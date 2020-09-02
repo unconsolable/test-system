@@ -1,13 +1,13 @@
 #include "loginwindow.h"
 
 #include <QApplication>
-#include "include/rapidjson/document.h"
 #include <fstream>
 
 rapidjson::Document accountDocument;
 
 int main(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
     std::fstream accountFstrm("account.json", std::ios::in | std::ios::out);
     std::string accountInfoStr;
     std::string tmp;
@@ -18,9 +18,8 @@ int main(int argc, char *argv[])
     if (accountDocument.Parse(accountInfoStr.c_str()).HasParseError())
     {
         QMessageBox::information(nullptr, "错误", "解析账户文件错误");
-        // 增加退出方法
+        a.exit();
     }
-    QApplication a(argc, argv);
     LoginWindow w;
     w.show();
     return a.exec();
