@@ -17,16 +17,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     src/choiceproblem.cpp \
+    src/judgementproblem.cpp \
     src/main.cpp \
     src/loginwindow.cpp \
     src/multiplechoiceproblem.cpp \
     src/problem.cpp \
     src/singlechoiceproblem.cpp \
     src/studentmainform.cpp \
-    src/teachermainform.cpp
+    src/teachermainform.cpp \
+    src/writeproblem.cpp
 
 HEADERS += \
     include/choiceproblem.h \
+    include/judgementproblem.h \
     include/rapidjson/allocators.h \
     include/rapidjson/document.h \
     include/rapidjson/encodedstream.h \
@@ -67,7 +70,9 @@ HEADERS += \
     include/problem.h \
     include/singlechoiceproblem.h \
     include/studentmainform.h \
-    include/teachermainform.h
+    include/teachermainform.h \
+    include/testmodel.h \
+    include/writeproblem.h
 
 FORMS += \
     include/loginwindow.ui \

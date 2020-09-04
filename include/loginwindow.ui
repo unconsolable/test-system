@@ -23,9 +23,9 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>LoginWindow</string>
+   <string>登录</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>

@@ -13,7 +13,7 @@ enum problemType
 {
     SINGLE,
     MULTIPLE,
-    TORF,
+    JUDGEMENT,
     WRITE,
 };
 

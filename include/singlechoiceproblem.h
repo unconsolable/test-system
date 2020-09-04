@@ -12,7 +12,7 @@ Author: unconsolable
 class SingleChoiceProblem : public ChoiceProblem
 {
 public:
-    SingleChoiceProblem(problemType = SINGLE, int = 0, const std::string& = "", const std::vector<std::string>& = {}, char = 'A');
+    SingleChoiceProblem(int = 0, const std::string& = "", const std::vector<std::string>& = {}, char = 'A');
 private:
     // 只有一个正确
     char m_charRightAns;
