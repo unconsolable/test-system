@@ -1,13 +1,19 @@
+/*
+File Name: studentmainform.h
+Description: Define StudentMainForm
+Author: unconsolable
+*/
+
 #ifndef STUDENTMAINFORM_H
 #define STUDENTMAINFORM_H
 
-#include <QWidget>
+#include <QMainWindow>
 
 namespace Ui {
 class StudentMainForm;
 }
 
-class StudentMainForm : public QWidget
+class StudentMainForm : public QMainWindow
 {
     Q_OBJECT
 

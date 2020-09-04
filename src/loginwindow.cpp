@@ -1,8 +1,14 @@
+/*
+File Name: loginwindow.cpp
+Description: Implement Login Window
+Author: unconsolable
+*/
+
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
 #include <string>
 
-extern rapidjson::Document accountDocument;
+extern rapidjson::Document g_jsonDocumentAccount;
 
 LoginWindow::LoginWindow(QWidget *parent)
     : QWidget(parent)
@@ -14,10 +20,10 @@ LoginWindow::LoginWindow(QWidget *parent)
 LoginWindow::~LoginWindow()
 {
     delete ui;
-    if (teaForm)
-        delete teaForm;
-    if (stuForm)
-        delete stuForm;
+    if (m_pTeacherFormTea)
+        delete m_pTeacherFormTea;
+    if (m_pStudentFormStu)
+        delete m_pStudentFormStu;
 }
 
 void LoginWindow::on_loginBtn_clicked()
@@ -25,31 +31,31 @@ void LoginWindow::on_loginBtn_clicked()
     // 获得输入的账号和密码
     const char *idStrPtr = ui->idEdit->text().toStdString().c_str();
     std::string pwStr = ui->pwEdit->text().toStdString();
-    std::string rootPwStr = accountDocument["root"].GetString();
-    if (accountDocument["faculty"].HasMember(idStrPtr))
+    std::string rootPwStr = g_jsonDocumentAccount["root"].GetString();
+    if (g_jsonDocumentAccount["faculty"].HasMember(idStrPtr))
     {
         // 教师界面
-        std::string rightPwStr = accountDocument["faculty"][idStrPtr].GetString();
+        std::string rightPwStr = g_jsonDocumentAccount["faculty"][idStrPtr].GetString();
         if (rightPwStr == pwStr)
         {
-            teaForm = new TeacherMainForm();
+            m_pTeacherFormTea = new TeacherMainForm();
             this->close();
-            teaForm->show();
+            m_pTeacherFormTea->show();
         }
         else
         {
             QMessageBox::information(this, "错误", "密码错误");
         }
     }
-    else if (accountDocument["student"].HasMember(idStrPtr))
+    else if (g_jsonDocumentAccount["student"].HasMember(idStrPtr))
     {
         // 学生界面
-        std::string rightPwStr = accountDocument["student"][idStrPtr].GetString();
+        std::string rightPwStr = g_jsonDocumentAccount["student"][idStrPtr].GetString();
         if (rightPwStr == pwStr)
         {
-            stuForm = new StudentMainForm();
+            m_pStudentFormStu = new StudentMainForm();
             this->close();
-            stuForm->show();
+            m_pStudentFormStu->show();
         }
         else
         {

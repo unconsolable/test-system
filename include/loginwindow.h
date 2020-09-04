@@ -1,13 +1,20 @@
+/*
+File Name: loginwindow.h
+Description: Header File for the Login Window
+Author: unconsolable
+*/
+
 #ifndef LOGINWINDOW_H
 #define LOGINWINDOW_H
 
 #include <QWidget>
 #include <QMessageBox>
 #include "teachermainform.h"
+
 #include "studentmainform.h"
 
-#include "include/rapidjson/document.h"
-#include "include/rapidjson/prettywriter.h"
+#include "rapidjson/document.h"
+#include "rapidjson/prettywriter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class LoginWindow; }
@@ -26,7 +33,7 @@ private slots:
 
 private:
     Ui::LoginWindow *ui;
-    TeacherMainForm *teaForm = nullptr;
-    StudentMainForm *stuForm = nullptr;
+    TeacherMainForm *m_pTeacherFormTea = nullptr;
+    StudentMainForm *m_pStudentFormStu = nullptr;
 };
 #endif // LOGINWINDOW_H

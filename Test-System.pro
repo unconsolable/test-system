@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -16,13 +16,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp \
-    loginwindow.cpp \
-    problem.cpp \
-    studentmainform.cpp \
-    teachermainform.cpp
+    src/choiceproblem.cpp \
+    src/main.cpp \
+    src/loginwindow.cpp \
+    src/multiplechoiceproblem.cpp \
+    src/problem.cpp \
+    src/singlechoiceproblem.cpp \
+    src/studentmainform.cpp \
+    src/teachermainform.cpp
 
 HEADERS += \
+    include/choiceproblem.h \
     include/rapidjson/allocators.h \
     include/rapidjson/document.h \
     include/rapidjson/encodedstream.h \
@@ -58,15 +62,19 @@ HEADERS += \
     include/rapidjson/stream.h \
     include/rapidjson/stringbuffer.h \
     include/rapidjson/writer.h \
-    loginwindow.h \
-    problem.h \
-    studentmainform.h \
-    teachermainform.h
+    include/loginwindow.h \
+    include/multiplechoiceproblem.h \
+    include/problem.h \
+    include/singlechoiceproblem.h \
+    include/studentmainform.h \
+    include/teachermainform.h
 
 FORMS += \
-    loginwindow.ui \
-    studentmainform.ui \
-    teachermainform.ui
+    include/loginwindow.ui \
+    include/studentmainform.ui \
+    include/teachermainform.ui
+
+INCLUDEPATH += include
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
