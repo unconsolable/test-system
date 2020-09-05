@@ -22,6 +22,7 @@ SOURCES += \
     src/loginwindow.cpp \
     src/multiplechoiceproblem.cpp \
     src/problem.cpp \
+    src/problemlistmodel.cpp \
     src/singlechoiceproblem.cpp \
     src/studentmainform.cpp \
     src/teachermainform.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
 HEADERS += \
     include/choiceproblem.h \
     include/judgementproblem.h \
+    include/problemlistmodel.h \
     include/rapidjson/allocators.h \
     include/rapidjson/document.h \
     include/rapidjson/encodedstream.h \
@@ -71,7 +73,6 @@ HEADERS += \
     include/singlechoiceproblem.h \
     include/studentmainform.h \
     include/teachermainform.h \
-    include/testmodel.h \
     include/writeproblem.h
 
 FORMS += \

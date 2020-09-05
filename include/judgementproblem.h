@@ -11,7 +11,10 @@ Author: unconsolable
 class JudgementProblem : public Problem
 {
 public:
-    JudgementProblem(int = 0, const std::string& = "", bool = true);
+    JudgementProblem(double = 0, const std::string& = "", bool = true);
+    virtual double checkAnswer(const QVariant&) override;
+    virtual rapidjson::Value toJsonValue(rapidjson::Document& doc) const override;
+    virtual ~JudgementProblem() override = default;
 private:
     bool m_boolRightAns;
 };

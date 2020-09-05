@@ -87,17 +87,13 @@
     <property name="title">
      <string>文件</string>
     </property>
+    <addaction name="m_actionOpenFile"/>
     <addaction name="m_actionSaveFile"/>
     <addaction name="separator"/>
     <addaction name="m_actionExit"/>
    </widget>
    <addaction name="fileMenu"/>
   </widget>
-  <action name="m_actionOpenFile">
-   <property name="text">
-    <string>打开</string>
-   </property>
-  </action>
   <action name="m_actionSaveFile">
    <property name="checkable">
     <bool>false</bool>
@@ -115,6 +111,11 @@
    </property>
    <property name="text">
     <string>退出</string>
+   </property>
+  </action>
+  <action name="m_actionOpenFile">
+   <property name="text">
+    <string>打开</string>
    </property>
   </action>
  </widget>

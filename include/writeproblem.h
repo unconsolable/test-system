@@ -14,7 +14,10 @@ Author: unconsolable
 class WriteProblem : public Problem
 {
 public:
-    WriteProblem(int = 0, const std::string& = "", const std::vector<std::string>& = {});
+    WriteProblem(double = 0, const std::string& = "", const std::vector<std::string>& = {});
+    virtual double checkAnswer(const QVariant&) override;
+    virtual rapidjson::Value toJsonValue(rapidjson::Document& doc) const override;
+    virtual ~WriteProblem() = default;
 private:
     std::vector<std::string> m_strVecKeyWords;
 };

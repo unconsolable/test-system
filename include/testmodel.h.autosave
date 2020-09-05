@@ -9,7 +9,10 @@ class TestModel : public QAbstractListModel
 {
     Q_OBJECT;
 public:
+    TestModel() = default;
+    
 private:
+    std::vector<Problem*> m_pProblemVecProList;
 };
 
 #endif // TESTMODEL_H
