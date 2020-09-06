@@ -8,6 +8,8 @@ Author: unconsolable
 #define TEACHERMAINFORM_H
 
 #include <QMainWindow>
+#include <QItemSelection>
+#include "problemlistmodel.h"
 
 class ProblemListModel;
 
@@ -25,8 +27,8 @@ public:
 private slots:
     void onFileOpen();
     void onFileSave();
-
     void on_m_buttonRm_clicked();
+    void on_m_buttonSelect_clicked();
 
 private:
     Ui::TeacherMainForm *ui;

@@ -7,7 +7,6 @@ Author: unconsolable
 #include "teachermainform.h"
 #include "ui_teachermainform.h"
 #include <QFileDialog>
-#include "problemlistmodel.h"
 #include <fstream>
 #include <QMessageBox>
 
@@ -60,7 +59,6 @@ void TeacherMainForm::onFileOpen()
     }
     if (!m_problemListModel->fromJsonDocument(b_jsonDocProList))
         QMessageBox::information(this, "Error", tr("转为Model失败"));
-
 }
 
 
@@ -89,5 +87,19 @@ void TeacherMainForm::on_m_buttonRm_clicked()
         {
             m_problemListModel->rmProblem(i.row());
         }
+    }
+}
+
+void TeacherMainForm::on_m_buttonSelect_clicked()
+{
+    auto selectModel = ui->m_listViewProblem->selectionModel();
+    if (selectModel)
+    {
+        // 获得对应下标
+        QModelIndexList indexList = selectModel->selectedIndexes();
+        auto curProblem = (*m_problemListModel)[indexList[0].row()];
+        ui->tmp_type->setText(tr(curProblem->convertType()));
+        ui->tmp_mark->setText(QString::number(curProblem->getMark()));
+        ui->tmp_desc->setText(curProblem->getDescription().c_str());
     }
 }

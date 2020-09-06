@@ -142,23 +142,7 @@ QVariant ProblemListModel::data(const QModelIndex& index, int role) const
         return QVariant();
     if (role == Qt::DisplayRole || role == Qt::EditRole)
     {
-        switch (m_pProblemVecProList[index.row()]->getType())
-        {
-        case SINGLE:
-            return tr("单选题");
-            break;
-        case MULTIPLE:
-            return tr("多选题");
-            break;
-        case JUDGEMENT:
-            return tr("判断题");
-            break;
-        case WRITE:
-            return tr("简答题");
-            break;
-        default:
-            return QVariant();
-        }
+        return tr(m_pProblemVecProList[index.row()]->convertType());
     }
     return QVariant();
 }
@@ -176,8 +160,10 @@ Qt::ItemFlags ProblemListModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid())
         return Qt::ItemIsEnabled;
-    // 按位或ItemIsEditable,告知Controller能够Model修改
-    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+    // 按位或ItemIsEditable,告知Controller能够修改显示的信息
+    // 不是修改数据
+    // return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+    return QAbstractItemModel::flags(index);
 }
 
 bool ProblemListModel::rmProblem(int pos)
@@ -188,4 +174,11 @@ bool ProblemListModel::rmProblem(int pos)
     m_pProblemVecProList.erase(m_pProblemVecProList.begin() + pos);
     endRemoveRows();
     return true;
+}
+
+Problem* ProblemListModel::operator[](size_t index)
+{
+    if (index >= m_pProblemVecProList.size())
+        return nullptr;
+    return m_pProblemVecProList[index];
 }

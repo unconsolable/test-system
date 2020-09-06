@@ -43,6 +43,8 @@ public:
     std::string toJsonString() const;
     // 从JSON中获得试卷信息
     bool fromJsonDocument(const rapidjson::Document& doc);
+    // 返回一个下标对应的题目指针,**不能对其delete**,若为nullptr则下标无效
+    Problem* operator[](size_t index);
 private:
     std::vector<Problem*> m_pProblemVecProList;
 };
