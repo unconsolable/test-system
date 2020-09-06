@@ -21,4 +21,7 @@ private:
     std::vector<char> m_charVecRightAns;
 };
 
+// 能够使用QVariant
+// Q_DECLARE_METATYPE(MultipleChoiceProblem);
+
 #endif // MULTIPLECHOICEPROBLEM_H

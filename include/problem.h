@@ -24,6 +24,7 @@ class Problem
 public:
     // 构造函数
     Problem(problemType = SINGLE, double = 0, const std::string& = "");
+    problemType getType() const;
     virtual double checkAnswer(const QVariant&) = 0;
     // 转换为rapidjson中的节点
     virtual rapidjson::Value toJsonValue(rapidjson::Document& doc) const;
@@ -34,5 +35,8 @@ protected:
     double m_doubleMark;
     std::string m_strDescription;
 };
+
+// 能够使用QVariant
+// Q_DECLARE_METATYPE(Problem);
 
 #endif // PROBLEM_H

@@ -14,7 +14,7 @@
    <string>出卷系统</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QListView" name="listView">
+   <widget class="QListView" name="m_listViewProblem">
     <property name="geometry">
      <rect>
       <x>25</x>

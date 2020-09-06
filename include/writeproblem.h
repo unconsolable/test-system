@@ -22,4 +22,7 @@ private:
     std::vector<std::string> m_strVecKeyWords;
 };
 
+// 能够使用QVariant
+// Q_DECLARE_METATYPE(WriteProblem);
+
 #endif // WRITEPROBLEM_H

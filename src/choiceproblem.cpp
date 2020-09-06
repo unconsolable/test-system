@@ -16,9 +16,11 @@ rapidjson::Value ChoiceProblem::toJsonValue(rapidjson::Document& doc) const
     auto problem = Problem::toJsonValue(doc);
     // 序列化选项
     rapidjson::Value answers(rapidjson::kArrayType);
-    for (const auto& b_strEachChoice : m_strVecAnswerList)
+    for (auto& b_strEachChoice : m_strVecAnswerList)
     {
-        answers.PushBack(b_strEachChoice, doc.GetAllocator());
+        rapidjson::Value choice;
+        choice.SetString(b_strEachChoice.c_str(), b_strEachChoice.size(), doc.GetAllocator());
+        answers.PushBack(choice, doc.GetAllocator());
     }
     problem.AddMember("answers", answers, doc.GetAllocator());
     return problem;

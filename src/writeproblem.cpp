@@ -25,10 +25,12 @@ rapidjson::Value WriteProblem::toJsonValue(rapidjson::Document &doc) const
 {
     auto problem = Problem::toJsonValue(doc);
     rapidjson::Value keyWord(rapidjson::kArrayType);
-    for (const auto& i : m_strVecKeyWords)
+    for (const auto& b_strEachKeyWord : m_strVecKeyWords)
     {
-        keyWord.PushBack(i, doc.GetAllocator());
+        rapidjson::Value choice;
+        choice.SetString(b_strEachKeyWord.c_str(), b_strEachKeyWord.size(), doc.GetAllocator());
+        keyWord.PushBack(choice, doc.GetAllocator());
     }
-    problem.AddMember("right",keyWord,doc.GetAllocator());
+    problem.AddMember("right", keyWord, doc.GetAllocator());
     return problem;
 }

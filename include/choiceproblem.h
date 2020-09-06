@@ -23,4 +23,7 @@ public:
     std::vector<std::string> m_strVecAnswerList;
 };
 
+// 能够使用QVariant
+// Q_DECLARE_METATYPE(ChoiceProblem);
+
 #endif // CHOICEPROBLEM_H

@@ -36,9 +36,11 @@ rapidjson::Value MultipleChoiceProblem::toJsonValue(rapidjson::Document& doc) co
 {
     auto problem = ChoiceProblem::toJsonValue(doc);
     rapidjson::Value answer(rapidjson::kArrayType);
-    for (const auto& i : m_strVecAnswerList)
+    for (const auto& b_strEachRight: m_strVecAnswerList)
     {
-        answer.PushBack(i,doc.GetAllocator());
+        rapidjson::Value choice;
+        choice.SetString(b_strEachRight.c_str(),b_strEachRight.size(), doc.GetAllocator());
+        answer.PushBack(choice, doc.GetAllocator());
     }
     problem.AddMember("right", answer, doc.GetAllocator());
     return problem;

@@ -21,4 +21,7 @@ private:
     char m_charRightAns;
 };
 
+// 能够使用QVariant
+// Q_DECLARE_METATYPE(SingleChoiceProblem);
+
 #endif // SINGLECHOICEPROBLEM_H

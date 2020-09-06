@@ -9,6 +9,8 @@ Author: unconsolable
 
 #include <QMainWindow>
 
+class ProblemListModel;
+
 namespace Ui {
 class TeacherMainForm;
 }
@@ -20,9 +22,12 @@ class TeacherMainForm : public QMainWindow
 public:
     explicit TeacherMainForm(QWidget *parent = nullptr);
     ~TeacherMainForm();
-
+public slots:
+    void onFileOpen();
+    void onFileSave();
 private:
     Ui::TeacherMainForm *ui;
+    ProblemListModel *m_problemListModel = nullptr;
 };
 
 #endif // TEACHERMAINFORM_H

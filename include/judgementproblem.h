@@ -19,4 +19,7 @@ private:
     bool m_boolRightAns;
 };
 
+// 能够使用QVariant
+// Q_DECLARE_METATYPE(JudgementProblem);
+
 #endif // JUDGEMENTPROBLEM_H

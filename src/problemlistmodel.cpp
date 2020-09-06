@@ -11,6 +11,10 @@ Author: unconsolable
 #include "writeproblem.h"
 #include "rapidjson/prettywriter.h"
 
+ProblemListModel::ProblemListModel(QObject *parent) : QAbstractListModel(parent)
+{
+}
+
 ProblemListModel::~ProblemListModel()
 {
     // 析构函数,倒序释放内存
@@ -40,10 +44,11 @@ void ProblemListModel::addWriteProblem(double _mark, const std::string& _desc, c
 {
     m_pProblemVecProList.push_back(new WriteProblem(_mark, _desc, _keyWords));
 }
+// 使用PrettyWriter转换成字符
 std::string ProblemListModel::toJsonString() const
 {
-    rapidjson::Document b_jsonTestPaper;
-    rapidjson::Value b_jsonProblemList;
+    rapidjson::Document b_jsonTestPaper(rapidjson::kObjectType);
+    rapidjson::Value b_jsonProblemList(rapidjson::kArrayType);
     for (const auto i : m_pProblemVecProList)
     {
         b_jsonProblemList.PushBack(i->toJsonValue(b_jsonTestPaper),b_jsonTestPaper.GetAllocator());
@@ -56,43 +61,46 @@ std::string ProblemListModel::toJsonString() const
 }
 bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
 {
+    // 检查是否有key:problem
     if (!doc.HasMember("problem") || !doc["problem"].IsArray())
     {
         return false;
     }
-    for (auto& v : doc["problem"].GetArray())
+    for (auto& b_jsonValueEachProblem : doc["problem"].GetArray())
     {
         std::vector<std::string> tmpAnsListOrKeyWords;
         std::vector<char> multipleChoice;
-        switch (v["type"].GetInt())
+        // 根据类型对应构造
+        switch (b_jsonValueEachProblem["type"].GetInt())
         {
         case SINGLE:
-            for (auto& i: doc["answers"].GetArray())
+            for (auto& i : b_jsonValueEachProblem["answers"].GetArray())
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
-            addSingleChoiceProblem(v["mark"].GetInt(), std::string(v["description"].GetString()), tmpAnsListOrKeyWords, v["right"].GetInt());
+            addSingleChoiceProblem(b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, b_jsonValueEachProblem["right"].GetInt());
             break;
         case MULTIPLE:
-            for (auto& i: doc["answers"].GetArray())
+            for (auto& i : b_jsonValueEachProblem["answers"].GetArray())
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
-            for (auto& i:doc["right"].GetArray())
+            // 存储选项用的是INT
+            for (auto& i : b_jsonValueEachProblem["right"].GetArray())
             {
-                multipleChoice.emplace_back(i.GetString());
+                multipleChoice.emplace_back(i.GetInt());
             }
-            addMultipleChoiceProblem(v["mark"].GetInt(), std::string(v["description"].GetString()), tmpAnsListOrKeyWords, multipleChoice);
+            addMultipleChoiceProblem(b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, multipleChoice);
             break;
         case JUDGEMENT:
-            addJudgementProblem(v["mark"].GetInt(), std::string(v["description"].GetString()),v["right"].GetBool());
+            addJudgementProblem(b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()),b_jsonValueEachProblem["right"].GetBool());
             break;
         case WRITE:
-            for (auto& i:doc["right"].GetArray())
+            for (auto& i: b_jsonValueEachProblem["right"].GetArray())
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
-            addWriteProblem(v["mark"].GetInt(), std::string(v["description"].GetString()), tmpAnsListOrKeyWords);
+            addWriteProblem(b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords);
             break;
         default:
             return false;
@@ -101,4 +109,43 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
     return true;
 }
 
+int ProblemListModel::rowCount(const QModelIndex &parent) const
+{
+    return m_pProblemVecProList.size();
+}
 
+QVariant ProblemListModel::data(const QModelIndex& index, int role) const
+{
+    if (!index.isValid())
+        return QVariant();
+//    if (role == Qt::DisplayRole)
+//    {
+        switch (m_pProblemVecProList[index.row()]->getType())
+        {
+        case SINGLE:
+            return QString("单选题");
+            break;
+        case MULTIPLE:
+            return QString("多选题");
+            break;
+        case JUDGEMENT:
+            return QString("判断题");
+            break;
+        case WRITE:
+            return QString("简答题");
+            break;
+        default:
+            return QVariant();
+        }
+//    }
+}
+
+//QVariant ProblemListModel::headerData(int section,  Qt::Orientation orientation, int role) const
+//{
+//    if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
+//    {
+//        return QString("题型");
+//    }
+//    return QAbstractListModel::headerData(section,orientation,role);
+
+//}
