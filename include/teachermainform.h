@@ -22,9 +22,12 @@ class TeacherMainForm : public QMainWindow
 public:
     explicit TeacherMainForm(QWidget *parent = nullptr);
     ~TeacherMainForm();
-public slots:
+private slots:
     void onFileOpen();
     void onFileSave();
+
+    void on_m_buttonRm_clicked();
+
 private:
     Ui::TeacherMainForm *ui;
     ProblemListModel *m_problemListModel = nullptr;

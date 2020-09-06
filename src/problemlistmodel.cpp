@@ -25,35 +25,54 @@ ProblemListModel::~ProblemListModel()
     }
 }
 // 添加单选题
-void ProblemListModel::addSingleChoiceProblem(double _mark, const std::string& _desc, const std::vector<std::string>& _ansList, char _right)
+void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, const std::vector<std::string>& _ansList, char _right)
 {
-    m_pProblemVecProList.push_back(new SingleChoiceProblem(_mark, _desc, _ansList, _right));
+    // 发送Model将变化的信号 [begin,end]方式表示
+    beginInsertRows(QModelIndex(), pos, pos);
+    m_pProblemVecProList.insert(m_pProblemVecProList.begin() + pos, new SingleChoiceProblem(_mark, _desc, _ansList, _right));
+    // 发送Model已变化的信号
+    endInsertRows();
 }
 // 添加多选题
-void ProblemListModel::addMultipleChoiceProblem(double _mark, const std::string& _desc, const std::vector<std::string>& _ansList, const std::vector<char>& _right)
+void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, const std::vector<std::string>& _ansList, const std::vector<char>& _right)
 {
+    // 发送Model将变化的信号 [begin,end]方式表示
+    beginInsertRows(QModelIndex(), pos, pos);
     m_pProblemVecProList.push_back(new MultipleChoiceProblem(_mark, _desc, _ansList, _right));
+    // 发送Model已变化的信号
+    endInsertRows();
 }
 // 添加判断题
-void ProblemListModel::addJudgementProblem(double _mark, const std::string& _desc, bool _right)
+void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, bool _right)
 {
+    // 发送Model将变化的信号 [begin,end]方式表示
+    beginInsertRows(QModelIndex(), pos, pos);
     m_pProblemVecProList.push_back(new JudgementProblem(_mark, _desc, _right));
+    // 发送Model已变化的信号
+    endInsertRows();
 }
 // 添加简答题
-void ProblemListModel::addWriteProblem(double _mark, const std::string& _desc, const std::vector<std::string>& _keyWords)
+void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, const std::vector<std::string>& _keyWords)
 {
+    // 发送Model将变化的信号 [begin,end]方式表示
+    beginInsertRows(QModelIndex(), pos, pos);
     m_pProblemVecProList.push_back(new WriteProblem(_mark, _desc, _keyWords));
+    // 发送Model已变化的信号
+    endInsertRows();
 }
 // 使用PrettyWriter转换成字符
 std::string ProblemListModel::toJsonString() const
 {
     rapidjson::Document b_jsonTestPaper(rapidjson::kObjectType);
     rapidjson::Value b_jsonProblemList(rapidjson::kArrayType);
+    // 每个题目转为JSON结构
     for (const auto i : m_pProblemVecProList)
     {
-        b_jsonProblemList.PushBack(i->toJsonValue(b_jsonTestPaper),b_jsonTestPaper.GetAllocator());
+        b_jsonProblemList.PushBack(i->toJsonValue(b_jsonTestPaper), b_jsonTestPaper.GetAllocator());
     }
-    b_jsonTestPaper.AddMember("problem", b_jsonProblemList,b_jsonTestPaper.GetAllocator());
+    // 添加Key-Value
+    b_jsonTestPaper.AddMember("problem", b_jsonProblemList, b_jsonTestPaper.GetAllocator());
+    // 转换为字符串,参考rapidjson文档
     rapidjson::StringBuffer sb;
     rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
     b_jsonTestPaper.Accept(writer);
@@ -61,7 +80,7 @@ std::string ProblemListModel::toJsonString() const
 }
 bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
 {
-    // 检查是否有key:problem
+    // 检查是否有为problem的key
     if (!doc.HasMember("problem") || !doc["problem"].IsArray())
     {
         return false;
@@ -78,7 +97,7 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
-            addSingleChoiceProblem(b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, b_jsonValueEachProblem["right"].GetInt());
+            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, b_jsonValueEachProblem["right"].GetInt());
             break;
         case MULTIPLE:
             for (auto& i : b_jsonValueEachProblem["answers"].GetArray())
@@ -90,17 +109,17 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
             {
                 multipleChoice.emplace_back(i.GetInt());
             }
-            addMultipleChoiceProblem(b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, multipleChoice);
+            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, multipleChoice);
             break;
         case JUDGEMENT:
-            addJudgementProblem(b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()),b_jsonValueEachProblem["right"].GetBool());
+            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()),b_jsonValueEachProblem["right"].GetBool());
             break;
         case WRITE:
             for (auto& i: b_jsonValueEachProblem["right"].GetArray())
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
-            addWriteProblem(b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords);
+            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords);
             break;
         default:
             return false;
@@ -111,6 +130,7 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
 
 int ProblemListModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return m_pProblemVecProList.size();
 }
 
@@ -118,34 +138,54 @@ QVariant ProblemListModel::data(const QModelIndex& index, int role) const
 {
     if (!index.isValid())
         return QVariant();
-//    if (role == Qt::DisplayRole)
-//    {
+    if (index.row() >= static_cast<int>(m_pProblemVecProList.size()))
+        return QVariant();
+    if (role == Qt::DisplayRole || role == Qt::EditRole)
+    {
         switch (m_pProblemVecProList[index.row()]->getType())
         {
         case SINGLE:
-            return QString("单选题");
+            return tr("单选题");
             break;
         case MULTIPLE:
-            return QString("多选题");
+            return tr("多选题");
             break;
         case JUDGEMENT:
-            return QString("判断题");
+            return tr("判断题");
             break;
         case WRITE:
-            return QString("简答题");
+            return tr("简答题");
             break;
         default:
             return QVariant();
         }
-//    }
+    }
+    return QVariant();
 }
 
-//QVariant ProblemListModel::headerData(int section,  Qt::Orientation orientation, int role) const
-//{
-//    if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
-//    {
-//        return QString("题型");
-//    }
-//    return QAbstractListModel::headerData(section,orientation,role);
+QVariant ProblemListModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    Q_UNUSED(section);
 
-//}
+    if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
+        return tr("题型");
+    return QVariant();
+}
+
+Qt::ItemFlags ProblemListModel::flags(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return Qt::ItemIsEnabled;
+    // 按位或ItemIsEditable,告知Controller能够Model修改
+    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+}
+
+bool ProblemListModel::rmProblem(int pos)
+{
+    beginRemoveRows(QModelIndex(), pos, pos);
+    // 删除指针之前**释放**对应资源
+    delete m_pProblemVecProList[pos];
+    m_pProblemVecProList.erase(m_pProblemVecProList.begin() + pos);
+    endRemoveRows();
+    return true;
+}

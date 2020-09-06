@@ -17,10 +17,10 @@
    <widget class="QListView" name="m_listViewProblem">
     <property name="geometry">
      <rect>
-      <x>25</x>
-      <y>21</y>
+      <x>20</x>
+      <y>11</y>
       <width>201</width>
-      <height>471</height>
+      <height>491</height>
      </rect>
     </property>
    </widget>
@@ -28,16 +28,16 @@
     <property name="geometry">
      <rect>
       <x>249</x>
-      <y>19</y>
-      <width>501</width>
-      <height>471</height>
+      <y>9</y>
+      <width>531</width>
+      <height>491</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="m_buttonAdd">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>20</x>
       <y>520</y>
       <width>71</width>
       <height>28</height>
@@ -47,10 +47,10 @@
      <string>+</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="m_buttonMinus">
+   <widget class="QPushButton" name="m_buttonRm">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>150</x>
       <y>520</y>
       <width>71</width>
       <height>28</height>
@@ -63,14 +63,20 @@
    <widget class="QPushButton" name="m_buttonFinish">
     <property name="geometry">
      <rect>
-      <x>650</x>
+      <x>690</x>
       <y>520</y>
       <width>93</width>
       <height>28</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="text">
-     <string>完成</string>
+     <string>完成修改</string>
     </property>
    </widget>
   </widget>

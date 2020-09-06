@@ -16,7 +16,14 @@ TeacherMainForm::TeacherMainForm(QWidget *parent) :
     ui(new Ui::TeacherMainForm)
 {
     ui->setupUi(this);
+    m_problemListModel = new ProblemListModel();
+    // 设置View对应的Model
+    ui->m_listViewProblem->setModel(m_problemListModel);
+    // 设置选择模式为单选
+    ui->m_listViewProblem->setSelectionMode(QAbstractItemView::SingleSelection);
+    // open menu和slot绑定
     connect(ui->m_actionOpenFile, SIGNAL(triggered()), this, SLOT(onFileOpen()));
+    // save menu和slot绑定
     connect(ui->m_actionSaveFile, SIGNAL(triggered()), this, SLOT(onFileSave()));
 }
 
@@ -32,15 +39,15 @@ void TeacherMainForm::onFileOpen()
     // 获得文件路径
     QString b_qStrFileDir = QFileDialog::getOpenFileName(this,"Open Paper File","/","JSON files(*.json)");
     // 打开文件
-    std::ifstream b_ifStrmProList(b_qStrFileDir.toStdString());
-    if (!b_ifStrmProList)
+    std::ifstream b_ifStrmProblemList(b_qStrFileDir.toStdString());
+    if (!b_ifStrmProblemList)
     {
         QMessageBox::information(this, "Error", tr("文件打开失败"));
         return;
     }
     std::string b_strProListInfo;
     std::string t_strInput;
-    while (b_ifStrmProList >> t_strInput)
+    while (b_ifStrmProblemList >> t_strInput)
     {
         // 读入账户文件形成JSON字符串
         b_strProListInfo += t_strInput + ' ';
@@ -51,22 +58,36 @@ void TeacherMainForm::onFileOpen()
         QMessageBox::information(this, "Error", tr("试卷解析失败"));
         return;
     }
-    m_problemListModel = new ProblemListModel();
     if (!m_problemListModel->fromJsonDocument(b_jsonDocProList))
         QMessageBox::information(this, "Error", tr("转为Model失败"));
-//    ui->m_listViewProblem->setModel(m_problemListModel);
+
 }
 
 
 void TeacherMainForm::onFileSave()
 {
     QString b_qStrFileDir = QFileDialog::getOpenFileName(this,"Open Paper File","/","JSON files(*.json)");
-    std::ofstream b_ofStrmProList(b_qStrFileDir.toStdString());
-    if (!b_ofStrmProList)
+    std::ofstream b_ofStrmProblemList(b_qStrFileDir.toStdString());
+    if (!b_ofStrmProblemList)
     {
         QMessageBox::information(this, "Error", tr("文件打开失败"));
         return;
     }
     std::string res = m_problemListModel->toJsonString();
-    b_ofStrmProList << res;
+    b_ofStrmProblemList << res;
+}
+
+void TeacherMainForm::on_m_buttonRm_clicked()
+{
+    // 获得选择的Model
+    auto selectModel = ui->m_listViewProblem->selectionModel();
+    if (selectModel)
+    {
+        // 获得对应下标
+        QModelIndexList indexList = selectModel->selectedIndexes();
+        for (auto &i : indexList)
+        {
+            m_problemListModel->rmProblem(i.row());
+        }
+    }
 }
