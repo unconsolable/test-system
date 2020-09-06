@@ -17,11 +17,19 @@ ProblemListModel::ProblemListModel(QObject *parent) : QAbstractListModel(parent)
 
 ProblemListModel::~ProblemListModel()
 {
-    // 析构函数,倒序释放内存
-    for (auto b_iter = m_pProblemVecProList.rbegin(); b_iter != m_pProblemVecProList.rend(); --b_iter)
+    // 析构函数,如下倒序释放内存会引起SIGSEGV
+    // for (auto b_iter = m_pProblemVecProList.rbegin(); b_iter != m_pProblemVecProList.rend(); --b_iter)
+    // {
+    //     delete *b_iter;
+    //    *b_iter = nullptr;
+    // }
+    for (auto i : m_pProblemVecProList)
     {
-        delete *b_iter;
-        *b_iter = nullptr;
+        if (i)
+        {
+            delete i;
+            i = nullptr;
+        }
     }
 }
 // 添加单选题
@@ -38,7 +46,7 @@ void ProblemListModel::addProblem(int pos, double _mark, const std::string& _des
 {
     // 发送Model将变化的信号 [begin,end]方式表示
     beginInsertRows(QModelIndex(), pos, pos);
-    m_pProblemVecProList.push_back(new MultipleChoiceProblem(_mark, _desc, _ansList, _right));
+    m_pProblemVecProList.insert(m_pProblemVecProList.begin() + pos, new MultipleChoiceProblem(_mark, _desc, _ansList, _right));
     // 发送Model已变化的信号
     endInsertRows();
 }
@@ -47,7 +55,7 @@ void ProblemListModel::addProblem(int pos, double _mark, const std::string& _des
 {
     // 发送Model将变化的信号 [begin,end]方式表示
     beginInsertRows(QModelIndex(), pos, pos);
-    m_pProblemVecProList.push_back(new JudgementProblem(_mark, _desc, _right));
+    m_pProblemVecProList.insert(m_pProblemVecProList.begin() + pos, new JudgementProblem(_mark, _desc, _right));
     // 发送Model已变化的信号
     endInsertRows();
 }
@@ -56,7 +64,7 @@ void ProblemListModel::addProblem(int pos, double _mark, const std::string& _des
 {
     // 发送Model将变化的信号 [begin,end]方式表示
     beginInsertRows(QModelIndex(), pos, pos);
-    m_pProblemVecProList.push_back(new WriteProblem(_mark, _desc, _keyWords));
+    m_pProblemVecProList.insert(m_pProblemVecProList.begin() + pos, new WriteProblem(_mark, _desc, _keyWords));
     // 发送Model已变化的信号
     endInsertRows();
 }

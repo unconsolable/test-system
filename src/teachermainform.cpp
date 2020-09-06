@@ -30,7 +30,10 @@ TeacherMainForm::~TeacherMainForm()
 {
     delete ui;
     if (m_problemListModel)
+    {
         delete m_problemListModel;
+        m_problemListModel = nullptr;
+    }
 }
 
 void TeacherMainForm::onFileOpen()
@@ -83,6 +86,12 @@ void TeacherMainForm::on_m_buttonRm_clicked()
     {
         // 获得对应下标
         QModelIndexList indexList = selectModel->selectedIndexes();
+        // 需要检测大小,避免未点击的UB
+        if (!indexList.size())
+        {
+            QMessageBox::information(this, tr("错误"), tr("未点击"));
+            return;
+        }
         for (auto &i : indexList)
         {
             m_problemListModel->rmProblem(i.row());
@@ -97,6 +106,12 @@ void TeacherMainForm::on_m_buttonSelect_clicked()
     {
         // 获得对应下标
         QModelIndexList indexList = selectModel->selectedIndexes();
+        // 需要检测大小,避免未点击的UB
+        if (!indexList.size())
+        {
+            QMessageBox::information(this, tr("错误"), tr("未点击"));
+            return;
+        }
         auto curProblem = (*m_problemListModel)[indexList[0].row()];
         ui->tmp_type->setText(tr(curProblem->convertType()));
         ui->tmp_mark->setText(QString::number(curProblem->getMark()));

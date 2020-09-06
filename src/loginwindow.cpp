@@ -20,10 +20,17 @@ LoginWindow::LoginWindow(QWidget *parent)
 LoginWindow::~LoginWindow()
 {
     delete ui;
+    // 删除后置nullptr防止悬垂指针
     if (m_pTeacherFormTea)
+    {
         delete m_pTeacherFormTea;
+        m_pTeacherFormTea = nullptr;
+    }
     if (m_pStudentFormStu)
+    {
         delete m_pStudentFormStu;
+        m_pStudentFormStu = nullptr;
+    }
 }
 
 void LoginWindow::on_loginBtn_clicked()
