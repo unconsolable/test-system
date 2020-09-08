@@ -35,7 +35,7 @@ public:
     void setType(problemType _ty);
     double getMark() const;
     void setMark(double Mark);
-    std::string getDescription() const;
+    const std::string& getDescription() const;
     void setDescription(const std::string &Description);
     // 将类型代号转为对应字符串
     const char* convertType() const;

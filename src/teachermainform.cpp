@@ -6,11 +6,51 @@ Author: unconsolable
 
 #include "teachermainform.h"
 #include "ui_teachermainform.h"
+// 每种具体问题的定义
+#include "singlechoiceproblem.h"
+#include "multiplechoiceproblem.h"
+#include "judgementproblem.h"
+#include "writeproblem.h"
+// 用到的库
 #include <QFileDialog>
 #include <fstream>
 #include <QMessageBox>
 #include <QGridLayout>
 #include <QTextEdit>
+#include <sstream>
+// 对选项文字的说明
+#define SetChoiceDesc()                                                                                             \
+    do                                                                                                              \
+    {                                                                                                               \
+        t_strVecChoiceDescOrKeyWords = &(static_cast<ChoiceProblem *>(curProblem)->getAnswerList());                \
+        m_teacherProblemWidget->m_lineEditProblemChoiceA->setText(tr(t_strVecChoiceDescOrKeyWords->at(0).c_str())); \
+        m_teacherProblemWidget->m_lineEditProblemChoiceB->setText(tr(t_strVecChoiceDescOrKeyWords->at(1).c_str())); \
+        m_teacherProblemWidget->m_lineEditProblemChoiceC->setText(tr(t_strVecChoiceDescOrKeyWords->at(2).c_str())); \
+        m_teacherProblemWidget->m_lineEditProblemChoiceD->setText(tr(t_strVecChoiceDescOrKeyWords->at(3).c_str())); \
+    }                                                                                                               \
+    while (0)
+// 对单选和多选选项的设定
+// 运算的需要加括号,成员选择不需括号
+#define SetChoiceButtonOrBox(ansChar, ControlA, ControlB, ControlC, ControlD, Method, State) \
+    do                                                                                       \
+    {                                                                                        \
+        switch ((ansChar))                                                                   \
+        {                                                                                    \
+        case 'A':                                                                            \
+            m_teacherProblemWidget->ControlA->Method((State));                               \
+            break;                                                                           \
+        case 'B':                                                                            \
+            m_teacherProblemWidget->ControlB->Method((State));                               \
+            break;                                                                           \
+        case 'C':                                                                            \
+            m_teacherProblemWidget->ControlC->Method((State));                               \
+            break;                                                                           \
+        case 'D':                                                                            \
+            m_teacherProblemWidget->ControlD->Method((State));                               \
+            break;                                                                           \
+        }                                                                                    \
+    }                                                                                        \
+    while (0)
 
 TeacherMainForm::TeacherMainForm(QWidget *parent) :
     QMainWindow(parent),
@@ -123,12 +163,43 @@ void TeacherMainForm::on_m_buttonSelect_clicked()
         m_teacherProblemWidget->m_lineEditProblemMark->setText(QString().number(curProblem->getMark(),'f',1));
         // 设置题面
         m_teacherProblemWidget->m_plainTextEditProblemDesc->setPlainText(tr(curProblem->getDescription().c_str()));
+        const std::vector<std::string> *t_strVecChoiceDescOrKeyWords = nullptr;
+        std::ostringstream oSStrmKeyWords;
         switch (curProblem->getType())
         {
-        case SINGLE:break;
-        case MULTIPLE:break;
-        case JUDGEMENT:break;
-        case WRITE:break;
+        case SINGLE:
+            // 设置选项文字
+            SetChoiceDesc();
+            // 设置正确答案
+            SetChoiceButtonOrBox(static_cast<SingleChoiceProblem*>(curProblem)->getRightAns(), m_radioProblemRightChoiceA, m_radioProblemRightChoiceB, m_radioProblemRightChoiceC, m_radioProblemRightChoiceD, setChecked, true);
+            break;
+        case MULTIPLE:
+            // 设置选项文字
+            SetChoiceDesc();
+            // 设置正确答案(组)
+            for (auto b_charEachAns : static_cast<MultipleChoiceProblem*>(curProblem)->getRightAns())
+            {
+                SetChoiceButtonOrBox(b_charEachAns, m_chkBoxProblemRightChoiceA, m_chkBoxProblemRightChoiceB, m_chkBoxProblemRightChoiceC, m_chkBoxProblemRightChoiceD, setCheckState, Qt::Checked);
+            }
+            break;
+        case JUDGEMENT:
+            // 设置正确答案
+            if (static_cast<JudgementProblem*>(curProblem)->getRightAns())
+                m_teacherProblemWidget->m_chkBoxIsRight->setCheckState(Qt::Checked);
+            else
+                m_teacherProblemWidget->m_chkBoxIsRight->setCheckState(Qt::Unchecked);
+            break;
+        case WRITE:
+            // 设置关键词组
+            t_strVecChoiceDescOrKeyWords = &(static_cast<WriteProblem*>(curProblem)->getKeyWords());
+            // 每组关键词之间以空格分离
+            for (const auto &t_strEachKeyWord : *t_strVecChoiceDescOrKeyWords)
+            {
+                oSStrmKeyWords << t_strEachKeyWord << std::endl;
+            }
+            // 显示关键词
+            m_teacherProblemWidget->m_plainTextKeyWordList->setPlainText(tr(oSStrmKeyWords.str().c_str()));
+            break;
         }
     }
 }

@@ -26,7 +26,7 @@ rapidjson::Value ChoiceProblem::toJsonValue(rapidjson::Document& doc) const
     return problem;
 }
 
-std::vector<std::string> ChoiceProblem::getAnswerList() const
+const std::vector<std::string> &ChoiceProblem::getAnswerList() const
 {
     return m_strVecAnswerList;
 }

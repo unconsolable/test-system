@@ -35,7 +35,7 @@ rapidjson::Value WriteProblem::toJsonValue(rapidjson::Document &doc) const
     return problem;
 }
 
-std::vector<std::string> WriteProblem::getKeyWords() const
+const std::vector<std::string> &WriteProblem::getKeyWords() const
 {
     return m_strVecKeyWords;
 }

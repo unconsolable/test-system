@@ -63,7 +63,6 @@ private:
     QCheckBox *m_chkBoxProblemRightChoiceB = nullptr;
     QCheckBox *m_chkBoxProblemRightChoiceC = nullptr;
     QCheckBox *m_chkBoxProblemRightChoiceD = nullptr;
-    QButtonGroup *m_BtnGroupMultipleChoice = nullptr;
     // 以下部分仅判断题会用到
     QCheckBox *m_chkBoxIsRight = nullptr;
     // 以下部分仅简答题会用到

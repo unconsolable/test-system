@@ -39,7 +39,6 @@
         CheckDeleteSetNull(m_chkBoxProblemRightChoiceB);\
         CheckDeleteSetNull(m_chkBoxProblemRightChoiceC);\
         CheckDeleteSetNull(m_chkBoxProblemRightChoiceD);\
-        CheckDeleteSetNull(m_BtnGroupMultipleChoice);   \
     }                                                   \
     while(0)
 // 释放选项
@@ -89,11 +88,6 @@
         m_chkBoxProblemRightChoiceB = new QCheckBox(tr("B"));             \
         m_chkBoxProblemRightChoiceC = new QCheckBox(tr("C"));             \
         m_chkBoxProblemRightChoiceD = new QCheckBox(tr("D"));             \
-        m_BtnGroupMultipleChoice = new QButtonGroup;                      \
-        m_BtnGroupMultipleChoice->addButton(m_chkBoxProblemRightChoiceA); \
-        m_BtnGroupMultipleChoice->addButton(m_chkBoxProblemRightChoiceB); \
-        m_BtnGroupMultipleChoice->addButton(m_chkBoxProblemRightChoiceC); \
-        m_BtnGroupMultipleChoice->addButton(m_chkBoxProblemRightChoiceD); \
     } while (0)
 // 添加选项到网格
 #define ViewAddChoice()                                                                                        \

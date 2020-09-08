@@ -46,7 +46,7 @@ rapidjson::Value MultipleChoiceProblem::toJsonValue(rapidjson::Document& doc) co
     return problem;
 }
 
-std::vector<char> MultipleChoiceProblem::getRightAns() const
+const std::vector<char>& MultipleChoiceProblem::getRightAns() const
 {
     return m_charVecRightAns;
 }

@@ -19,7 +19,7 @@ public:
     virtual rapidjson::Value toJsonValue(rapidjson::Document& doc) const override;
     virtual ~ChoiceProblem() override = default;
     // 选项的Setter和Getter
-    std::vector<std::string> getAnswerList() const;
+    const std::vector<std::string>& getAnswerList() const;
     void setAnswerList(const std::vector<std::string> &AnswerList);
 protected:
     // 共通:选项

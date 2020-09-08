@@ -16,7 +16,7 @@ public:
     virtual double checkAnswer(const QVariant&) override;
     virtual rapidjson::Value toJsonValue(rapidjson::Document& doc) const override;
     virtual ~MultipleChoiceProblem() override = default;
-    std::vector<char> getRightAns() const;
+    const std::vector<char>& getRightAns() const;
     void setRightAns(const std::vector<char> &rightAns);
 private:
     // 正确答案用列表表示，A,B,C

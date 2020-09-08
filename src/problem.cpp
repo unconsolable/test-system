@@ -44,7 +44,7 @@ problemType Problem::getType() const
     return m_problemTy;
 }
 
-std::string Problem::getDescription() const
+const std::string &Problem::getDescription() const
 {
     return m_strDescription;
 }
