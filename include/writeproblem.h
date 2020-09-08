@@ -18,6 +18,9 @@ public:
     virtual double checkAnswer(const QVariant&) override;
     virtual rapidjson::Value toJsonValue(rapidjson::Document& doc) const override;
     virtual ~WriteProblem() = default;
+    std::vector<std::string> getKeyWords() const;
+    void setKeyWords(const std::vector<std::string> &keyWords);
+
 private:
     std::vector<std::string> m_strVecKeyWords;
 };

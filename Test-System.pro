@@ -26,6 +26,7 @@ SOURCES += \
     src/singlechoiceproblem.cpp \
     src/studentmainform.cpp \
     src/teachermainform.cpp \
+    src/teacherproblemwidget.cpp \
     src/writeproblem.cpp
 
 HEADERS += \
@@ -73,6 +74,7 @@ HEADERS += \
     include/singlechoiceproblem.h \
     include/studentmainform.h \
     include/teachermainform.h \
+    include/teacherproblemwidget.h \
     include/writeproblem.h
 
 FORMS += \

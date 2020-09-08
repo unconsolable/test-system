@@ -18,7 +18,10 @@ public:
     virtual double checkAnswer(const QVariant&) override = 0;
     virtual rapidjson::Value toJsonValue(rapidjson::Document& doc) const override;
     virtual ~ChoiceProblem() override = default;
-public:
+    // 选项的Setter和Getter
+    std::vector<std::string> getAnswerList() const;
+    void setAnswerList(const std::vector<std::string> &AnswerList);
+protected:
     // 共通:选项
     std::vector<std::string> m_strVecAnswerList;
 };

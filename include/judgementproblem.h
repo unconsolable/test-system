@@ -15,6 +15,9 @@ public:
     virtual double checkAnswer(const QVariant&) override;
     virtual rapidjson::Value toJsonValue(rapidjson::Document& doc) const override;
     virtual ~JudgementProblem() override = default;
+    bool getRightAns() const;
+    void setRightAns(bool rightAns);
+
 private:
     bool m_boolRightAns;
 };

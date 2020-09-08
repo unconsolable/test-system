@@ -26,3 +26,13 @@ rapidjson::Value JudgementProblem::toJsonValue(rapidjson::Document& doc) const
     problem.AddMember("right", true, doc.GetAllocator());
     return problem;
 }
+
+bool JudgementProblem::getRightAns() const
+{
+    return m_boolRightAns;
+}
+
+void JudgementProblem::setRightAns(bool rightAns)
+{
+    m_boolRightAns = rightAns;
+}

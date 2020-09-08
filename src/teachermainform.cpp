@@ -9,6 +9,8 @@ Author: unconsolable
 #include <QFileDialog>
 #include <fstream>
 #include <QMessageBox>
+#include <QGridLayout>
+#include <QTextEdit>
 
 TeacherMainForm::TeacherMainForm(QWidget *parent) :
     QMainWindow(parent),
@@ -24,18 +26,17 @@ TeacherMainForm::TeacherMainForm(QWidget *parent) :
     connect(ui->m_actionOpenFile, SIGNAL(triggered()), this, SLOT(onFileOpen()));
     // save menu和slot绑定
     connect(ui->m_actionSaveFile, SIGNAL(triggered()), this, SLOT(onFileSave()));
+    // 添加TeacherProblemWidget
+    m_teacherProblemWidget = new TeacherProblemWidget(ui->m_widgetProblem);
 }
 
 TeacherMainForm::~TeacherMainForm()
 {
     delete ui;
-    if (m_problemListModel)
-    {
-        delete m_problemListModel;
-        m_problemListModel = nullptr;
-    }
+    CheckDeleteSetNull(m_problemListModel);
+    CheckDeleteSetNull(m_teacherProblemWidget);
 }
-
+// 点击打开菜单后的事件
 void TeacherMainForm::onFileOpen()
 {
     // 获得文件路径
@@ -63,8 +64,7 @@ void TeacherMainForm::onFileOpen()
     if (!m_problemListModel->fromJsonDocument(b_jsonDocProList))
         QMessageBox::information(this, "Error", tr("转为Model失败"));
 }
-
-
+// 点击保存菜单后的事件
 void TeacherMainForm::onFileSave()
 {
     QString b_qStrFileDir = QFileDialog::getOpenFileName(this,"Open Paper File","/","JSON files(*.json)");
@@ -77,7 +77,7 @@ void TeacherMainForm::onFileSave()
     std::string res = m_problemListModel->toJsonString();
     b_ofStrmProblemList << res;
 }
-
+// 删除功能
 void TeacherMainForm::on_m_buttonRm_clicked()
 {
     // 获得选择的Model
@@ -112,9 +112,23 @@ void TeacherMainForm::on_m_buttonSelect_clicked()
             QMessageBox::information(this, tr("错误"), tr("未点击"));
             return;
         }
-        auto curProblem = (*m_problemListModel)[indexList[0].row()];
-        ui->tmp_type->setText(tr(curProblem->convertType()));
-        ui->tmp_mark->setText(QString::number(curProblem->getMark()));
-        ui->tmp_desc->setText(curProblem->getDescription().c_str());
+        // 获得选择的下标和对应题目的指针
+        curProblemIndex = indexList[0].row();
+        auto curProblem = (*m_problemListModel)[curProblemIndex];
+        // 绘制题面
+        m_teacherProblemWidget->onProblemTypeChanged(curProblem->getType());
+        // 设置题型
+        m_teacherProblemWidget->m_comboBoxProblemType->setCurrentIndex(curProblem->getType());
+        // 设置分值
+        m_teacherProblemWidget->m_lineEditProblemMark->setText(QString().number(curProblem->getMark(),'f',1));
+        // 设置题面
+        m_teacherProblemWidget->m_plainTextEditProblemDesc->setPlainText(tr(curProblem->getDescription().c_str()));
+        switch (curProblem->getType())
+        {
+        case SINGLE:break;
+        case MULTIPLE:break;
+        case JUDGEMENT:break;
+        case WRITE:break;
+        }
     }
 }

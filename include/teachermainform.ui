@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>972</width>
     <height>600</height>
    </rect>
   </property>
@@ -27,45 +27,12 @@
    <widget class="QWidget" name="m_widgetProblem" native="true">
     <property name="geometry">
      <rect>
-      <x>249</x>
-      <y>9</y>
-      <width>531</width>
+      <x>240</x>
+      <y>10</y>
+      <width>721</width>
       <height>491</height>
      </rect>
     </property>
-    <widget class="QLineEdit" name="tmp_mark">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>150</y>
-       <width>113</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="tmp_type">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>100</y>
-       <width>113</width>
-       <height>21</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="tmp_desc">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>210</y>
-       <width>113</width>
-       <height>21</height>
-      </rect>
-     </property>
-    </widget>
    </widget>
    <widget class="QPushButton" name="m_buttonAdd">
     <property name="geometry">
@@ -96,7 +63,7 @@
    <widget class="QPushButton" name="m_buttonFinish">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>860</x>
       <y>520</y>
       <width>93</width>
       <height>28</height>
@@ -131,7 +98,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>972</width>
      <height>26</height>
     </rect>
    </property>

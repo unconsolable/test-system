@@ -45,3 +45,13 @@ rapidjson::Value MultipleChoiceProblem::toJsonValue(rapidjson::Document& doc) co
     problem.AddMember("right", answer, doc.GetAllocator());
     return problem;
 }
+
+std::vector<char> MultipleChoiceProblem::getRightAns() const
+{
+    return m_charVecRightAns;
+}
+
+void MultipleChoiceProblem::setRightAns(const std::vector<char> &rightAns)
+{
+    m_charVecRightAns = rightAns;
+}

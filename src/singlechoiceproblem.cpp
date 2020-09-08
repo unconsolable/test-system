@@ -27,3 +27,13 @@ rapidjson::Value SingleChoiceProblem::toJsonValue(rapidjson::Document& doc) cons
     problem.AddMember("right",m_charRightAns,doc.GetAllocator());
     return problem;
 }
+
+char SingleChoiceProblem::getRightAns() const
+{
+    return m_charRightAns;
+}
+
+void SingleChoiceProblem::setRightAns(char rightAns)
+{
+    m_charRightAns = rightAns;
+}

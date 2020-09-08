@@ -10,6 +10,7 @@ Author: unconsolable
 #include <QMainWindow>
 #include <QItemSelection>
 #include "problemlistmodel.h"
+#include "teacherproblemwidget.h"
 
 class ProblemListModel;
 
@@ -33,6 +34,8 @@ private slots:
 private:
     Ui::TeacherMainForm *ui;
     ProblemListModel *m_problemListModel = nullptr;
+    TeacherProblemWidget *m_teacherProblemWidget = nullptr;
+    int curProblemIndex= 0;
 };
 
 #endif // TEACHERMAINFORM_H

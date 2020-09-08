@@ -34,3 +34,13 @@ rapidjson::Value WriteProblem::toJsonValue(rapidjson::Document &doc) const
     problem.AddMember("right", keyWord, doc.GetAllocator());
     return problem;
 }
+
+std::vector<std::string> WriteProblem::getKeyWords() const
+{
+    return m_strVecKeyWords;
+}
+
+void WriteProblem::setKeyWords(const std::vector<std::string> &keyWords)
+{
+    m_strVecKeyWords = keyWords;
+}

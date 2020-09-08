@@ -25,3 +25,13 @@ rapidjson::Value ChoiceProblem::toJsonValue(rapidjson::Document& doc) const
     problem.AddMember("answers", answers, doc.GetAllocator());
     return problem;
 }
+
+std::vector<std::string> ChoiceProblem::getAnswerList() const
+{
+    return m_strVecAnswerList;
+}
+
+void ChoiceProblem::setAnswerList(const std::vector<std::string> &answerList)
+{
+    m_strVecAnswerList = answerList;
+}
