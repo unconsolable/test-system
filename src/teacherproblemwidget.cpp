@@ -198,14 +198,14 @@ TeacherProblemWidget::~TeacherProblemWidget()
 void TeacherProblemWidget::onProblemTypeChanged(int index)
 {
     m_boolProblemTypeChanged = true;
-    switch(m_intLastComboBoxIndex)
+    switch(m_intLastProblemTypeIndex)
     {
     case SINGLE: CheckDeleteChoice(); CheckDeleteSingle(); break;
     case MULTIPLE: CheckDeleteChoice(); CheckDeleteMultiple(); break;
     case JUDGEMENT: CheckDeleteJudgement(); break;
     case WRITE: CheckDeleteWrite(); break;
     }
-    m_intLastComboBoxIndex = index;
+    m_intLastProblemTypeIndex = index;
     switch (index)
     {
     case SINGLE: InitChoice(); InitRadioButtonAndGroup(); ViewAddChoice(); ViewAddRadioButton(); break;

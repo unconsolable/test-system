@@ -144,10 +144,13 @@ int ProblemListModel::rowCount(const QModelIndex &parent) const
 
 QVariant ProblemListModel::data(const QModelIndex& index, int role) const
 {
+    // 返回用于在QListView显示的数据
+    // 检查下标是否有效
     if (!index.isValid())
         return QVariant();
     if (index.row() >= static_cast<int>(m_pProblemVecProList.size()))
         return QVariant();
+    // 返回题目类型
     if (role == Qt::DisplayRole || role == Qt::EditRole)
     {
         return tr(m_pProblemVecProList[index.row()]->convertType());

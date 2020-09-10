@@ -18,7 +18,7 @@ Author: unconsolable
 #include <QGridLayout>
 #include <QTextEdit>
 #include <sstream>
-// 对选项文字的说明
+// 对每个选项说明的设置
 #define SetChoiceDesc()                                                                                             \
     do                                                                                                              \
     {                                                                                                               \
@@ -51,6 +51,10 @@ Author: unconsolable
         }                                                                                    \
     }                                                                                        \
     while (0)
+// 将多选选项添加到vector中
+#define AddMultipleChoiceInVector(method, choiceChar)               \
+    if (m_teacherProblemWidget->method->checkState() == Qt::Checked) \
+            b_charVecRightAns.push_back((choiceChar));
 
 TeacherMainForm::TeacherMainForm(QWidget *parent) :
     QMainWindow(parent),
@@ -153,8 +157,8 @@ void TeacherMainForm::on_m_buttonSelect_clicked()
             return;
         }
         // 获得选择的下标和对应题目的指针
-        curProblemIndex = indexList[0].row();
-        auto curProblem = (*m_problemListModel)[curProblemIndex];
+        m_intCurProblemIndex = indexList[0].row();
+        auto curProblem = (*m_problemListModel)[m_intCurProblemIndex];
         // 绘制题面
         m_teacherProblemWidget->onProblemTypeChanged(curProblem->getType());
         // 设置题型
@@ -202,4 +206,92 @@ void TeacherMainForm::on_m_buttonSelect_clicked()
             break;
         }
     }
+}
+
+void TeacherMainForm::on_m_buttonFinish_clicked()
+{
+    // 通用信息不再另外保存
+    // 判断题的对错也不再另外保存
+    std::vector<std::string> b_strVecChoiceDesc;
+    std::vector<char> b_charVecRightAns;
+    std::vector<std::string> b_strVecRightAns;
+    char b_charRightAns;
+    // 将需要另外保存的数据存储
+    // 保存选项描述
+    if (m_teacherProblemWidget->m_intLastProblemTypeIndex == SINGLE || m_teacherProblemWidget->m_intLastProblemTypeIndex == MULTIPLE)
+    {
+        b_strVecRightAns.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceA->text().toStdString());
+        b_strVecRightAns.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceB->text().toStdString());
+        b_strVecRightAns.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceC->text().toStdString());
+        b_strVecRightAns.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceD->text().toStdString());
+    }
+    QRadioButton* b_checkedButton = qobject_cast<QRadioButton*>(m_teacherProblemWidget->m_BtnGroupSingleChoice->checkedButton());
+    QString name = b_checkedButton->objectName();
+    // 保存单选答案
+    if (!QString::compare(name, "m_radioProblemRightChoiceA"))
+    {
+        b_charRightAns = 'A';
+    }
+    else if (!QString::compare(name, "m_radioProblemRightChoiceB"))
+    {
+        b_charRightAns = 'B';
+    }
+    else if (!QString::compare(name, "m_radioProblemRightChoiceC"))
+    {
+        b_charRightAns = 'C';
+    }
+    else
+    {
+        b_charRightAns = 'D';
+    }
+    // 保存多选答案
+    if (m_teacherProblemWidget->m_intLastProblemTypeIndex == MULTIPLE)
+    {
+        AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceA,'A');
+        AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceB,'B');
+        AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceC,'C');
+        AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceD,'D');
+    }
+    // 保存简答关键词
+    if (m_teacherProblemWidget->m_intLastProblemTypeIndex == WRITE)
+    {
+        std::istringstream isStrm(m_teacherProblemWidget->m_plainTextKeyWordList->toPlainText().toStdString());
+        std::string tmpStr;
+        while (isStrm >> tmpStr)
+        {
+            b_strVecRightAns.push_back(tmpStr);
+        }
+    }
+    // 为实现简便，不再标记每个数据变化
+    // 而是统一先删除原来，再写新题目
+    m_problemListModel->rmProblem(m_intCurProblemIndex);
+    switch (m_teacherProblemWidget->m_intLastProblemTypeIndex)
+    {
+    case SINGLE:
+        m_problemListModel->addProblem
+                (m_intCurProblemIndex, m_teacherProblemWidget->m_lineEditProblemMark->text().toDouble(),
+                 m_teacherProblemWidget->m_plainTextEditProblemDesc->toPlainText().toStdString(),
+                 b_strVecChoiceDesc, b_charRightAns);
+        break;
+    case MULTIPLE:
+        m_problemListModel->addProblem
+                (m_intCurProblemIndex, m_teacherProblemWidget->m_lineEditProblemMark->text().toDouble(),
+                 m_teacherProblemWidget->m_plainTextEditProblemDesc->toPlainText().toStdString(),
+                 b_strVecRightAns, b_charRightAns);
+        break;
+    case JUDGEMENT:
+        m_problemListModel->addProblem
+                (m_intCurProblemIndex, m_teacherProblemWidget->m_lineEditProblemMark->text().toDouble(),
+                 m_teacherProblemWidget->m_plainTextEditProblemDesc->toPlainText().toStdString(),
+                 m_teacherProblemWidget->m_chkBoxIsRight->checkState() == Qt::Checked);
+        break;
+    case WRITE:
+        m_problemListModel->addProblem
+                (m_intCurProblemIndex, m_teacherProblemWidget->m_lineEditProblemMark->text().toDouble(),
+                 m_teacherProblemWidget->m_plainTextEditProblemDesc->toPlainText().toStdString(),
+                 b_strVecRightAns);
+        break;
+    }
+
+
 }

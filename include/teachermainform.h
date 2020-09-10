@@ -31,11 +31,14 @@ private slots:
     void on_m_buttonRm_clicked();
     void on_m_buttonSelect_clicked();
 
+    void on_m_buttonFinish_clicked();
+
 private:
     Ui::TeacherMainForm *ui;
     ProblemListModel *m_problemListModel = nullptr;
     TeacherProblemWidget *m_teacherProblemWidget = nullptr;
-    int curProblemIndex= 0;
+    // 当前选择的题目的下标
+    int m_intCurProblemIndex= 0;
 };
 
 #endif // TEACHERMAINFORM_H

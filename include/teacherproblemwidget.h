@@ -70,7 +70,7 @@ private:
     // 需要flag标志位,若为true需要将Model删除再重新增加
     bool m_boolProblemTypeChanged = false;
     // 之前选择的选项
-    int m_intLastComboBoxIndex = 0;
+    int m_intLastProblemTypeIndex = 0;
 private slots:
     void onProblemTypeChanged(int index);
 };
