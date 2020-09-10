@@ -72,6 +72,8 @@ TeacherMainForm::TeacherMainForm(QWidget *parent) :
     connect(ui->m_actionSaveFile, SIGNAL(triggered()), this, SLOT(onFileSave()));
     // 添加TeacherProblemWidget
     m_teacherProblemWidget = new TeacherProblemWidget(ui->m_widgetProblem);
+    // QListView双击事件与slot绑定
+    connect(ui->m_listViewProblem, SIGNAL(doubleClicked(const QModelIndex)), this, SLOT(on_m_problemListItemDoubleClicked(const QModelIndex&)));
 }
 
 TeacherMainForm::~TeacherMainForm()
@@ -143,68 +145,57 @@ void TeacherMainForm::on_m_buttonRm_clicked()
     }
 }
 
-void TeacherMainForm::on_m_buttonSelect_clicked()
+void TeacherMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index)
 {
-    auto selectModel = ui->m_listViewProblem->selectionModel();
-    if (selectModel)
+    // 获得选择的下标和对应题目的指针
+    m_intCurProblemIndex = index.row();
+    auto curProblem = (*m_problemListModel)[m_intCurProblemIndex];
+    // 绘制题面
+    m_teacherProblemWidget->onProblemTypeChanged(curProblem->getType());
+    // 设置题型
+    m_teacherProblemWidget->m_comboBoxProblemType->setCurrentIndex(curProblem->getType());
+    // 设置分值
+    m_teacherProblemWidget->m_lineEditProblemMark->setText(QString().number(curProblem->getMark(),'f',1));
+    // 设置题目描述
+    m_teacherProblemWidget->m_plainTextEditProblemDesc->setPlainText(tr(curProblem->getDescription().c_str()));
+    // 根据题目类型不同分别显示不同内容
+    const std::vector<std::string> *t_strVecChoiceDescOrKeyWords = nullptr;
+    std::ostringstream oSStrmKeyWords;
+    switch (curProblem->getType())
     {
-        // 获得对应下标
-        QModelIndexList indexList = selectModel->selectedIndexes();
-        // 需要检测大小,避免未点击的UB
-        if (!indexList.size())
+    case SINGLE:
+        // 设置选项文字
+        SetChoiceDesc();
+        // 设置正确答案
+        SetChoiceButtonOrBox(static_cast<SingleChoiceProblem*>(curProblem)->getRightAns(), m_radioProblemRightChoiceA, m_radioProblemRightChoiceB, m_radioProblemRightChoiceC, m_radioProblemRightChoiceD, setChecked, true);
+        break;
+    case MULTIPLE:
+        // 设置选项文字
+        SetChoiceDesc();
+        // 设置正确答案(组)
+        for (auto b_charEachAns : static_cast<MultipleChoiceProblem*>(curProblem)->getRightAns())
         {
-            QMessageBox::information(this, tr("错误"), tr("未点击"));
-            return;
+            SetChoiceButtonOrBox(b_charEachAns, m_chkBoxProblemRightChoiceA, m_chkBoxProblemRightChoiceB, m_chkBoxProblemRightChoiceC, m_chkBoxProblemRightChoiceD, setCheckState, Qt::Checked);
         }
-        // 获得选择的下标和对应题目的指针
-        m_intCurProblemIndex = indexList[0].row();
-        auto curProblem = (*m_problemListModel)[m_intCurProblemIndex];
-        // 绘制题面
-        m_teacherProblemWidget->onProblemTypeChanged(curProblem->getType());
-        // 设置题型
-        m_teacherProblemWidget->m_comboBoxProblemType->setCurrentIndex(curProblem->getType());
-        // 设置分值
-        m_teacherProblemWidget->m_lineEditProblemMark->setText(QString().number(curProblem->getMark(),'f',1));
-        // 设置题面
-        m_teacherProblemWidget->m_plainTextEditProblemDesc->setPlainText(tr(curProblem->getDescription().c_str()));
-        const std::vector<std::string> *t_strVecChoiceDescOrKeyWords = nullptr;
-        std::ostringstream oSStrmKeyWords;
-        switch (curProblem->getType())
+        break;
+    case JUDGEMENT:
+        // 设置正确答案
+        if (static_cast<JudgementProblem*>(curProblem)->getRightAns())
+            m_teacherProblemWidget->m_chkBoxIsRight->setCheckState(Qt::Checked);
+        else
+            m_teacherProblemWidget->m_chkBoxIsRight->setCheckState(Qt::Unchecked);
+        break;
+    case WRITE:
+        // 设置关键词组
+        t_strVecChoiceDescOrKeyWords = &(static_cast<WriteProblem*>(curProblem)->getKeyWords());
+        // 每组关键词之间以空格分离
+        for (const auto &t_strEachKeyWord : *t_strVecChoiceDescOrKeyWords)
         {
-        case SINGLE:
-            // 设置选项文字
-            SetChoiceDesc();
-            // 设置正确答案
-            SetChoiceButtonOrBox(static_cast<SingleChoiceProblem*>(curProblem)->getRightAns(), m_radioProblemRightChoiceA, m_radioProblemRightChoiceB, m_radioProblemRightChoiceC, m_radioProblemRightChoiceD, setChecked, true);
-            break;
-        case MULTIPLE:
-            // 设置选项文字
-            SetChoiceDesc();
-            // 设置正确答案(组)
-            for (auto b_charEachAns : static_cast<MultipleChoiceProblem*>(curProblem)->getRightAns())
-            {
-                SetChoiceButtonOrBox(b_charEachAns, m_chkBoxProblemRightChoiceA, m_chkBoxProblemRightChoiceB, m_chkBoxProblemRightChoiceC, m_chkBoxProblemRightChoiceD, setCheckState, Qt::Checked);
-            }
-            break;
-        case JUDGEMENT:
-            // 设置正确答案
-            if (static_cast<JudgementProblem*>(curProblem)->getRightAns())
-                m_teacherProblemWidget->m_chkBoxIsRight->setCheckState(Qt::Checked);
-            else
-                m_teacherProblemWidget->m_chkBoxIsRight->setCheckState(Qt::Unchecked);
-            break;
-        case WRITE:
-            // 设置关键词组
-            t_strVecChoiceDescOrKeyWords = &(static_cast<WriteProblem*>(curProblem)->getKeyWords());
-            // 每组关键词之间以空格分离
-            for (const auto &t_strEachKeyWord : *t_strVecChoiceDescOrKeyWords)
-            {
-                oSStrmKeyWords << t_strEachKeyWord << std::endl;
-            }
-            // 显示关键词
-            m_teacherProblemWidget->m_plainTextKeyWordList->setPlainText(tr(oSStrmKeyWords.str().c_str()));
-            break;
+            oSStrmKeyWords << t_strEachKeyWord << std::endl;
         }
+        // 显示关键词
+        m_teacherProblemWidget->m_plainTextKeyWordList->setPlainText(tr(oSStrmKeyWords.str().c_str()));
+        break;
     }
 }
 

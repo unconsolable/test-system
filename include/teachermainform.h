@@ -29,11 +29,12 @@ private slots:
     void onFileOpen();
     void onFileSave();
     void on_m_buttonRm_clicked();
-    void on_m_buttonSelect_clicked();
 
     void on_m_buttonFinish_clicked();
 
     void on_m_buttonAdd_clicked();
+
+    void on_m_problemListItemDoubleClicked(const QModelIndex &index);
 
 private:
     Ui::TeacherMainForm *ui;
