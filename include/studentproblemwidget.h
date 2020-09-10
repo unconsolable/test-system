@@ -1,18 +1,16 @@
 /*
-File Name: teacherproblemwidget.h
+File Name: studentproblemwidget.h
 Description: Define the widget showing the problem for students
 Author: unconsolable
 */
-#ifndef TEACHERPROBLEMWIDGET_H
-#define TEACHERPROBLEMWIDGET_H
+#ifndef STUDENTPROBLEMWIDGET_H
+#define STUDENTPROBLEMWIDGET_H
 
 #include <QWidget>
 #include <QGridLayout>
 #include <QRadioButton>
 #include <QLabel>
-#include <QLineEdit>
 #include <QPlainTextEdit>
-#include <QComboBox>
 #include <QCheckBox>
 #include <QButtonGroup>
 
@@ -27,40 +25,37 @@ Author: unconsolable
         }                       \
     }while(0)
 
-class TeacherProblemWidget : public QWidget
+class StudentProblemWidget : public QWidget
 {
     Q_OBJECT
-    friend class TeacherMainForm;
+    friend class StudentMainForm;
 public:
-    TeacherProblemWidget(QWidget *parent = nullptr);
-    ~TeacherProblemWidget();
+    StudentProblemWidget(QWidget *parent = nullptr);
+    ~StudentProblemWidget();
 private:
-    // 布局
+    // 网格布局
     QGridLayout *m_gridLayoutProblem = nullptr;
-    // 描述性文字
-    QLabel *m_labelProblemTypeHint = nullptr;
-    QLabel *m_labelProblemMarkHint = nullptr;
-    QLabel *m_labelProblemDescHint = nullptr;
+    // 题型
+    QLabel *m_labelProblemType = nullptr;
+    // 分值
+    QLabel *m_labelProblemMark = nullptr;
+    // 题干
+    QLabel *m_labelProblemDesc = nullptr;
+    // 答题区提示
     QLabel *m_labelProblemAnswerHint = nullptr;
-    // 题目类型下拉框
-    QComboBox *m_comboBoxProblemType = nullptr;
-    // 题目分值输入
-    QLineEdit *m_lineEditProblemMark = nullptr;
-    // 题干输入
-    QPlainTextEdit *m_plainTextEditProblemDesc = nullptr;
     // 以下部分可能部分题会用不到
     // 因此析构时检查是否为空
     // 并避免悬垂指针
-    
+
     // 以下部分仅选择题会用到
     // 选项的描述
-    QLineEdit *m_lineEditProblemChoiceA = nullptr;
-    QLineEdit *m_lineEditProblemChoiceB = nullptr;
-    QLineEdit *m_lineEditProblemChoiceC = nullptr;
-    QLineEdit *m_lineEditProblemChoiceD = nullptr;
+    QLabel *m_labelProblemChoiceA = nullptr;
+    QLabel *m_labelProblemChoiceB = nullptr;
+    QLabel *m_labelProblemChoiceC = nullptr;
+    QLabel *m_labelProblemChoiceD = nullptr;
     // 单选中选择正确选项
-    QRadioButton *m_radioProblemRightChoiceB = nullptr;
     QRadioButton *m_radioProblemRightChoiceA = nullptr;
+    QRadioButton *m_radioProblemRightChoiceB = nullptr;
     QRadioButton *m_radioProblemRightChoiceC = nullptr;
     QRadioButton *m_radioProblemRightChoiceD = nullptr;
     QButtonGroup *m_btnGroupSingleChoice = nullptr;
@@ -72,13 +67,12 @@ private:
     // 以下部分仅判断题会用到
     QCheckBox *m_chkBoxIsRight = nullptr;
     // 以下部分仅简答题会用到
-    QPlainTextEdit *m_plainTextKeyWordList = nullptr;
-    // 需要flag标志位,若为true需要将Model删除再重新增加
-    bool m_boolProblemTypeChanged = false;
-    // 之前选择的选项
-    int m_intLastProblemTypeIndex = 0;
+    QPlainTextEdit *m_plainTextWriteAnswer = nullptr;
+    // 之前选择的选项,-1表示之前没有控件
+    int m_intLastProblemTypeIndex = -1;
 private slots:
+    // 负责在题目类型变化时重新绘制题面
     void onProblemTypeChanged(int index);
 };
 
-#endif // PROBLEMWIDGET_H
+#endif // STUDENTPROBLEMWIDGET_H

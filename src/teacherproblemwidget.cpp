@@ -1,3 +1,8 @@
+/*
+File Name: teacherproblemwidget.cpp
+Description: Implement the widget showing the problem
+Author: unconsolable
+*/
 #include "teacherproblemwidget.h"
 #include "problem.h"
 #include <QDebug>
@@ -28,7 +33,7 @@
         CheckDeleteSetNull(m_radioProblemRightChoiceA); \
         CheckDeleteSetNull(m_radioProblemRightChoiceC); \
         CheckDeleteSetNull(m_radioProblemRightChoiceD); \
-        CheckDeleteSetNull(m_BtnGroupSingleChoice);     \
+        CheckDeleteSetNull(m_btnGroupSingleChoice);     \
     }while(0)
 #define CheckDeleteGridView() CheckDeleteSetNull(m_gridLayoutProblem)
 // 释放多选答题区
@@ -73,11 +78,11 @@
         m_radioProblemRightChoiceB = new QRadioButton(tr("B"));         \
         m_radioProblemRightChoiceC = new QRadioButton(tr("C"));         \
         m_radioProblemRightChoiceD = new QRadioButton(tr("D"));         \
-        m_BtnGroupSingleChoice = new QButtonGroup(this);                \
-        m_BtnGroupSingleChoice->addButton(m_radioProblemRightChoiceA);  \
-        m_BtnGroupSingleChoice->addButton(m_radioProblemRightChoiceB);  \
-        m_BtnGroupSingleChoice->addButton(m_radioProblemRightChoiceC);  \
-        m_BtnGroupSingleChoice->addButton(m_radioProblemRightChoiceD);  \
+        m_btnGroupSingleChoice = new QButtonGroup(this);                \
+        m_btnGroupSingleChoice->addButton(m_radioProblemRightChoiceA);  \
+        m_btnGroupSingleChoice->addButton(m_radioProblemRightChoiceB);  \
+        m_btnGroupSingleChoice->addButton(m_radioProblemRightChoiceC);  \
+        m_btnGroupSingleChoice->addButton(m_radioProblemRightChoiceD);  \
     }                                                                   \
     while(0)
 // 初始化多选答题区
@@ -139,7 +144,6 @@
 TeacherProblemWidget::TeacherProblemWidget(QWidget *parent)
     : QWidget(parent)
 {
-    setWindowTitle(tr("eg."));
     // 初始化布局和描述性文字
     m_gridLayoutProblem = new QGridLayout(this);
     m_labelProblemTypeHint = new QLabel(tr("题型"));

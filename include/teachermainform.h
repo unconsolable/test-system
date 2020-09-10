@@ -41,7 +41,7 @@ private:
     ProblemListModel *m_problemListModel = nullptr;
     TeacherProblemWidget *m_teacherProblemWidget = nullptr;
     // 当前选择的题目的下标
-    int m_intCurProblemIndex= 0;
+    int m_intCurProblemIndex = 0;
 };
 
 #endif // TEACHERMAINFORM_H

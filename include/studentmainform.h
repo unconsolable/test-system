@@ -8,6 +8,9 @@ Author: unconsolable
 #define STUDENTMAINFORM_H
 
 #include <QMainWindow>
+#include <QItemSelection>
+#include "problemlistmodel.h"
+#include "studentproblemwidget.h"
 
 namespace Ui {
 class StudentMainForm;
@@ -20,9 +23,23 @@ class StudentMainForm : public QMainWindow
 public:
     explicit StudentMainForm(QWidget *parent = nullptr);
     ~StudentMainForm();
-
+private slots:
+    // 导入试题文件
+    void onFileOpen();
+    // 提交结果
+    void onFileSave();
+    // 计算此题得分
+//    void on_m_buttonFinish_clicked();
+    // 选定并显示题目
+    void on_m_problemListItemDoubleClicked(const QModelIndex &index);
 private:
     Ui::StudentMainForm *ui;
+    ProblemListModel *m_problemListModel = nullptr;
+    StudentProblemWidget *m_studentProblemWidget = nullptr;
+    // 当前选的题目下标
+    int m_intCurProblemIndex = 0;
+    // 目前得到总分
+    double m_doubleTotalMark = 0;
 };
 
 #endif // STUDENTMAINFORM_H

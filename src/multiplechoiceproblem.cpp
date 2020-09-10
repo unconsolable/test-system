@@ -36,10 +36,11 @@ rapidjson::Value MultipleChoiceProblem::toJsonValue(rapidjson::Document& doc) co
 {
     auto problem = ChoiceProblem::toJsonValue(doc);
     rapidjson::Value answer(rapidjson::kArrayType);
-    for (const auto& b_strEachRight: m_strVecAnswerList)
+    // 设置多选选项,选项用char表示,应转为int存
+    for (const auto& b_charEachRight: m_charVecRightAns)
     {
         rapidjson::Value choice;
-        choice.SetString(b_strEachRight.c_str(),b_strEachRight.size(), doc.GetAllocator());
+        choice.SetInt(b_charEachRight);
         answer.PushBack(choice, doc.GetAllocator());
     }
     problem.AddMember("right", answer, doc.GetAllocator());
