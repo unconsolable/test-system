@@ -220,29 +220,22 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
     // 保存选项描述
     if (m_teacherProblemWidget->m_intLastProblemTypeIndex == SINGLE || m_teacherProblemWidget->m_intLastProblemTypeIndex == MULTIPLE)
     {
-        b_strVecRightAns.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceA->text().toStdString());
-        b_strVecRightAns.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceB->text().toStdString());
-        b_strVecRightAns.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceC->text().toStdString());
-        b_strVecRightAns.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceD->text().toStdString());
+        b_strVecChoiceDesc.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceA->text().toStdString());
+        b_strVecChoiceDesc.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceB->text().toStdString());
+        b_strVecChoiceDesc.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceC->text().toStdString());
+        b_strVecChoiceDesc.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceD->text().toStdString());
     }
-    QRadioButton* b_checkedButton = qobject_cast<QRadioButton*>(m_teacherProblemWidget->m_BtnGroupSingleChoice->checkedButton());
-    QString name = b_checkedButton->objectName();
-    // 保存单选答案
-    if (!QString::compare(name, "m_radioProblemRightChoiceA"))
+    // 保存单选
+    if (m_teacherProblemWidget->m_intLastProblemTypeIndex == SINGLE)
     {
-        b_charRightAns = 'A';
-    }
-    else if (!QString::compare(name, "m_radioProblemRightChoiceB"))
-    {
-        b_charRightAns = 'B';
-    }
-    else if (!QString::compare(name, "m_radioProblemRightChoiceC"))
-    {
-        b_charRightAns = 'C';
-    }
-    else
-    {
-        b_charRightAns = 'D';
+        if (m_teacherProblemWidget->m_radioProblemRightChoiceA->isChecked())
+            b_charRightAns = 'A';
+        else if (m_teacherProblemWidget->m_radioProblemRightChoiceB->isChecked())
+            b_charRightAns = 'B';
+        else if (m_teacherProblemWidget->m_radioProblemRightChoiceC->isChecked())
+            b_charRightAns = 'C';
+        else
+            b_charRightAns = 'D';
     }
     // 保存多选答案
     if (m_teacherProblemWidget->m_intLastProblemTypeIndex == MULTIPLE)
@@ -277,7 +270,7 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
         m_problemListModel->addProblem
                 (m_intCurProblemIndex, m_teacherProblemWidget->m_lineEditProblemMark->text().toDouble(),
                  m_teacherProblemWidget->m_plainTextEditProblemDesc->toPlainText().toStdString(),
-                 b_strVecRightAns, b_charRightAns);
+                 b_strVecChoiceDesc, b_charVecRightAns);
         break;
     case JUDGEMENT:
         m_problemListModel->addProblem
