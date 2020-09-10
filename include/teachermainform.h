@@ -33,6 +33,8 @@ private slots:
 
     void on_m_buttonFinish_clicked();
 
+    void on_m_buttonAdd_clicked();
+
 private:
     Ui::TeacherMainForm *ui;
     ProblemListModel *m_problemListModel = nullptr;

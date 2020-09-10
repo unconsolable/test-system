@@ -98,6 +98,7 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
         std::vector<std::string> tmpAnsListOrKeyWords;
         std::vector<char> multipleChoice;
         // 根据类型对应构造
+        // 分值类型变化为Double
         switch (b_jsonValueEachProblem["type"].GetInt())
         {
         case SINGLE:
@@ -105,7 +106,7 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
-            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, b_jsonValueEachProblem["right"].GetInt());
+            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, b_jsonValueEachProblem["right"].GetInt());
             break;
         case MULTIPLE:
             for (auto& i : b_jsonValueEachProblem["answers"].GetArray())
@@ -117,17 +118,17 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
             {
                 multipleChoice.emplace_back(i.GetInt());
             }
-            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, multipleChoice);
+            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, multipleChoice);
             break;
         case JUDGEMENT:
-            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()),b_jsonValueEachProblem["right"].GetBool());
+            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()),b_jsonValueEachProblem["right"].GetBool());
             break;
         case WRITE:
             for (auto& i: b_jsonValueEachProblem["right"].GetArray())
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
-            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetInt(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords);
+            addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords);
             break;
         default:
             return false;

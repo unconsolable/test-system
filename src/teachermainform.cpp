@@ -288,3 +288,8 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
 
 
 }
+
+void TeacherMainForm::on_m_buttonAdd_clicked()
+{
+    m_problemListModel->addProblem(m_problemListModel->rowCount(), 1.0, "这是一个题目模板,模板为选择题,根据需求自行更改",{"1","2","3","4"}, 'A');
+}
