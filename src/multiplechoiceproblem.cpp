@@ -14,11 +14,15 @@ MultipleChoiceProblem::MultipleChoiceProblem(double _mark, const std::string& _d
 
 double MultipleChoiceProblem::checkAnswer(const QVariant & ans)
 {
+    // 获得选项表
     auto b_qVariantVecAns = ans.toList().toVector();
+    // 每个选项的分数
     double b_doubleChoiceMark = m_doubleMark / m_charVecRightAns.size();
     double b_doubleTotalMark = 0;
+    // 每个选项遍历
     for (const auto& b_qVariantChoice : b_qVariantVecAns)
     {
+        // 和正确选项核对
         for (const auto& b_charRightChoice : m_charVecRightAns)
         {
             if (b_qVariantChoice.toChar() == b_charRightChoice)

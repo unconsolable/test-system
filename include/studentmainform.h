@@ -32,6 +32,8 @@ private slots:
 //    void on_m_buttonFinish_clicked();
     // 选定并显示题目
     void on_m_problemListItemDoubleClicked(const QModelIndex &index);
+    void on_m_buttonFinish_clicked();
+
 private:
     Ui::StudentMainForm *ui;
     ProblemListModel *m_problemListModel = nullptr;

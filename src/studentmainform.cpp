@@ -127,3 +127,60 @@ void StudentMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
         break;
     }
 }
+
+void StudentMainForm::on_m_buttonFinish_clicked()
+{
+    QVariant b_variantForAnswer;
+    QVector<QVariant> b_variantMultipleAnswer;
+    QVariant b_variantTempChoiceAnswer;
+    switch ((*m_problemListModel)[m_intCurProblemIndex]->getType())
+    {
+    case SINGLE:
+        // 判断单选的答案
+        if (m_studentProblemWidget->m_radioProblemRightChoiceA->isChecked())
+            b_variantForAnswer.setValue('A');
+        else if (m_studentProblemWidget->m_radioProblemRightChoiceB->isChecked())
+            b_variantForAnswer.setValue('B');
+        else if (m_studentProblemWidget->m_radioProblemRightChoiceC->isChecked())
+            b_variantForAnswer.setValue('C');
+        else
+            b_variantForAnswer.setValue('D');
+        break;
+    case MULTIPLE:
+        // 添加多选
+        if (m_studentProblemWidget->m_chkBoxProblemRightChoiceA->checkState() == Qt::Checked)
+        {
+            b_variantTempChoiceAnswer.setValue('A');
+            b_variantMultipleAnswer.push_back(b_variantTempChoiceAnswer);
+        }
+        if (m_studentProblemWidget->m_chkBoxProblemRightChoiceB->checkState() == Qt::Checked)
+        {
+            b_variantTempChoiceAnswer.setValue('B');
+            b_variantMultipleAnswer.push_back(b_variantTempChoiceAnswer);
+        }
+        if (m_studentProblemWidget->m_chkBoxProblemRightChoiceC->checkState() == Qt::Checked)
+        {
+            b_variantTempChoiceAnswer.setValue('C');
+            b_variantMultipleAnswer.push_back(b_variantTempChoiceAnswer);
+        }
+        if (m_studentProblemWidget->m_chkBoxProblemRightChoiceD->checkState() == Qt::Checked)
+        {
+            b_variantTempChoiceAnswer.setValue('D');
+            b_variantMultipleAnswer.push_back(b_variantTempChoiceAnswer);
+        }
+        // 设置答案序列
+        b_variantForAnswer.setValue(b_variantMultipleAnswer);
+        break;
+    case JUDGEMENT:
+        // 设置判断题答案
+        b_variantForAnswer.setValue(m_studentProblemWidget->m_chkBoxIsRight->checkState() == Qt::Checked);
+        break;
+    case WRITE:
+        // 设置简答题答案
+        b_variantForAnswer.setValue(m_studentProblemWidget->m_plainTextWriteAnswer->toPlainText());
+        break;
+    }
+    // 计算增加的成绩
+    m_doubleTotalMark += (*m_problemListModel)[m_intCurProblemIndex]->checkAnswer(b_variantForAnswer);
+    QMessageBox::information(this, tr("Information"), QString().number(m_doubleTotalMark,'f',1));
+}
