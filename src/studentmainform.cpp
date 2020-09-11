@@ -19,6 +19,7 @@ Author: unconsolable
 #include <QGridLayout>
 #include <QTextEdit>
 #include <sstream>
+#include <numeric>
 // 对每个选项说明的设置
 #define SetChoiceDesc()                                                                                          \
     do                                                                                                           \
@@ -54,6 +55,12 @@ StudentMainForm::~StudentMainForm()
     delete ui;
     CheckDeleteSetNull(m_problemListModel);
     CheckDeleteSetNull(m_studentProblemWidget);
+    if (m_doubleArrayAnswerMark)
+    {
+        // 需要单独使用数组删除
+        delete[] m_doubleArrayAnswerMark;
+        m_doubleArrayAnswerMark = nullptr;
+    }
 }
 // 点击打开菜单后的事件
 void StudentMainForm::onFileOpen()
@@ -82,13 +89,16 @@ void StudentMainForm::onFileOpen()
     }
     if (!m_problemListModel->fromJsonDocument(b_jsonDocProList))
         QMessageBox::information(this, "Error", tr("转为Model失败"));
+    m_doubleArrayAnswerMark = new double[m_problemListModel->rowCount()]{0};
 }
 // 点击保存菜单后的事件
 void StudentMainForm::onFileSave()
 {
-    if (abs(m_doubleTotalMark - 100) >= 0.001)
+    // 计算分数
+    double ans = std::accumulate(m_doubleArrayAnswerMark, m_doubleArrayAnswerMark + m_problemListModel->rowCount(), 0.0);
+    if (abs(ans - 100) >= 0.001)
     {
-        QMessageBox::information(this, tr("Error"), tr("未到100分,检查后提交"));
+        QMessageBox::information(this, tr("Error"), QString().number(ans, 'f', 1) + tr("分，未到100分，继续修改。"));
     }
     else
     {
@@ -129,6 +139,7 @@ void StudentMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
 }
 
 void StudentMainForm::on_m_buttonFinish_clicked()
+// 判断是否已经正确提交
 {
     QVariant b_variantForAnswer;
     QVector<QVariant> b_variantMultipleAnswer;
@@ -180,7 +191,7 @@ void StudentMainForm::on_m_buttonFinish_clicked()
         b_variantForAnswer.setValue(m_studentProblemWidget->m_plainTextWriteAnswer->toPlainText());
         break;
     }
-    // 计算增加的成绩
-    m_doubleTotalMark += (*m_problemListModel)[m_intCurProblemIndex]->checkAnswer(b_variantForAnswer);
-    QMessageBox::information(this, tr("Information"), QString().number(m_doubleTotalMark,'f',1));
+    // 记录这一题的成绩
+    m_doubleArrayAnswerMark[m_intCurProblemIndex] = (*m_problemListModel)[m_intCurProblemIndex]->checkAnswer(b_variantForAnswer);
+//    QMessageBox::information(this, tr("Information"), QString().number(m_doubleTotalMark,'f',1));
 }

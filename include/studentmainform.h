@@ -41,7 +41,7 @@ private:
     // 当前选的题目下标
     int m_intCurProblemIndex = 0;
     // 目前得到总分
-    double m_doubleTotalMark = 0;
+    double *m_doubleArrayAnswerMark= nullptr;
 };
 
 #endif // STUDENTMAINFORM_H

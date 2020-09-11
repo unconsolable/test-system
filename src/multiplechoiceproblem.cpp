@@ -15,7 +15,7 @@ MultipleChoiceProblem::MultipleChoiceProblem(double _mark, const std::string& _d
 double MultipleChoiceProblem::checkAnswer(const QVariant & ans)
 {
     // 获得选项表
-    auto b_qVariantVecAns = ans.toList().toVector();
+    auto b_qVariantVecAns = ans.value<QVector<QVariant>>();
     // 每个选项的分数
     double b_doubleChoiceMark = m_doubleMark / m_charVecRightAns.size();
     double b_doubleTotalMark = 0;
