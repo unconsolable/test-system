@@ -31,6 +31,11 @@ LoginWindow::~LoginWindow()
         delete m_pStudentFormStu;
         m_pStudentFormStu = nullptr;
     }
+    if (m_pRootFormRoot)
+    {
+        delete m_pRootFormRoot;
+        m_pRootFormRoot = nullptr;
+    }
 }
 
 void LoginWindow::on_loginBtn_clicked()
@@ -71,7 +76,9 @@ void LoginWindow::on_loginBtn_clicked()
     }
     else if (rootPwStr == pwStr)
     {
-        // 管理员界面
+        m_pRootFormRoot = new RootMainForm();
+        this->close();
+        m_pRootFormRoot->show();
     }
     else
     {

@@ -26,6 +26,7 @@ public:
     explicit TeacherMainForm(QWidget *parent = nullptr);
     ~TeacherMainForm();
 private slots:
+    void onFileNew();
     void onFileOpen();
     void onFileSave();
     void on_m_buttonRm_clicked();

@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/rootmainform.cpp \
     src/choiceproblem.cpp \
     src/judgementproblem.cpp \
     src/main.cpp \
@@ -77,12 +78,14 @@ HEADERS += \
     include/studentproblemwidget.h \
     include/teachermainform.h \
     include/teacherproblemwidget.h \
-    include/writeproblem.h
+    include/writeproblem.h \
+    include/rootmainform.h
 
 FORMS += \
     include/loginwindow.ui \
     include/studentmainform.ui \
-    include/teachermainform.ui
+    include/teachermainform.ui \
+    include/rootmainform.ui
 
 INCLUDEPATH += include
 

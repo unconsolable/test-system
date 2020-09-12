@@ -70,6 +70,8 @@ TeacherMainForm::TeacherMainForm(QWidget *parent) :
     connect(ui->m_actionOpenFile, SIGNAL(triggered()), this, SLOT(onFileOpen()));
     // save menu和slot绑定
     connect(ui->m_actionSaveFile, SIGNAL(triggered()), this, SLOT(onFileSave()));
+    // new menu和slot绑定
+    connect(ui->m_actionNewFile, SIGNAL(triggered()), this, SLOT(onFileNew()));
     // 添加TeacherProblemWidget
     m_teacherProblemWidget = new TeacherProblemWidget(ui->m_widgetProblem);
     // QListView双击事件与slot绑定
@@ -89,6 +91,7 @@ void TeacherMainForm::onFileOpen()
     QString b_qStrFileDir = QFileDialog::getOpenFileName(this,"Open Paper File","/","JSON files(*.json)");
     // 打开文件
     std::ifstream b_ifStrmProblemList(b_qStrFileDir.toStdString());
+    // 判断流是否成功打开
     if (!b_ifStrmProblemList)
     {
         QMessageBox::information(this, "Error", tr("文件打开失败"));
@@ -144,7 +147,7 @@ void TeacherMainForm::on_m_buttonRm_clicked()
         }
     }
 }
-
+// 双击时实现题目选中
 void TeacherMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index)
 {
     // 获得选择的下标和对应题目的指针
@@ -198,7 +201,7 @@ void TeacherMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
         break;
     }
 }
-
+// 完成修改时,保存题目信息
 void TeacherMainForm::on_m_buttonFinish_clicked()
 {
     // 通用信息不再另外保存
@@ -249,6 +252,7 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
     // 为实现简便，不再标记每个数据变化
     // 而是统一先删除原来，再写新题目
     m_problemListModel->rmProblem(m_intCurProblemIndex);
+    // 将题目的各项数据传入函数
     switch (m_teacherProblemWidget->m_intLastProblemTypeIndex)
     {
     case SINGLE:
@@ -279,8 +283,24 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
 
 
 }
-
+// 添加一个模板问题,可以自行修改保存
 void TeacherMainForm::on_m_buttonAdd_clicked()
 {
     m_problemListModel->addProblem(m_problemListModel->rowCount(), 1.0, "这是一个题目模板,模板为选择题,根据需求自行更改",{"1","2","3","4"}, 'A');
 }
+// 新建一个空白问题文件,用于存储问题
+void TeacherMainForm::onFileNew()
+{
+    // 获得文件路径并打开
+    QString b_qStrFileDir = QFileDialog::getOpenFileName(this,"Open New File","/","JSON files(*.json)");
+    std::ofstream b_ofStrmProblemList(b_qStrFileDir.toStdString());
+    // 检查是否成功打开
+    if (!b_ofStrmProblemList)
+    {
+        QMessageBox::information(this, "Error", tr("文件打开失败"));
+        return;
+    }
+    std::string emptyFile("{\n\t\"problem\":[\n\t]\n}");
+    b_ofStrmProblemList << emptyFile;
+}
+

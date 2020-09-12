@@ -12,6 +12,7 @@ Author: unconsolable
 #include "teachermainform.h"
 
 #include "studentmainform.h"
+#include "rootmainform.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
@@ -35,5 +36,6 @@ private:
     Ui::LoginWindow *ui;
     TeacherMainForm *m_pTeacherFormTea = nullptr;
     StudentMainForm *m_pStudentFormStu = nullptr;
+    RootMainForm *m_pRootFormRoot = nullptr;
 };
 #endif // LOGINWINDOW_H
