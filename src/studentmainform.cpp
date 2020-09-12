@@ -195,3 +195,33 @@ void StudentMainForm::on_m_buttonFinish_clicked()
     m_doubleArrayAnswerMark[m_intCurProblemIndex] = (*m_problemListModel)[m_intCurProblemIndex]->checkAnswer(b_variantForAnswer);
 //    QMessageBox::information(this, tr("Information"), QString().number(m_doubleTotalMark,'f',1));
 }
+// 显示下一题, 会保存当前题目的答案
+void StudentMainForm::on_m_buttonNext_clicked()
+{
+    on_m_buttonFinish_clicked();
+    // 下标加1
+    int b_intNextColumn = m_intCurProblemIndex + 1;
+    // 越界回到开始
+    if (b_intNextColumn == m_problemListModel->rowCount())
+        b_intNextColumn = 0;
+    // 获取下标对应的QModelIndex
+    QModelIndex b_qModelIndexNext = m_problemListModel->index(b_intNextColumn, 0);
+    // 设置选中
+    ui->m_listViewProblem->setCurrentIndex(b_qModelIndexNext);
+    // 发生事件
+    on_m_problemListItemDoubleClicked(b_qModelIndexNext);
+}
+// 显示上一题, 会保存当前题目的答案
+void StudentMainForm::on_m_buttonPrev_clicked()
+{
+    on_m_buttonFinish_clicked();
+    int b_intNextColumn = m_intCurProblemIndex - 1;
+    if (b_intNextColumn == -1)
+        b_intNextColumn = m_problemListModel->rowCount() - 1;
+    // 获取下标对应的QModelIndex
+    QModelIndex b_qModelIndexNext = m_problemListModel->index(b_intNextColumn, 0);
+    // 设置选中
+    ui->m_listViewProblem->setCurrentIndex(b_qModelIndexNext);
+    // 发生事件
+    on_m_problemListItemDoubleClicked(b_qModelIndexNext);
+}

@@ -34,6 +34,10 @@ private slots:
     void on_m_problemListItemDoubleClicked(const QModelIndex &index);
     void on_m_buttonFinish_clicked();
 
+    void on_m_buttonNext_clicked();
+
+    void on_m_buttonPrev_clicked();
+
 private:
     Ui::StudentMainForm *ui;
     ProblemListModel *m_problemListModel = nullptr;
