@@ -25,8 +25,10 @@ SOURCES += \
     src/problem.cpp \
     src/problemlistmodel.cpp \
     src/singlechoiceproblem.cpp \
+    src/studentaccountmodel.cpp \
     src/studentmainform.cpp \
     src/studentproblemwidget.cpp \
+    src/teacheraccountmodel.cpp \
     src/teachermainform.cpp \
     src/teacherproblemwidget.cpp \
     src/writeproblem.cpp
@@ -74,8 +76,10 @@ HEADERS += \
     include/multiplechoiceproblem.h \
     include/problem.h \
     include/singlechoiceproblem.h \
+    include/studentaccountmodel.h \
     include/studentmainform.h \
     include/studentproblemwidget.h \
+    include/teacheraccountmodel.h \
     include/teachermainform.h \
     include/teacherproblemwidget.h \
     include/writeproblem.h \
