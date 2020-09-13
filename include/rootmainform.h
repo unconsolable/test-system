@@ -47,6 +47,10 @@ private slots:
     void on_m_teacherAccountItemDoubleClicked(const QModelIndex& index);
     void on_m_btnLoadRoot_clicked();
 
+    void on_m_btnSave_clicked();
+
+    void on_m_btnFinish_clicked();
+
 private:
     Ui::RootMainForm *ui;
     StudentAccountModel *m_listModelStudentAccount = nullptr;
