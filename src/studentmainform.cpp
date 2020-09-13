@@ -57,7 +57,7 @@ StudentMainForm::~StudentMainForm()
     CheckDeleteSetNull(m_studentProblemWidget);
     if (m_doubleArrayAnswerMark)
     {
-        // 需要单独使用数组删除
+        // 需要单独使用数组的delete
         delete[] m_doubleArrayAnswerMark;
         m_doubleArrayAnswerMark = nullptr;
     }
@@ -89,6 +89,11 @@ void StudentMainForm::onFileOpen()
     }
     if (!m_problemListModel->fromJsonDocument(b_jsonDocProList))
         QMessageBox::information(this, "Error", tr("转为Model失败"));
+    if (m_problemListModel->totalMark() < 100)
+    {
+        QMessageBox::information(this, "Error", tr("试卷总分低于100，不能用于考试，程序即将退出"));
+        exit(2);
+    }
     m_doubleArrayAnswerMark = new double[m_problemListModel->rowCount()]{0};
 }
 // 点击保存菜单后的事件

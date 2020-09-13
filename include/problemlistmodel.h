@@ -45,6 +45,8 @@ public:
     bool fromJsonDocument(const rapidjson::Document& doc);
     // 返回一个下标对应的题目指针,**不能对其delete**,若为nullptr则下标无效
     Problem* operator[](size_t index);
+    // 计算所有题目总分，辅助判断是否低于100.
+    double totalMark() const;
 private:
     std::vector<Problem*> m_pProblemVecProList;
 };

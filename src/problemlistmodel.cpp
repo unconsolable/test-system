@@ -195,3 +195,13 @@ Problem* ProblemListModel::operator[](size_t index)
         return nullptr;
     return m_pProblemVecProList[index];
 }
+
+double ProblemListModel::totalMark() const
+{
+    double totalmark = 0;
+    for (auto& i : m_pProblemVecProList)
+    {
+        totalmark += i->getMark();
+    }
+    return totalmark;
+}

@@ -116,6 +116,8 @@ void TeacherMainForm::onFileOpen()
 // 点击保存菜单后的事件
 void TeacherMainForm::onFileSave()
 {
+    // 先检查分值是否达到100，没有100会有提示，但是否保存交给用户。
+    double b_doubleTotalMark = 0;
     QString b_qStrFileDir = QFileDialog::getOpenFileName(this,"Open Paper File","/","JSON files(*.json)");
     std::ofstream b_ofStrmProblemList(b_qStrFileDir.toStdString());
     if (!b_ofStrmProblemList)
