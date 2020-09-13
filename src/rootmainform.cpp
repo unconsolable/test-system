@@ -91,3 +91,10 @@ void RootMainForm::on_m_teacherAccountItemDoubleClicked(const QModelIndex& index
     ui->m_lineEditAccount->setText(tr(accountAndPasswdPair.first.c_str()));
     ui->m_lineEditPasswd->setText(tr(accountAndPasswdPair.second.c_str()));
 }
+// 加载管理员账号信息
+void RootMainForm::on_m_btnLoadRoot_clicked()
+{
+    m_accountType = ROOT;
+    ui->m_lineEditAccount->setText(tr("root"));
+    ui->m_lineEditPasswd->setText(tr(g_jsonDocumentAccount["root"].GetString()));
+}

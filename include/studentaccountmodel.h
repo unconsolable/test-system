@@ -27,8 +27,6 @@ public:
     // 获得账户密码
     std::pair<std::string, std::string> getAccountAndPasswd(int pos);
 private:
-    // 建立下标与key对应关系
-    std::map<int, std::string> m_mapListIndexToAccount;
     rapidjson::Document *m_jsonDocumentAccount;
 };
 

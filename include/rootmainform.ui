@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>账户管理</string>
   </property>
   <widget class="QListView" name="m_listViewStuAccount">
    <property name="geometry">
