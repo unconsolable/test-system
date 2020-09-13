@@ -40,7 +40,7 @@ private:
     // 分值
     QLabel *m_labelProblemMark = nullptr;
     // 题干
-    QLabel *m_labelProblemDesc = nullptr;
+    QPlainTextEdit *m_plainTextProblemDesc = nullptr;
     // 答题区提示
     QLabel *m_labelProblemAnswerHint = nullptr;
     // 以下部分可能部分题会用不到

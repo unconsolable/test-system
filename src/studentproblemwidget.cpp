@@ -89,7 +89,7 @@ Author: unconsolable
     {                                    \
         delete m_labelProblemType;       \
         delete m_labelProblemMark;       \
-        delete m_labelProblemDesc;       \
+        delete m_plainTextProblemDesc;   \
         delete m_labelProblemAnswerHint; \
     } while (0)
 // 释放GridView
@@ -135,7 +135,8 @@ StudentProblemWidget::StudentProblemWidget(QWidget *parent)
     m_gridLayoutProblem = new QGridLayout(this);
     m_labelProblemType = new QLabel;
     m_labelProblemMark = new QLabel;
-    m_labelProblemDesc = new QLabel;
+    m_plainTextProblemDesc = new QPlainTextEdit;
+    m_plainTextProblemDesc->setReadOnly(true);
     m_labelProblemAnswerHint = new QLabel(tr("解答"));
     // 设置最小宽度
     m_gridLayoutProblem->setColumnMinimumWidth(0, 150);
@@ -150,7 +151,7 @@ StudentProblemWidget::StudentProblemWidget(QWidget *parent)
     // 添加到GridLayout中
     m_gridLayoutProblem->addWidget(m_labelProblemType, 0, 0, 1, 2);
     m_gridLayoutProblem->addWidget(m_labelProblemMark,0, 2, 1, 2);
-    m_gridLayoutProblem->addWidget(m_labelProblemDesc, 1, 0, 5, 4);
+    m_gridLayoutProblem->addWidget(m_plainTextProblemDesc, 1, 0, 5, 4);
     m_gridLayoutProblem->addWidget(m_labelProblemAnswerHint, 6, 0, 1, 2);
 }
 // 析构通用信息

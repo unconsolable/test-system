@@ -117,7 +117,7 @@ void StudentMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
     // 设置分值
     m_studentProblemWidget->m_labelProblemMark->setText(QString().number(curProblem->getMark(),'f',1) + QString("分"));
     // 设置题目描述
-    m_studentProblemWidget->m_labelProblemDesc->setText(tr(curProblem->getDescription().c_str()));
+    m_studentProblemWidget->m_plainTextProblemDesc->setPlainText(tr(curProblem->getDescription().c_str()));
     // 根据题目类型不同分别显示不同内容
     const std::vector<std::string> *t_strVecChoiceDescOrKeyWords = nullptr;
     std::ostringstream oSStrmKeyWords;
@@ -158,7 +158,7 @@ void StudentMainForm::on_m_buttonFinish_clicked()
             b_variantForAnswer.setValue('D');
         break;
     case MULTIPLE:
-        // 添加多选
+        // 添加多选的选项
         if (m_studentProblemWidget->m_chkBoxProblemRightChoiceA->checkState() == Qt::Checked)
         {
             b_variantTempChoiceAnswer.setValue('A');
