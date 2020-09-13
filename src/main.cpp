@@ -4,7 +4,6 @@
 #include <fstream>
 
 rapidjson::Document g_jsonDocumentAccount;
-rapidjson::Document g_jsonDocumentTest;
 
 int main(int argc, char *argv[])
 {
@@ -14,7 +13,7 @@ int main(int argc, char *argv[])
     {
         // 若文件打开失败报错退出
         QMessageBox::information(nullptr,"错误","账户文件打开错误");
-        a.exit();
+        exit(1);
     }
     std::string b_strAccountInfoStr;
     std::string t_strInput;

@@ -69,7 +69,7 @@ void RootMainForm::on_m_btnRmTea_clicked()
 // 添加示例账户
 void RootMainForm::on_m_btnAddStu_clicked()
 {
-    m_listModelStudentAccount->addAccount("示例修改账户", "和密码,不要直接保存");
+    m_listModelStudentAccount->addAccount("示例", "修改账户和密码,不要直接保存");
 }
 // 添加示例账户
 void RootMainForm::on_m_btnAddTea_clicked()
@@ -79,6 +79,8 @@ void RootMainForm::on_m_btnAddTea_clicked()
 // 选择学生账户
 void RootMainForm::on_m_studentAccountItemDoubleClicked(const QModelIndex& index)
 {
+    // 避免加载root账号后未保存，导致其他账号也无法修改
+    ui->m_lineEditAccount->setReadOnly(false);
     // 记录选择的账户类型
     m_accountType = STUDENT;
     // 记录选择的账户位置
@@ -92,6 +94,8 @@ void RootMainForm::on_m_studentAccountItemDoubleClicked(const QModelIndex& index
 // 选择教师账户
 void RootMainForm::on_m_teacherAccountItemDoubleClicked(const QModelIndex& index)
 {
+    // 避免加载root账号后未保存，导致其他账号也无法修改
+    ui->m_lineEditAccount->setReadOnly(false);
     // 记录选择的账户类型
     m_accountType = FACULTY;
     // 记录选择的账户位置

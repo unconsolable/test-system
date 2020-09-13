@@ -74,11 +74,17 @@ void LoginWindow::on_loginBtn_clicked()
             QMessageBox::information(this, "错误", "密码错误");
         }
     }
-    else if (rootPwStr == pwStr)
+    else if (ui->idEdit->text() == QString("root"))
     {
-        m_pRootFormRoot = new RootMainForm();
-        this->close();
-        m_pRootFormRoot->show();
+        // 管理员界面
+        if (rootPwStr == pwStr)
+        {
+            m_pRootFormRoot = new RootMainForm();
+            this->close();
+            m_pRootFormRoot->show();
+        }
+        else
+            QMessageBox::information(this, "错误", "密码错误");
     }
     else
     {

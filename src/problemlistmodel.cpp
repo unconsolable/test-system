@@ -145,6 +145,7 @@ int ProblemListModel::rowCount(const QModelIndex &parent) const
 
 QVariant ProblemListModel::data(const QModelIndex& index, int role) const
 {
+
     // 返回用于在QListView显示的数据
     // 检查下标是否有效
     if (!index.isValid())
@@ -154,7 +155,7 @@ QVariant ProblemListModel::data(const QModelIndex& index, int role) const
     // 返回题目类型
     if (role == Qt::DisplayRole || role == Qt::EditRole)
     {
-        return tr(m_pProblemVecProList[index.row()]->convertType());
+        return QString("第%1题,%2,%3分").arg(index.row() + 1).arg(tr(m_pProblemVecProList[index.row()]->convertType())).arg(m_pProblemVecProList[index.row()]->getMark(),0,'f',1);
     }
     return QVariant();
 }
