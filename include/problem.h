@@ -19,7 +19,12 @@ enum problemType
     JUDGEMENT,
     WRITE,
 };
-
+/* 本类为所有问题的基类,定义纯虚函数
+ * 转换为JSON节点和判断题目得分
+ * 由于不同题目判断得分需要的数据不同
+ * 这里使用QVariant统一包含
+ * 需要时自己根据类型解析
+ */
 class Problem
 {
 public:

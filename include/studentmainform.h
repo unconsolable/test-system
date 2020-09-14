@@ -1,6 +1,6 @@
 /*
 File Name: studentmainform.h
-Description: Define StudentMainForm
+Description: Define the class for students' test system
 Author: unconsolable
 */
 
@@ -28,19 +28,20 @@ private slots:
     void onFileOpen();
     // 提交结果
     void onFileSave();
-    // 计算此题得分
-//    void on_m_buttonFinish_clicked();
     // 选定并显示题目
     void on_m_problemListItemDoubleClicked(const QModelIndex &index);
+    // 计算此题得分
     void on_m_buttonFinish_clicked();
-
+    // 切换至下一题
     void on_m_buttonNext_clicked();
-
+    // 切换至上一题
     void on_m_buttonPrev_clicked();
 
 private:
     Ui::StudentMainForm *ui;
+    // 问题列表(试卷)的模型指针,类似CDoc
     ProblemListModel *m_problemListModel = nullptr;
+    // 专门负责显示题目信息的子窗口
     StudentProblemWidget *m_studentProblemWidget = nullptr;
     // 当前选的题目下标
     int m_intCurProblemIndex = 0;

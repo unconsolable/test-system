@@ -1,6 +1,6 @@
 /*
 File Name: teacherproblemwidget.h
-Description: Define the widget showing the problem for students
+Description: Define the widget showing the problem for teachers
 Author: unconsolable
 */
 #ifndef TEACHERPROBLEMWIDGET_H

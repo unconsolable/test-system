@@ -14,6 +14,7 @@ SingleChoiceProblem::SingleChoiceProblem(double _mark, const std::string& _desc,
 
 double SingleChoiceProblem::checkAnswer(const QVariant& ans)
 {
+    // 判断选择的字符是否相符
     if (m_charRightAns == ans.toChar())
         return m_doubleMark;
     else

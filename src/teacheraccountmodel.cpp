@@ -1,6 +1,6 @@
 /*
-File Name:
-Description:
+File Name: teacheraccountmodel.cpp
+Description: A Model for Teacher Account
 Author: unconsolable
 */
 #include "teacheraccountmodel.h"

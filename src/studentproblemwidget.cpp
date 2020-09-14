@@ -183,7 +183,7 @@ void StudentProblemWidget::onProblemTypeChanged(int index)
     case WRITE: CheckDeleteWrite(); break;
     default: break; //对于-1这种不需任何删除
     }
-    // 记录之前类型便于再次删除
+    // 记录之前类型便于后续删除题目面板控件
     m_intLastProblemTypeIndex = index;
     // 添加新的类型特有数据
     switch (index)

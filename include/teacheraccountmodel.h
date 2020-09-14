@@ -1,3 +1,8 @@
+/*
+File Name: teacheraccountmodel.h
+Description: Define the Model for Teacher Account based on QAbstractListModel
+Author: unconsolable
+*/
 #ifndef TEACHERACCOUNTMODEL_H
 #define TEACHERACCOUNTMODEL_H
 

@@ -1,6 +1,6 @@
 /*
 File Name: writeproblem.h
-Description:
+Description: Define the class of the write problem
 Author: unconsolable
 */
 

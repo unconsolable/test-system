@@ -95,39 +95,48 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
     }
     for (auto& b_jsonValueEachProblem : doc["problem"].GetArray())
     {
+        // 这个用于存选项或者关键词,两个不会同时出现
         std::vector<std::string> tmpAnsListOrKeyWords;
+        // 这个用于存多选的选项字符
         std::vector<char> multipleChoice;
         // 根据类型对应构造
         // 分值类型变化为Double
         switch (b_jsonValueEachProblem["type"].GetInt())
         {
         case SINGLE:
+            // 存入选项描述
             for (auto& i : b_jsonValueEachProblem["answers"].GetArray())
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
+            // 传入题目信息
             addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, b_jsonValueEachProblem["right"].GetInt());
             break;
         case MULTIPLE:
+            //存入选项描述
             for (auto& i : b_jsonValueEachProblem["answers"].GetArray())
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
-            // 存储选项用的是INT
+            // 存储选项用的是char,应转为int
             for (auto& i : b_jsonValueEachProblem["right"].GetArray())
             {
                 multipleChoice.emplace_back(i.GetInt());
             }
+            // 传入题目信息
             addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, multipleChoice);
             break;
         case JUDGEMENT:
+            // 直接传true/false即可
             addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()),b_jsonValueEachProblem["right"].GetBool());
             break;
         case WRITE:
+            // 构造关键词列表
             for (auto& i: b_jsonValueEachProblem["right"].GetArray())
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
+            // 传入题目信息
             addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords);
             break;
         default:
@@ -139,6 +148,7 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
 
 int ProblemListModel::rowCount(const QModelIndex &parent) const
 {
+    // 用于View显示使用,返回Model中条目
     Q_UNUSED(parent);
     return m_pProblemVecProList.size();
 }
@@ -155,6 +165,7 @@ QVariant ProblemListModel::data(const QModelIndex& index, int role) const
     // 返回题目类型
     if (role == Qt::DisplayRole || role == Qt::EditRole)
     {
+        // 格式化返回字符串,类似sprintf
         return QString("第%1题,%2,%3分").arg(index.row() + 1).arg(tr(m_pProblemVecProList[index.row()]->convertType())).arg(m_pProblemVecProList[index.row()]->getMark(),0,'f',1);
     }
     return QVariant();
@@ -163,7 +174,7 @@ QVariant ProblemListModel::data(const QModelIndex& index, int role) const
 QVariant ProblemListModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     Q_UNUSED(section);
-
+    // 返回表头
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
         return tr("题型");
     return QVariant();
@@ -181,9 +192,11 @@ Qt::ItemFlags ProblemListModel::flags(const QModelIndex &index) const
 
 bool ProblemListModel::rmProblem(int pos)
 {
+    // 向Model告知,便于Model中显示的变化
     beginRemoveRows(QModelIndex(), pos, pos);
     // 删除指针之前**释放**对应资源
     delete m_pProblemVecProList[pos];
+    // 再删除指针(即一串对应虚拟地址空间的编号)
     m_pProblemVecProList.erase(m_pProblemVecProList.begin() + pos);
     endRemoveRows();
     return true;
@@ -191,6 +204,7 @@ bool ProblemListModel::rmProblem(int pos)
 
 Problem* ProblemListModel::operator[](size_t index)
 {
+    // 检查下标是否有效
     if (index >= m_pProblemVecProList.size())
         return nullptr;
     return m_pProblemVecProList[index];
@@ -198,6 +212,8 @@ Problem* ProblemListModel::operator[](size_t index)
 
 double ProblemListModel::totalMark() const
 {
+    // 计算总分,便于判断是否是总分
+    // 低于100分的试卷用于考试
     double totalmark = 0;
     for (auto& i : m_pProblemVecProList)
     {

@@ -116,8 +116,6 @@ void TeacherMainForm::onFileOpen()
 // 点击保存菜单后的事件
 void TeacherMainForm::onFileSave()
 {
-    // 先检查分值是否达到100，没有100会有提示，但是否保存交给用户。
-    double b_doubleTotalMark = 0;
     QString b_qStrFileDir = QFileDialog::getOpenFileName(this,"Open Paper File","/","JSON files(*.json)");
     std::ofstream b_ofStrmProblemList(b_qStrFileDir.toStdString());
     if (!b_ofStrmProblemList)
@@ -208,9 +206,13 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
 {
     // 通用信息不再另外保存
     // 判断题的对错也不再另外保存
+    // 题目描述信息
     std::vector<std::string> b_strVecChoiceDesc;
+    // 多选题选项
     std::vector<char> b_charVecRightAns;
+    // 简答题关键词
     std::vector<std::string> b_strVecRightAns;
+    // 单选题正确选项
     char b_charRightAns;
     // 将需要另外保存的数据存储
     // 保存选项描述
@@ -220,26 +222,26 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
         b_strVecChoiceDesc.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceB->text().toStdString());
         b_strVecChoiceDesc.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceC->text().toStdString());
         b_strVecChoiceDesc.push_back(m_teacherProblemWidget->m_lineEditProblemChoiceD->text().toStdString());
-    }
-    // 保存单选
-    if (m_teacherProblemWidget->m_intLastProblemTypeIndex == SINGLE)
-    {
-        if (m_teacherProblemWidget->m_radioProblemRightChoiceA->isChecked())
-            b_charRightAns = 'A';
-        else if (m_teacherProblemWidget->m_radioProblemRightChoiceB->isChecked())
-            b_charRightAns = 'B';
-        else if (m_teacherProblemWidget->m_radioProblemRightChoiceC->isChecked())
-            b_charRightAns = 'C';
-        else
-            b_charRightAns = 'D';
-    }
-    // 保存多选答案
-    if (m_teacherProblemWidget->m_intLastProblemTypeIndex == MULTIPLE)
-    {
-        AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceA,'A');
-        AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceB,'B');
-        AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceC,'C');
-        AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceD,'D');
+        // 保存单选
+        if (m_teacherProblemWidget->m_intLastProblemTypeIndex == SINGLE)
+        {
+            if (m_teacherProblemWidget->m_radioProblemRightChoiceA->isChecked())
+                b_charRightAns = 'A';
+            else if (m_teacherProblemWidget->m_radioProblemRightChoiceB->isChecked())
+                b_charRightAns = 'B';
+            else if (m_teacherProblemWidget->m_radioProblemRightChoiceC->isChecked())
+                b_charRightAns = 'C';
+            else
+                b_charRightAns = 'D';
+        }
+        // 保存多选答案
+        if (m_teacherProblemWidget->m_intLastProblemTypeIndex == MULTIPLE)
+        {
+            AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceA,'A');
+            AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceB,'B');
+            AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceC,'C');
+            AddMultipleChoiceInVector(m_chkBoxProblemRightChoiceD,'D');
+        }
     }
     // 保存简答关键词
     if (m_teacherProblemWidget->m_intLastProblemTypeIndex == WRITE)

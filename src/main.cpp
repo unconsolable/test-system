@@ -1,3 +1,8 @@
+/*
+File Name: main.cpp
+Description: Where the program start
+Author: unconsolable
+*/
 #include "loginwindow.h"
 
 #include <QApplication>
@@ -22,10 +27,11 @@ int main(int argc, char *argv[])
         // 读入账户文件形成JSON字符串
         b_strAccountInfoStr += t_strInput + ' ';
     }
+    // 若解析有错误则报错退出
     if (g_jsonDocumentAccount.Parse(b_strAccountInfoStr.c_str()).HasParseError())
     {
         QMessageBox::information(nullptr, "错误", "解析账户文件错误");
-        a.exit();
+        exit(1);
     }
     LoginWindow w;
     w.show();

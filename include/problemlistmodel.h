@@ -27,7 +27,7 @@ public:
     virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     // 返回表头,重载QAbstractListModel
     virtual QVariant headerData(int section,  Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-    // 让Controller部分知道Model可以编辑
+    // 让Controller部分知道Model可以编辑(编辑指的是可以双击或F2修改)
     virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
     /* 因为数据有不同类别,所以不重写insertRows和removeRows
      * 为便于实现,假定只能单个数据添加和删除

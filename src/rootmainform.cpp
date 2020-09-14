@@ -12,10 +12,10 @@ RootMainForm::RootMainForm(QWidget *parent) :
     ui(new Ui::RootMainForm)
 {
     ui->setupUi(this);
-    // 设置学生的对应model
+    // new并设置设置学生的对应model
     m_listModelStudentAccount = new StudentAccountModel(&g_jsonDocumentAccount);
     ui->m_listViewStuAccount->setModel(m_listModelStudentAccount);
-    // 设置老师的对应model
+    // new并设置设置老师的对应model
     m_listModelTeacherAccount = new TeacherAccountModel(&g_jsonDocumentAccount);
     ui->m_listViewTeacherAccount->setModel(m_listModelTeacherAccount);
     // studentView与slot绑定
@@ -27,6 +27,7 @@ RootMainForm::RootMainForm(QWidget *parent) :
 RootMainForm::~RootMainForm()
 {
     delete ui;
+    // 检测是否为空再删除并置nullptr
     CheckDeleteSetNull(m_listModelStudentAccount);
     CheckDeleteSetNull(m_listModelTeacherAccount);
 }
@@ -38,7 +39,7 @@ void RootMainForm::on_m_btnRmStu_clicked()
     {
         // 获得对应下标
         QModelIndexList indexList = selectModel->selectedIndexes();
-        // 需要检测大小,避免未点击的UB
+        // 需要检测大小,避免未选中便按确定的UB
         if (!indexList.size())
         {
             QMessageBox::information(this, tr("错误"), tr("未点击"));

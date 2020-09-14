@@ -15,9 +15,11 @@ Problem::Problem(problemType _ty, double _mark, const std::string& _desc)
 rapidjson::Value Problem::toJsonValue(rapidjson::Document& doc) const
 {
     rapidjson::Value problem(rapidjson::kObjectType);
-    // 序列化基类的数据成员:题目类型,分数,描述
+    // 序列化基类的数据成员:题目类型,
     problem.AddMember("type",static_cast<int>(m_problemTy),doc.GetAllocator());
+    // 分数,
     problem.AddMember("mark",m_doubleMark,doc.GetAllocator());
+    //  描述
     rapidjson::Value b_jsonValueDescription;
     b_jsonValueDescription.SetString(m_strDescription.c_str(),m_strDescription.size(), doc.GetAllocator());
     problem.AddMember("description",b_jsonValueDescription, doc.GetAllocator());
@@ -56,6 +58,7 @@ void Problem::setDescription(const std::string &Description)
 
 const char* Problem::convertType() const
 {
+    // 根据类型转换为对应字符串
     switch (m_problemTy)
     {
     case SINGLE:

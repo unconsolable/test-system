@@ -1,6 +1,6 @@
 /*
-File Name:
-Description:
+File Name: studentaccountmodel.cpp
+Description: Implement the Model for Student Account
 Author: unconsolable
 */
 #include "studentaccountmodel.h"

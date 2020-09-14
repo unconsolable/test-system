@@ -1,6 +1,6 @@
 /*
 File Name: teachermainform.h
-Description: Define class TeacherMainForm
+Description: Define the class of the form for teachers to generate test problems
 Author: unconsolable
 */
 

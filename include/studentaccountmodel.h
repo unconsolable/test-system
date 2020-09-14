@@ -5,8 +5,10 @@
 #include "rapidjson/document.h"
 #include <string>
 #include <map>
-// 内部直接使用jsonDocument的指针,减少资源拷贝
-// 这个指针对应内容非new创建 不要delete
+// 我们把账号文件解析的jsonDocument设置为全局变量
+// 因此数据直接用这个全局变量的指针,减少资源拷贝
+// 本类实现即为在数据基础上加wrapper,使其符合qt中Model-View的要求
+// 这个指针非new创建 不要delete
 class StudentAccountModel : public QAbstractListModel
 {
     Q_OBJECT

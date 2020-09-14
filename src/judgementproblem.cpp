@@ -14,6 +14,7 @@ JudgementProblem::JudgementProblem(double _mark, const std::string& _desc, bool 
 
 double JudgementProblem::checkAnswer(const QVariant & ans)
 {
+    // 判断答案是否相符
     if (m_boolRightAns == ans.toBool())
         return m_doubleMark;
     else
@@ -23,7 +24,7 @@ double JudgementProblem::checkAnswer(const QVariant & ans)
 rapidjson::Value JudgementProblem::toJsonValue(rapidjson::Document& doc) const
 {
     auto problem = Problem::toJsonValue(doc);
-    problem.AddMember("right", true, doc.GetAllocator());
+    problem.AddMember("right", m_boolRightAns, doc.GetAllocator());
     return problem;
 }
 

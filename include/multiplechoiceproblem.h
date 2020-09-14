@@ -1,6 +1,6 @@
 /*
 File Name: multiplechoiceproblem.h
-Description: Define class MultipleChoice
+Description: Define the class for Multiple Choice Problem
 Author: unconsolable
 */
 
