@@ -40,12 +40,12 @@ private slots:
 private:
     Ui::StudentMainForm *ui;
     // 问题列表(试卷)的模型指针,类似CDoc
-    ProblemListModel *m_problemListModel = nullptr;
+    ProblemListModel *m_pProblemListModel = nullptr;
     // 专门负责显示题目信息的子窗口
     StudentProblemWidget *m_studentProblemWidget = nullptr;
     // 当前选的题目下标
     int m_intCurProblemIndex = 0;
-    // 目前得到总分
+    // 目前每题得分
     double *m_doubleArrayAnswerMark= nullptr;
 };
 

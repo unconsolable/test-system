@@ -63,6 +63,7 @@ private:
     QRadioButton *m_radioProblemRightChoiceA = nullptr;
     QRadioButton *m_radioProblemRightChoiceC = nullptr;
     QRadioButton *m_radioProblemRightChoiceD = nullptr;
+    // 选项设为组,实现组内四选一
     QButtonGroup *m_btnGroupSingleChoice = nullptr;
     // 多选中选择正确选项
     QCheckBox *m_chkBoxProblemRightChoiceA = nullptr;
@@ -78,6 +79,7 @@ private:
     // 之前选择的选项
     int m_intLastProblemTypeIndex = 0;
 private slots:
+    // 题目类型改变时,释放原有控件,添加新的控件
     void onProblemTypeChanged(int index);
 };
 

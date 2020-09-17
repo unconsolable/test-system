@@ -61,9 +61,9 @@ TeacherMainForm::TeacherMainForm(QWidget *parent) :
     ui(new Ui::TeacherMainForm)
 {
     ui->setupUi(this);
-    m_problemListModel = new ProblemListModel();
+    m_pProblemListModel = new ProblemListModel();
     // 设置View对应的Model
-    ui->m_listViewProblem->setModel(m_problemListModel);
+    ui->m_listViewProblem->setModel(m_pProblemListModel);
     // 设置选择模式为单选
     ui->m_listViewProblem->setSelectionMode(QAbstractItemView::SingleSelection);
     // open menu和slot绑定
@@ -81,7 +81,7 @@ TeacherMainForm::TeacherMainForm(QWidget *parent) :
 TeacherMainForm::~TeacherMainForm()
 {
     delete ui;
-    CheckDeleteSetNull(m_problemListModel);
+    CheckDeleteSetNull(m_pProblemListModel);
     CheckDeleteSetNull(m_teacherProblemWidget);
 }
 // 点击打开菜单后的事件
@@ -110,7 +110,7 @@ void TeacherMainForm::onFileOpen()
         QMessageBox::information(this, "Error", tr("试卷解析失败"));
         return;
     }
-    if (!m_problemListModel->fromJsonDocument(b_jsonDocProList))
+    if (!m_pProblemListModel->fromJsonDocument(b_jsonDocProList))
         QMessageBox::information(this, "Error", tr("转为Model失败"));
 }
 // 点击保存菜单后的事件
@@ -123,7 +123,7 @@ void TeacherMainForm::onFileSave()
         QMessageBox::information(this, "Error", tr("文件打开失败"));
         return;
     }
-    std::string res = m_problemListModel->toJsonString();
+    std::string res = m_pProblemListModel->toJsonString();
     b_ofStrmProblemList << res;
 }
 // 删除功能
@@ -143,7 +143,7 @@ void TeacherMainForm::on_m_buttonRm_clicked()
         }
         for (auto &i : indexList)
         {
-            m_problemListModel->rmProblem(i.row());
+            m_pProblemListModel->rmProblem(i.row());
         }
     }
 }
@@ -152,7 +152,7 @@ void TeacherMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
 {
     // 获得选择的下标和对应题目的指针
     m_intCurProblemIndex = index.row();
-    auto curProblem = (*m_problemListModel)[m_intCurProblemIndex];
+    auto curProblem = (*m_pProblemListModel)[m_intCurProblemIndex];
     // 绘制题面
     m_teacherProblemWidget->onProblemTypeChanged(curProblem->getType());
     // 设置题型
@@ -213,7 +213,7 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
     // 简答题关键词
     std::vector<std::string> b_strVecRightAns;
     // 单选题正确选项
-    char b_charRightAns;
+    char b_charRightAns = 'A';
     // 将需要另外保存的数据存储
     // 保存选项描述
     if (m_teacherProblemWidget->m_intLastProblemTypeIndex == SINGLE || m_teacherProblemWidget->m_intLastProblemTypeIndex == MULTIPLE)
@@ -255,30 +255,30 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
     }
     // 为实现简便，不再标记每个数据变化
     // 而是统一先删除原来，再写新题目
-    m_problemListModel->rmProblem(m_intCurProblemIndex);
+    m_pProblemListModel->rmProblem(m_intCurProblemIndex);
     // 将题目的各项数据传入函数
     switch (m_teacherProblemWidget->m_intLastProblemTypeIndex)
     {
     case SINGLE:
-        m_problemListModel->addProblem
+        m_pProblemListModel->addProblem
                 (m_intCurProblemIndex, m_teacherProblemWidget->m_lineEditProblemMark->text().toDouble(),
                  m_teacherProblemWidget->m_plainTextEditProblemDesc->toPlainText().toStdString(),
                  b_strVecChoiceDesc, b_charRightAns);
         break;
     case MULTIPLE:
-        m_problemListModel->addProblem
+        m_pProblemListModel->addProblem
                 (m_intCurProblemIndex, m_teacherProblemWidget->m_lineEditProblemMark->text().toDouble(),
                  m_teacherProblemWidget->m_plainTextEditProblemDesc->toPlainText().toStdString(),
                  b_strVecChoiceDesc, b_charVecRightAns);
         break;
     case JUDGEMENT:
-        m_problemListModel->addProblem
+        m_pProblemListModel->addProblem
                 (m_intCurProblemIndex, m_teacherProblemWidget->m_lineEditProblemMark->text().toDouble(),
                  m_teacherProblemWidget->m_plainTextEditProblemDesc->toPlainText().toStdString(),
                  m_teacherProblemWidget->m_chkBoxIsRight->checkState() == Qt::Checked);
         break;
     case WRITE:
-        m_problemListModel->addProblem
+        m_pProblemListModel->addProblem
                 (m_intCurProblemIndex, m_teacherProblemWidget->m_lineEditProblemMark->text().toDouble(),
                  m_teacherProblemWidget->m_plainTextEditProblemDesc->toPlainText().toStdString(),
                  b_strVecRightAns);
@@ -290,7 +290,7 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
 // 添加一个模板问题,可以自行修改保存
 void TeacherMainForm::on_m_buttonAdd_clicked()
 {
-    m_problemListModel->addProblem(m_problemListModel->rowCount(), 1.0, "这是一个题目模板,模板为选择题,根据需求自行更改",{"1","2","3","4"}, 'A');
+    m_pProblemListModel->addProblem(m_pProblemListModel->rowCount(), 1.0, "这是一个题目模板,模板为选择题,根据需求自行更改",{"1","2","3","4"}, 'A');
 }
 // 新建一个空白问题文件,用于存储问题
 void TeacherMainForm::onFileNew()

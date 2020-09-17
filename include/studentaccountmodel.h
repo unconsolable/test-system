@@ -14,7 +14,7 @@ class StudentAccountModel : public QAbstractListModel
     Q_OBJECT
 public:
     // 拷贝控制
-    StudentAccountModel( rapidjson::Document *jsonDocumentAcc, QObject *parent = nullptr);
+    StudentAccountModel(rapidjson::Document *jsonDocumentAcc, QObject *parent = nullptr);
     StudentAccountModel(const StudentAccountModel&) = delete;
     StudentAccountModel& operator=(const StudentAccountModel&) = delete;
     ~StudentAccountModel() = default;
@@ -29,7 +29,7 @@ public:
     // 获得账户密码
     std::pair<std::string, std::string> getAccountAndPasswd(int pos);
 private:
-    rapidjson::Document *m_jsonDocumentAccount;
+    rapidjson::Document *m_pJsonDocumentAccount;
 };
 
 #endif // STUDENTACCOUNTMODEL_H

@@ -35,9 +35,9 @@ StudentMainForm::StudentMainForm(QWidget *parent) :
     ui(new Ui::StudentMainForm)
 {
     ui->setupUi(this);
-    m_problemListModel = new ProblemListModel();
+    m_pProblemListModel = new ProblemListModel();
     // 设置View对应的Model
-    ui->m_listViewProblem->setModel(m_problemListModel);
+    ui->m_listViewProblem->setModel(m_pProblemListModel);
     // 设置选择模式为单选
     ui->m_listViewProblem->setSelectionMode(QAbstractItemView::SingleSelection);
     // open menu和slot绑定
@@ -53,7 +53,7 @@ StudentMainForm::StudentMainForm(QWidget *parent) :
 StudentMainForm::~StudentMainForm()
 {
     delete ui;
-    CheckDeleteSetNull(m_problemListModel);
+    CheckDeleteSetNull(m_pProblemListModel);
     CheckDeleteSetNull(m_studentProblemWidget);
     if (m_doubleArrayAnswerMark)
     {
@@ -87,20 +87,20 @@ void StudentMainForm::onFileOpen()
         QMessageBox::information(this, "Error", tr("试卷解析失败"));
         return;
     }
-    if (!m_problemListModel->fromJsonDocument(b_jsonDocProList))
+    if (!m_pProblemListModel->fromJsonDocument(b_jsonDocProList))
         QMessageBox::information(this, "Error", tr("转为Model失败"));
-    if (m_problemListModel->totalMark() < 100)
+    if (m_pProblemListModel->totalMark() < 100)
     {
         QMessageBox::information(this, "Error", tr("试卷总分低于100，不能用于考试，程序即将退出"));
         exit(2);
     }
-    m_doubleArrayAnswerMark = new double[m_problemListModel->rowCount()]{0};
+    m_doubleArrayAnswerMark = new double[m_pProblemListModel->rowCount()]{0};
 }
 // 点击保存菜单后的事件
 void StudentMainForm::onFileSave()
 {
     // 计算分数
-    double ans = std::accumulate(m_doubleArrayAnswerMark, m_doubleArrayAnswerMark + m_problemListModel->rowCount(), 0.0);
+    double ans = std::accumulate(m_doubleArrayAnswerMark, m_doubleArrayAnswerMark + m_pProblemListModel->rowCount(), 0.0);
     if (abs(ans - 100) >= 0.001)
     {
         QMessageBox::information(this, tr("Error"), QString().number(ans, 'f', 1) + tr("分，未到100分，继续修改。"));
@@ -114,7 +114,7 @@ void StudentMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
 {
     // 获得下标与对应题目的指针
     m_intCurProblemIndex = index.row();
-    auto curProblem = (*m_problemListModel)[m_intCurProblemIndex];
+    auto curProblem = (*m_pProblemListModel)[m_intCurProblemIndex];
     // 绘制题面
     m_studentProblemWidget->onProblemTypeChanged(curProblem->getType());
     // 设置题型
@@ -149,7 +149,7 @@ void StudentMainForm::on_m_buttonFinish_clicked()
     QVariant b_variantForAnswer;
     QVector<QVariant> b_variantMultipleAnswer;
     QVariant b_variantTempChoiceAnswer;
-    switch ((*m_problemListModel)[m_intCurProblemIndex]->getType())
+    switch ((*m_pProblemListModel)[m_intCurProblemIndex]->getType())
     {
     case SINGLE:
         // 判断单选的答案
@@ -197,7 +197,7 @@ void StudentMainForm::on_m_buttonFinish_clicked()
         break;
     }
     // 记录这一题的成绩
-    m_doubleArrayAnswerMark[m_intCurProblemIndex] = (*m_problemListModel)[m_intCurProblemIndex]->checkAnswer(b_variantForAnswer);
+    m_doubleArrayAnswerMark[m_intCurProblemIndex] = (*m_pProblemListModel)[m_intCurProblemIndex]->checkAnswer(b_variantForAnswer);
 //    QMessageBox::information(this, tr("Information"), QString().number(m_doubleTotalMark,'f',1));
 }
 // 显示下一题, 会保存当前题目的答案
@@ -207,10 +207,10 @@ void StudentMainForm::on_m_buttonNext_clicked()
     // 下标加1
     int b_intNextColumn = m_intCurProblemIndex + 1;
     // 越界回到开始
-    if (b_intNextColumn == m_problemListModel->rowCount())
+    if (b_intNextColumn == m_pProblemListModel->rowCount())
         b_intNextColumn = 0;
     // 获取下标对应的QModelIndex
-    QModelIndex b_qModelIndexNext = m_problemListModel->index(b_intNextColumn, 0);
+    QModelIndex b_qModelIndexNext = m_pProblemListModel->index(b_intNextColumn, 0);
     // 设置选中
     ui->m_listViewProblem->setCurrentIndex(b_qModelIndexNext);
     // 发生事件
@@ -222,9 +222,9 @@ void StudentMainForm::on_m_buttonPrev_clicked()
     on_m_buttonFinish_clicked();
     int b_intNextColumn = m_intCurProblemIndex - 1;
     if (b_intNextColumn == -1)
-        b_intNextColumn = m_problemListModel->rowCount() - 1;
+        b_intNextColumn = m_pProblemListModel->rowCount() - 1;
     // 获取下标对应的QModelIndex
-    QModelIndex b_qModelIndexNext = m_problemListModel->index(b_intNextColumn, 0);
+    QModelIndex b_qModelIndexNext = m_pProblemListModel->index(b_intNextColumn, 0);
     // 设置选中
     ui->m_listViewProblem->setCurrentIndex(b_qModelIndexNext);
     // 发生事件

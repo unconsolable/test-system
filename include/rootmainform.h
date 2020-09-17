@@ -64,9 +64,9 @@ private slots:
 private:
     Ui::RootMainForm *ui;
     // 学生账号列表的指针
-    StudentAccountModel *m_listModelStudentAccount = nullptr;
+    StudentAccountModel *m_pListModelStudentAccount = nullptr;
     // 教师账号列表的指针
-    TeacherAccountModel *m_listModelTeacherAccount = nullptr;
+    TeacherAccountModel *m_pListModelTeacherAccount = nullptr;
     // 记录当前双击的账号类型
     AccountType m_accountType = STUDENT;
     // 记录下标

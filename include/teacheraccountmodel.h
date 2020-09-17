@@ -33,7 +33,7 @@ public:
     // 获得账户密码
     std::pair<std::string, std::string> getAccountAndPasswd(int pos);
 private:
-    rapidjson::Document *m_jsonDocumentAccount;
+    rapidjson::Document *m_pJsonDocumentAccount;
 };
 
 #endif // TEACHERACCOUNTMODEL_H
