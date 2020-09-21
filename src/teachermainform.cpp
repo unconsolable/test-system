@@ -60,6 +60,7 @@
 #define AddMultipleChoiceInVector(method, choiceChar)               \
     if (m_teacherProblemWidget->method->checkState() == Qt::Checked) \
             b_charVecRightAns.push_back((choiceChar));
+
 /***************************
  * Name:
  *   TeacherMainForm
@@ -70,6 +71,7 @@
  * Description:
  *   构造出题系统窗体
  ***************************/
+
 TeacherMainForm::TeacherMainForm(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::TeacherMainForm)
@@ -91,6 +93,7 @@ TeacherMainForm::TeacherMainForm(QWidget *parent) :
     // QListView双击事件与slot绑定
     connect(ui->m_listViewProblem, SIGNAL(doubleClicked(const QModelIndex)), this, SLOT(on_m_problemListItemDoubleClicked(const QModelIndex&)));
 }
+
 /***************************
  * Name:
  *   ~TeacherMainForm
@@ -101,12 +104,15 @@ TeacherMainForm::TeacherMainForm(QWidget *parent) :
  * Description:
  *   析构出题系统窗体
  ***************************/
+
 TeacherMainForm::~TeacherMainForm()
 {
     delete ui;
+    // 非空再delete并置0
     CheckDeleteSetNull(m_pProblemListModel);
     CheckDeleteSetNull(m_teacherProblemWidget);
 }
+
 /***************************
  * Name:
  *   onFileOpen
@@ -117,6 +123,7 @@ TeacherMainForm::~TeacherMainForm()
  * Description:
  *   点击打开菜单后的事件
  ***************************/
+
 void TeacherMainForm::onFileOpen()
 {
     // 获得文件路径
@@ -129,7 +136,9 @@ void TeacherMainForm::onFileOpen()
         QMessageBox::information(this, "Error", tr("文件打开失败"));
         return;
     }
+    // 读入的总字符串
     std::string b_strProListInfo;
+    // 读入的一部分字符串
     std::string t_strInput;
     while (b_ifStrmProblemList >> t_strInput)
     {

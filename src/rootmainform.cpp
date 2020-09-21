@@ -33,15 +33,15 @@ RootMainForm::RootMainForm(QWidget *parent) :
     ui(new Ui::RootMainForm)
 {
     ui->setupUi(this);
-    // new并设置设置学生的对应model
+    // new并设置设置学生账号的对应model
     m_pListModelStudentAccount = new StudentAccountModel(&g_jsonDocumentAccount);
     ui->m_listViewStuAccount->setModel(m_pListModelStudentAccount);
-    // new并设置设置老师的对应model
+    // new并设置设置老师账号的对应model
     m_pListModelTeacherAccount = new TeacherAccountModel(&g_jsonDocumentAccount);
     ui->m_listViewTeacherAccount->setModel(m_pListModelTeacherAccount);
-    // studentView与slot绑定
+    // studentView的双击信号与slot绑定
     connect(ui->m_listViewStuAccount, SIGNAL(doubleClicked(const QModelIndex)), this, SLOT(on_m_studentAccountItemDoubleClicked(const QModelIndex&)));
-    // teacherView与slot绑定
+    // teacherView的双击信号与slot绑定
     connect(ui->m_listViewTeacherAccount, SIGNAL(doubleClicked(const QModelIndex)), this, SLOT(on_m_teacherAccountItemDoubleClicked(const QModelIndex&)));
 }
 
@@ -82,16 +82,18 @@ void RootMainForm::on_m_btnRmStu_clicked()
     {
         // 获得对应下标
         QModelIndexList indexList = selectModel->selectedIndexes();
-        // 需要检测大小,避免未选中便按确定的UB
+        // 需要检测大小,避免未选中便按确定的错误
         if (!indexList.size())
         {
             QMessageBox::information(this, tr("错误"), tr("未点击"));
             return;
         }
+        // 逐个删除
         for (auto &i : indexList)
             m_pListModelStudentAccount->rmAccount(i.row());
     }
 }
+
 /***************************
  * Name:
  *   on_m_btnRmTea_clicked
@@ -102,6 +104,7 @@ void RootMainForm::on_m_btnRmStu_clicked()
  * Description:
  *   老师账号删除功能
  ***************************/
+
 void RootMainForm::on_m_btnRmTea_clicked()
 {
     auto selectModel = ui->m_listViewTeacherAccount->selectionModel();
@@ -119,6 +122,7 @@ void RootMainForm::on_m_btnRmTea_clicked()
             m_pListModelTeacherAccount->rmAccount(i.row());
     }
 }
+
 /***************************
  * Name:
  *   on_m_btnAddStu_clicked
@@ -127,12 +131,14 @@ void RootMainForm::on_m_btnRmTea_clicked()
  * Return:
  *   none
  * Description:
- *   学生中添加示例账户
+ *   学生账号中添加示例账户
  ***************************/
+
 void RootMainForm::on_m_btnAddStu_clicked()
 {
     m_pListModelStudentAccount->addAccount("示例", "修改账户和密码,不要直接保存");
 }
+
 /***************************
  * Name:
  *   on_m_btnAddTea_clicked
@@ -141,22 +147,25 @@ void RootMainForm::on_m_btnAddStu_clicked()
  * Return:
  *   none
  * Description:
- *   老师中添加示例账户
+ *   老师账号中添加示例账户
  ***************************/
+
 void RootMainForm::on_m_btnAddTea_clicked()
 {
     m_pListModelTeacherAccount->addAccount("示例", "修改账户和密码,不要直接保存");
 }
+
 /***************************
  * Name:
  *   on_m_studentAccountItemDoubleClicked
  * Input:
- *   index 点击坐标
+ *   index 点击的数据的坐标
  * Return:
  *   none
  * Description:
  *   选择学生账户
  ***************************/
+
 void RootMainForm::on_m_studentAccountItemDoubleClicked(const QModelIndex& index)
 {
     // 避免加载root账号后未保存，导致其他账号也无法修改
@@ -171,16 +180,18 @@ void RootMainForm::on_m_studentAccountItemDoubleClicked(const QModelIndex& index
     ui->m_lineEditAccount->setText(tr(accountAndPasswdPair.first.c_str()));
     ui->m_lineEditPasswd->setText(tr(accountAndPasswdPair.second.c_str()));
 }
+
 /***************************
  * Name:
  *   on_m_teacherAccountItemDoubleClicked
  * Input:
- *   index 点击坐标
+ *   index 点击的数据的坐标
  * Return:
  *   none
  * Description:
  *   选择教师账户
  ***************************/
+
 void RootMainForm::on_m_teacherAccountItemDoubleClicked(const QModelIndex& index)
 {
     // 避免加载root账号后未保存，导致其他账号也无法修改
@@ -195,6 +206,7 @@ void RootMainForm::on_m_teacherAccountItemDoubleClicked(const QModelIndex& index
     ui->m_lineEditAccount->setText(tr(accountAndPasswdPair.first.c_str()));
     ui->m_lineEditPasswd->setText(tr(accountAndPasswdPair.second.c_str()));
 }
+
 /***************************
  * Name:
  *   on_m_btnLoadRoot_clicked
@@ -205,6 +217,7 @@ void RootMainForm::on_m_teacherAccountItemDoubleClicked(const QModelIndex& index
  * Description:
  *   加载管理员账号信息
  ***************************/
+
 void RootMainForm::on_m_btnLoadRoot_clicked()
 {
     // 记录选择的账户类型
@@ -214,6 +227,7 @@ void RootMainForm::on_m_btnLoadRoot_clicked()
     ui->m_lineEditAccount->setText(tr("root"));
     ui->m_lineEditPasswd->setText(tr(g_jsonDocumentAccount["root"].GetString()));
 }
+
 /***************************
  * Name:
  *   on_m_btnSave_clicked
@@ -224,6 +238,7 @@ void RootMainForm::on_m_btnLoadRoot_clicked()
  * Description:
  *   保存为文件
  ***************************/
+
 void RootMainForm::on_m_btnSave_clicked()
 {
     // 获得文件路径并打开
@@ -242,6 +257,7 @@ void RootMainForm::on_m_btnSave_clicked()
     // 写入
     b_ofStrmProblemList << sb.GetString();
 }
+
 /***************************
  * Name:
  *   on_m_btnFinish_clicked
@@ -250,8 +266,9 @@ void RootMainForm::on_m_btnSave_clicked()
  * Return:
  *   none
  * Description:
- *   完成信息修改
+ *   完成信息修改,记录信息
  ***************************/
+
 void RootMainForm::on_m_btnFinish_clicked()
 {
     // switch-case中不能定义并初始化变量,采用if
@@ -263,8 +280,11 @@ void RootMainForm::on_m_btnFinish_clicked()
         g_jsonDocumentAccount.RemoveMember("root");
         // 增加新的
         std::string newPasswd = ui->m_lineEditPasswd->text().toStdString().c_str();
+        // 用于存储转为JSON字符串的密码
         rapidjson::Value newPasswdJson;
+        // 存储字符串
         newPasswdJson.SetString(newPasswd.c_str(), newPasswd.size(), g_jsonDocumentAccount.GetAllocator());
+        // 添加账号与密码键值对
         g_jsonDocumentAccount.AddMember("root", newPasswdJson, g_jsonDocumentAccount.GetAllocator());
     }
     else if (m_accountType == FACULTY)

@@ -144,6 +144,7 @@
         m_gridLayoutProblem->addWidget(m_plainTextKeyWordList, 7, 0, 4, 4); \
     }                                                                       \
     while (0)
+
 /***************************
  * Name:
  *   TeacherProblemWidget
@@ -154,6 +155,7 @@
  * Description:
  *   构造题目显示窗体
  ***************************/
+
 TeacherProblemWidget::TeacherProblemWidget(QWidget *parent)
     : QWidget(parent)
 {
@@ -191,9 +193,10 @@ TeacherProblemWidget::TeacherProblemWidget(QWidget *parent)
     // View添加RadioButton
     ViewAddRadioButton();
 }
+
 /***************************
  * Name:
- *   TeacherProblemWidget
+ *   ~TeacherProblemWidget
  * Input:
  *   none
  * Return:
@@ -201,6 +204,7 @@ TeacherProblemWidget::TeacherProblemWidget(QWidget *parent)
  * Description:
  *   析构题目显示窗体
  ***************************/
+
 TeacherProblemWidget::~TeacherProblemWidget()
 {
     // 释放提示性字符
@@ -220,6 +224,7 @@ TeacherProblemWidget::~TeacherProblemWidget()
     // 释放简答
     CheckDeleteWrite();
 }
+
 /***************************
  * Name:
  *   onProblemTypeChanged
@@ -231,6 +236,7 @@ TeacherProblemWidget::~TeacherProblemWidget()
  *   释放原问题对应控件
  *   添加新问题对应控件
  ***************************/
+
 void TeacherProblemWidget::onProblemTypeChanged(int newtype)
 {
     m_boolProblemTypeChanged = true;

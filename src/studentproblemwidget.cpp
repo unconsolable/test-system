@@ -183,6 +183,7 @@ StudentProblemWidget::StudentProblemWidget(QWidget *parent)
  *  析构StudentProblemWidget类
  *  析构所有控件
  ***************************/
+
 StudentProblemWidget::~StudentProblemWidget()
 {
     // 释放题目数据
@@ -212,6 +213,7 @@ StudentProblemWidget::~StudentProblemWidget()
  *   释放原问题对应控件
  *   添加新问题对应控件
  ***************************/
+
 void StudentProblemWidget::onProblemTypeChanged(int newtype)
 {
     // 释放原有类型特有控件

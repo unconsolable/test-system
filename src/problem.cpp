@@ -43,12 +43,13 @@ Problem::Problem(problemType _ty, double _mark, const std::string& _desc)
 
 rapidjson::Value Problem::toJsonValue(rapidjson::Document& doc) const
 {
+    // 定义用于返回的JSON节点
     rapidjson::Value problem(rapidjson::kObjectType);
     // 序列化基类的数据成员:题目类型,
     problem.AddMember("type",static_cast<int>(m_problemTy),doc.GetAllocator());
     // 分数,
     problem.AddMember("mark",m_doubleMark,doc.GetAllocator());
-    // 描述需要转为字符串
+    // 用于存储题干
     rapidjson::Value b_jsonValueDescription;
     // 设置字符串
     b_jsonValueDescription.SetString(m_strDescription.c_str(),m_strDescription.size(), doc.GetAllocator());

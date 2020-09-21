@@ -40,15 +40,19 @@ StudentAccountModel::StudentAccountModel(rapidjson::Document *_jsonDocumentAcc, 
 
 void StudentAccountModel::addAccount(const std::string &account, const std::string &passwd)
 {
+    // 发送将变化的信号
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    // account建为jsonValue格式，转为string
+    // account建为jsonValue格式
     rapidjson::Value jsonValueAccount;
+    // 转为string存储账号信息
     jsonValueAccount.SetString(account.c_str(), account.size(), m_pJsonDocumentAccount->GetAllocator());
     // passwd建为jsonValue格式，转为string
     rapidjson::Value jsonValuePasswd;
+    // 转为string存储密码信息
     jsonValuePasswd.SetString(passwd.c_str(), passwd.size(), m_pJsonDocumentAccount->GetAllocator());
     // 尾后追加
     (*m_pJsonDocumentAccount)["student"].AddMember(jsonValueAccount, jsonValuePasswd, m_pJsonDocumentAccount->GetAllocator());
+    // 发送变化完成的信号
     endInsertRows();
 }
 
@@ -83,9 +87,11 @@ int StudentAccountModel::rowCount(const QModelIndex &parent) const
 
 void StudentAccountModel::rmAccount(int pos)
 {
+    // 发送开始删除的信息
     beginRemoveRows(QModelIndex(), pos, pos);
-    // 传入对应key
+    // 传入对应key，删除数据
     (*m_pJsonDocumentAccount)["student"].EraseMember((*m_pJsonDocumentAccount)["student"].MemberBegin() + pos);
+    // 发送删除完成的信息
     endRemoveRows();
 }
 

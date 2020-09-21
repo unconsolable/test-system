@@ -45,10 +45,11 @@ rapidjson::Value ChoiceProblem::toJsonValue(rapidjson::Document& doc) const
 {
     // 获得通用信息
     auto problem = Problem::toJsonValue(doc);
-    // 序列化选项
+    // 序列化选项array
     rapidjson::Value answers(rapidjson::kArrayType);
     for (auto& b_strEachChoice : m_strVecAnswerList)
     {
+        // 用于存储某一选项字符串
         rapidjson::Value choice;
         // 设置选项字符串为JSON字符串
         choice.SetString(b_strEachChoice.c_str(), b_strEachChoice.size(), doc.GetAllocator());

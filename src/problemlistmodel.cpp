@@ -74,10 +74,12 @@ ProblemListModel::~ProblemListModel()
  * Description:
  *   添加单选题
  ***************************/
+
 void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, const std::vector<std::string>& _ansList, char _right)
 {
     // 发送Model将变化的信号 [begin,end]方式表示
     beginInsertRows(QModelIndex(), pos, pos);
+    // 添加新指针
     m_pProblemVecProList.insert(m_pProblemVecProList.begin() + pos, new SingleChoiceProblem(_mark, _desc, _ansList, _right));
     // 发送Model已变化的信号
     endInsertRows();
@@ -97,14 +99,17 @@ void ProblemListModel::addProblem(int pos, double _mark, const std::string& _des
  * Description:
  *   添加多选题
  ***************************/
+
 void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, const std::vector<std::string>& _ansList, const std::vector<char>& _right)
 {
     // 发送Model将变化的信号 [begin,end]方式表示
     beginInsertRows(QModelIndex(), pos, pos);
+    // 添加新指针
     m_pProblemVecProList.insert(m_pProblemVecProList.begin() + pos, new MultipleChoiceProblem(_mark, _desc, _ansList, _right));
     // 发送Model已变化的信号
     endInsertRows();
 }
+
 /***************************
  * Name:
  *   addProblem
@@ -118,14 +123,17 @@ void ProblemListModel::addProblem(int pos, double _mark, const std::string& _des
  * Description:
  *   添加判断题
  ***************************/
+
 void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, bool _right)
 {
     // 发送Model将变化的信号 [begin,end]方式表示
     beginInsertRows(QModelIndex(), pos, pos);
+    // 添加新指针
     m_pProblemVecProList.insert(m_pProblemVecProList.begin() + pos, new JudgementProblem(_mark, _desc, _right));
     // 发送Model已变化的信号
     endInsertRows();
 }
+
 /***************************
  * Name:
  *   addProblem
@@ -139,14 +147,17 @@ void ProblemListModel::addProblem(int pos, double _mark, const std::string& _des
  * Description:
  *   添加简答题
  ***************************/
+
 void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, const std::vector<std::string>& _keyWords)
 {
     // 发送Model将变化的信号 [begin,end]方式表示
     beginInsertRows(QModelIndex(), pos, pos);
+    // 添加新指针
     m_pProblemVecProList.insert(m_pProblemVecProList.begin() + pos, new WriteProblem(_mark, _desc, _keyWords));
     // 发送Model已变化的信号
     endInsertRows();
 }
+
 /***************************
  * Name:
  *   toJsonString
@@ -157,6 +168,7 @@ void ProblemListModel::addProblem(int pos, double _mark, const std::string& _des
  * Description:
  *   将所有题目转为JSON字符串
  ***************************/
+
 std::string ProblemListModel::toJsonString() const
 {
     rapidjson::Document b_jsonTestPaper(rapidjson::kObjectType);
@@ -174,6 +186,7 @@ std::string ProblemListModel::toJsonString() const
     b_jsonTestPaper.Accept(writer);
     return sb.GetString();
 }
+
 /***************************
  * Name:
  *   fromJsonDocument
@@ -184,6 +197,7 @@ std::string ProblemListModel::toJsonString() const
  * Description:
  *   将解析的JSON树转为问题列表
  ***************************/
+
 bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
 {
     // 检查是否有为problem的key
@@ -207,7 +221,7 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
-            // 传入题目信息
+            // 传入题目信息，增加题目
             addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, b_jsonValueEachProblem["right"].GetInt());
             break;
         case MULTIPLE:
@@ -221,10 +235,11 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
             {
                 multipleChoice.emplace_back(i.GetInt());
             }
-            // 传入题目信息
+            // 传入题目信息，增加题目
             addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords, multipleChoice);
             break;
         case JUDGEMENT:
+            // 传入题目信息，增加题目
             // 直接传true/false即可
             addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()),b_jsonValueEachProblem["right"].GetBool());
             break;
@@ -234,13 +249,15 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
             {
                 tmpAnsListOrKeyWords.emplace_back(i.GetString());
             }
-            // 传入题目信息
+            // 传入题目信息，增加题目
             addProblem(rowCount(), b_jsonValueEachProblem["mark"].GetDouble(), std::string(b_jsonValueEachProblem["description"].GetString()), tmpAnsListOrKeyWords);
             break;
         default:
+            // 不在范围内,失败
             return false;
         }
     }
+    // 转换成功
     return true;
 }
 
@@ -283,7 +300,7 @@ QVariant ProblemListModel::data(const QModelIndex& index, int role) const
         return QVariant();
     if (index.row() >= static_cast<int>(m_pProblemVecProList.size()))
         return QVariant();
-    // 返回题目类型
+    // 返回题目用于显示的数据
     if (role == Qt::DisplayRole || role == Qt::EditRole)
     {
         // 格式化返回字符串,类似sprintf
@@ -368,6 +385,7 @@ bool ProblemListModel::rmProblem(int pos)
  *   返回m_pProblemVecProList
  *   中index处存的指针
  ***************************/
+
 Problem* ProblemListModel::operator[](size_t index)
 {
     // 检查下标是否有效
@@ -384,17 +402,19 @@ Problem* ProblemListModel::operator[](size_t index)
  * Return:
  *   double
  * Description:
- *   计算总分
+ *   计算试卷总分,便于判断是否是
+ *   总分低于100分的试卷用于考试
  ***************************/
 
 double ProblemListModel::totalMark() const
 {
-    // 计算总分,便于判断是否是
-    // 总分低于100分的试卷用于考试
+    // 用于存储总分
     double totalmark = 0;
     for (auto& i : m_pProblemVecProList)
     {
+        // 增加分数
         totalmark += i->getMark();
     }
+    // 返回分数
     return totalmark;
 }

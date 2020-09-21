@@ -10,6 +10,7 @@
 */
 
 #include "judgementproblem.h"
+
 /***************************
  * Name:
  *   JudegmentProblem
@@ -22,6 +23,7 @@
  * Description:
  *   判断题构造函数
  ***************************/
+
 JudgementProblem::JudgementProblem(double _mark, const std::string& _desc, bool _right):
     Problem(JUDGEMENT, _mark, _desc), m_boolRightAns(_right)
 {

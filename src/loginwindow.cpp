@@ -35,7 +35,7 @@ LoginWindow::LoginWindow(QWidget *parent)
 
 /***************************
  * Name:
- *   LoginWindow
+ *   ~LoginWindow
  * Input:
  *   none
  * Return:
@@ -86,8 +86,9 @@ void LoginWindow::on_loginBtn_clicked()
     std::string rootPwStr = g_jsonDocumentAccount["root"].GetString();
     if (g_jsonDocumentAccount["faculty"].HasMember(idStrPtr))
     {
-        // 比较密码
+        // 正确密码
         std::string rightPwStr = g_jsonDocumentAccount["faculty"][idStrPtr].GetString();
+        // 比较密码是否正确
         if (rightPwStr == pwStr)
         {
             // 密码正确，切换窗口
@@ -103,8 +104,9 @@ void LoginWindow::on_loginBtn_clicked()
     }
     else if (g_jsonDocumentAccount["student"].HasMember(idStrPtr))
     {
-        // 学生界面
+        // 正确密码
         std::string rightPwStr = g_jsonDocumentAccount["student"][idStrPtr].GetString();
+        // 比较是否相等
         if (rightPwStr == pwStr)
         {
             // 密码正确，切换窗口
@@ -120,7 +122,7 @@ void LoginWindow::on_loginBtn_clicked()
     }
     else if (ui->idEdit->text() == QString("root"))
     {
-        // 管理员界面
+        // 比较管理员密码和输入密码是否相同
         if (rootPwStr == pwStr)
         {
             // 密码正确，切换窗口
@@ -134,7 +136,7 @@ void LoginWindow::on_loginBtn_clicked()
     }
     else
     {
-        // 不存在
+        // 账号不存在
         QMessageBox::information(this, "错误", "账号不存在, 请联系添加");
     }
 

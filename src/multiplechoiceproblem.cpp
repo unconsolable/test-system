@@ -30,10 +30,11 @@ MultipleChoiceProblem::MultipleChoiceProblem(double _mark, const std::string& _d
 
 double MultipleChoiceProblem::checkAnswer(const QVariant & ans)
 {
-    // 获得选项表
+    // 转为QVector类型存储
     auto b_qVariantVecAns = ans.value<QVector<QVariant>>();
     // 每个选项的分数
     double b_doubleChoiceMark = m_doubleMark / m_charVecRightAns.size();
+    // 获得的总分
     double b_doubleTotalMark = 0;
     // 每个选项遍历
     for (const auto& b_qVariantChoice : b_qVariantVecAns)
@@ -65,23 +66,51 @@ double MultipleChoiceProblem::checkAnswer(const QVariant & ans)
 
 rapidjson::Value MultipleChoiceProblem::toJsonValue(rapidjson::Document& doc) const
 {
+    // 先获得选则题转为的JSON节点
     auto problem = ChoiceProblem::toJsonValue(doc);
+    // 存储多选正确选项组
     rapidjson::Value answer(rapidjson::kArrayType);
-    // 设置多选选项,选项用char表示,应转为int存
+    // 添加多选选项,选项用char表示,应转为int存
     for (const auto& b_charEachRight: m_charVecRightAns)
     {
+        // 某个正确选项
         rapidjson::Value choice;
+        // 设置其数字
         choice.SetInt(b_charEachRight);
+        // 正确选项组尾后附加
         answer.PushBack(choice, doc.GetAllocator());
     }
+    // 节点尾后附加正确答案组
     problem.AddMember("right", answer, doc.GetAllocator());
     return problem;
 }
+
+/***************************
+ * Name:
+ *   getRightAns
+ * Input:
+ *   none
+ * Return:
+ *   const std::vector<char>&
+ * Description:
+ *   返回正确答案组
+ ***************************/
 
 const std::vector<char>& MultipleChoiceProblem::getRightAns() const
 {
     return m_charVecRightAns;
 }
+
+/***************************
+ * Name:
+ *   setRightAns
+ * Input:
+ *   rightAns
+ * Return:
+ *   none
+ * Description:
+ *   设置正确答案组
+ ***************************/
 
 void MultipleChoiceProblem::setRightAns(const std::vector<char> &rightAns)
 {

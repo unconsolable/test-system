@@ -96,6 +96,7 @@ StudentMainForm::~StudentMainForm()
  * Description:
  *   点击打开菜单后的事件
  ***************************/
+
 void StudentMainForm::onFileOpen()
 {
     // 获得文件路径
@@ -133,6 +134,7 @@ void StudentMainForm::onFileOpen()
     // 初始化每题得分数组
     m_doubleArrayAnswerMark = new double[m_pProblemListModel->rowCount()]{0};
 }
+
 /***************************
  * Name:
  *   onFileSave
@@ -143,6 +145,7 @@ void StudentMainForm::onFileOpen()
  * Description:
  *   点击保存菜单后的事件
  ***************************/
+
 void StudentMainForm::onFileSave()
 {
     // 计算分数
@@ -158,6 +161,7 @@ void StudentMainForm::onFileSave()
         QMessageBox::information(this, tr("Accepted"), QString().number(ans, 'f', 1) + tr("分，到100分,已经提交"));
     }
 }
+
 /***************************
  * Name:
  *   on_m_problemListItemDoubleClicked
@@ -166,8 +170,9 @@ void StudentMainForm::onFileSave()
  * Return:
  *   none
  * Description:
- *   选择题目
+ *   双击后选择题目
  ***************************/
+
 void StudentMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index)
 {
     // 获得下标与对应题目的指针
@@ -210,7 +215,7 @@ void StudentMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
  * Return:
  *   none
  * Description:
- *   记下本次作答总分
+ *   记下本次作答的得分
  ***************************/
 
 void StudentMainForm::on_m_buttonFinish_clicked()

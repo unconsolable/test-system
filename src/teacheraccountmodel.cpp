@@ -41,6 +41,7 @@ TeacherAccountModel::TeacherAccountModel(rapidjson::Document *_jsonDocumentAcc, 
 
 void TeacherAccountModel::addAccount(const std::string &account, const std::string &passwd)
 {
+    // 开始添加数据
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     // account建为jsonValue格式
     rapidjson::Value jsonValueAccount;
@@ -50,6 +51,7 @@ void TeacherAccountModel::addAccount(const std::string &account, const std::stri
     jsonValuePasswd.SetString(passwd.c_str(), passwd.size(), m_pJsonDocumentAccount->GetAllocator());
     // 尾后追加
     (*m_pJsonDocumentAccount)["faculty"].AddMember(jsonValueAccount, jsonValuePasswd, m_pJsonDocumentAccount->GetAllocator());
+    // 数据添加结束
     endInsertRows();
 }
 
@@ -84,9 +86,11 @@ int TeacherAccountModel::rowCount(const QModelIndex &parent) const
 
 void TeacherAccountModel::rmAccount(int pos)
 {
+    // 开始删除数据
     beginRemoveRows(QModelIndex(), pos, pos);
     // 传入对应key
     (*m_pJsonDocumentAccount)["faculty"].EraseMember((*m_pJsonDocumentAccount)["faculty"].MemberBegin() + pos);
+    // 数据删除结束
     endRemoveRows();
 }
 
@@ -131,5 +135,6 @@ QVariant TeacherAccountModel::data(const QModelIndex &index, int role) const
 
 std::pair<std::string, std::string> TeacherAccountModel::getAccountAndPasswd(int pos)
 {
+    // 返回<账号,密码>对
     return std::make_pair(((*m_pJsonDocumentAccount)["faculty"].MemberBegin() + pos)->name.GetString(), ((*m_pJsonDocumentAccount)["faculty"].MemberBegin() + pos)->value.GetString());
 }
