@@ -1,14 +1,42 @@
 /*
-File Name: studentaccountmodel.cpp
-Description: Implement the Model for Student Account
-Author: unconsolable
+文件名: studentaccountmodel.h
+版本: 1.0
+目的与主要功能: 实现学生账号模型
+创建日期: 2020.9.13
+描述: 实现学生账号模型
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 #include "studentaccountmodel.h"
+
+/***************************
+ * Name:
+ *   StudentAccountModel
+ * Input:
+ *   parent 父级模型
+ * Return:
+ *   none
+ * Description:
+ *   学生账号模型构造函数
+ ***************************/
 
 StudentAccountModel::StudentAccountModel(rapidjson::Document *_jsonDocumentAcc, QObject *parent)
     :QAbstractListModel(parent), m_pJsonDocumentAccount(_jsonDocumentAcc)
 {
 }
+
+/***************************
+ * Name:
+ *   addAccount
+ * Input:
+ *   account 账号名
+ *   passwd 密码
+ * Return:
+ *   none
+ * Description:
+ *   添加学生账号
+ ***************************/
 
 void StudentAccountModel::addAccount(const std::string &account, const std::string &passwd)
 {
@@ -24,12 +52,34 @@ void StudentAccountModel::addAccount(const std::string &account, const std::stri
     endInsertRows();
 }
 
+/***************************
+ * Name:
+ *   rowCount
+ * Input:
+ *   parent 无用
+ * Return:
+ *   none
+ * Description:
+ *   返回数据数目
+ ***************************/
+
 int StudentAccountModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     // 返回model中元素个数
     return (*m_pJsonDocumentAccount)["student"].MemberCount();
 }
+
+/***************************
+ * Name:
+ *   rmAccount
+ * Input:
+ *   pos
+ * Return:
+ *   bool
+ * Description:
+ *   删除pos处账号
+ ***************************/
 
 void StudentAccountModel::rmAccount(int pos)
 {
@@ -38,6 +88,18 @@ void StudentAccountModel::rmAccount(int pos)
     (*m_pJsonDocumentAccount)["student"].EraseMember((*m_pJsonDocumentAccount)["student"].MemberBegin() + pos);
     endRemoveRows();
 }
+
+/***************************
+ * Name:
+ *   data
+ * Input:
+ *   index 数据坐标
+ *   role 数据类型
+ * Return:
+ *   QVariant
+ * Description:
+ *   输出用于显示的数据
+ ***************************/
 
 QVariant StudentAccountModel::data(const QModelIndex &index, int role) const
 {
@@ -52,6 +114,17 @@ QVariant StudentAccountModel::data(const QModelIndex &index, int role) const
         return tr(((*m_pJsonDocumentAccount)["student"].MemberBegin() + index.row())->name.GetString());
     return QVariant();
 }
+
+/***************************
+ * Name:
+ *   getAccountAndPasswd
+ * Input:
+ *   pos
+ * Return:
+ *   std::pair<std::string, std::string>
+ * Description:
+ *   返回账号密码对
+ ***************************/
 
 std::pair<std::string, std::string> StudentAccountModel::getAccountAndPasswd(int pos)
 {

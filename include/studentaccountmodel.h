@@ -1,3 +1,13 @@
+/*
+文件名: studentaccountmodel.h
+版本: 1.0
+目的与主要功能: 继承QAbstractModel定义学生账号模型
+创建日期: 2020.9.13
+描述: 继承QAbstractModel定义学生账号模型
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
+*/
 #ifndef STUDENTACCOUNTMODEL_H
 #define STUDENTACCOUNTMODEL_H
 

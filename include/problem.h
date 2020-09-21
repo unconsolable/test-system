@@ -1,7 +1,12 @@
 /*
-File Name: problem.h
-Description: Define class Problem
-Author: unconsolable
+文件名: problem.h
+版本: 1.0
+目的与主要功能: 定义问题类
+创建日期: 2020.9.2
+描述: 定义问题类
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 
 #ifndef PROBLEM_H

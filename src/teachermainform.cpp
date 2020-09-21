@@ -1,7 +1,12 @@
 /*
-File Name: teachermainform.h
-Description: Implement TeacherMainForm
-Author: unconsolable
+文件名: teachermainform.h
+版本: 1.0
+目的与主要功能: 实现教师窗体类
+创建日期: 2020.9.3
+描述: 实现教师窗体类
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 
 #include "teachermainform.h"
@@ -55,7 +60,16 @@ Author: unconsolable
 #define AddMultipleChoiceInVector(method, choiceChar)               \
     if (m_teacherProblemWidget->method->checkState() == Qt::Checked) \
             b_charVecRightAns.push_back((choiceChar));
-
+/***************************
+ * Name:
+ *   TeacherMainForm
+ * Input:
+ *   parent 父窗体
+ * Return:
+ *   none
+ * Description:
+ *   构造出题系统窗体
+ ***************************/
 TeacherMainForm::TeacherMainForm(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::TeacherMainForm)
@@ -77,14 +91,32 @@ TeacherMainForm::TeacherMainForm(QWidget *parent) :
     // QListView双击事件与slot绑定
     connect(ui->m_listViewProblem, SIGNAL(doubleClicked(const QModelIndex)), this, SLOT(on_m_problemListItemDoubleClicked(const QModelIndex&)));
 }
-
+/***************************
+ * Name:
+ *   ~TeacherMainForm
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   析构出题系统窗体
+ ***************************/
 TeacherMainForm::~TeacherMainForm()
 {
     delete ui;
     CheckDeleteSetNull(m_pProblemListModel);
     CheckDeleteSetNull(m_teacherProblemWidget);
 }
-// 点击打开菜单后的事件
+/***************************
+ * Name:
+ *   onFileOpen
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   点击打开菜单后的事件
+ ***************************/
 void TeacherMainForm::onFileOpen()
 {
     // 获得文件路径
@@ -113,7 +145,16 @@ void TeacherMainForm::onFileOpen()
     if (!m_pProblemListModel->fromJsonDocument(b_jsonDocProList))
         QMessageBox::information(this, "Error", tr("转为Model失败"));
 }
-// 点击保存菜单后的事件
+/***************************
+ * Name:
+ *   onFileSave
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   点击保存菜单后发生的事件
+ ***************************/
 void TeacherMainForm::onFileSave()
 {
     QString b_qStrFileDir = QFileDialog::getOpenFileName(this,"Open Paper File","/","JSON files(*.json)");
@@ -126,7 +167,16 @@ void TeacherMainForm::onFileSave()
     std::string res = m_pProblemListModel->toJsonString();
     b_ofStrmProblemList << res;
 }
-// 删除功能
+/***************************
+ * Name:
+ *   on_m_buttonRm_clicked
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   点击删除按钮后发生的事件
+ ***************************/
 void TeacherMainForm::on_m_buttonRm_clicked()
 {
     // 获得选择的Model
@@ -147,7 +197,16 @@ void TeacherMainForm::on_m_buttonRm_clicked()
         }
     }
 }
-// 双击时实现题目选中
+/***************************
+ * Name:
+ *   on_m_problemListItemDoubleClicked
+ * Input:
+ *   index 点击的数据坐标
+ * Return:
+ *   none
+ * Description:
+ *   双击时实现题目选中
+ ***************************/
 void TeacherMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index)
 {
     // 获得选择的下标和对应题目的指针
@@ -201,7 +260,16 @@ void TeacherMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
         break;
     }
 }
-// 完成修改时,保存题目信息
+/***************************
+ * Name:
+ *   on_m_buttonFinish_clicked
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   完成修改时,保存题目信息
+ ***************************/
 void TeacherMainForm::on_m_buttonFinish_clicked()
 {
     bool isMarkDouble = false;
@@ -295,12 +363,30 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
 
 
 }
-// 添加一个模板问题,可以自行修改保存
+/***************************
+ * Name:
+ *   on_m_buttonAdd_clicked
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   添加一个模板问题,可以自行修改保存
+ ***************************/
 void TeacherMainForm::on_m_buttonAdd_clicked()
 {
     m_pProblemListModel->addProblem(m_pProblemListModel->rowCount(), 1.0, "这是一个题目模板,模板为选择题,根据需求自行更改",{"1","2","3","4"}, 'A');
 }
-// 新建一个空白问题文件,用于存储问题
+/***************************
+ * Name:
+ *   onFileNew
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   新建一个空白问题文件,用于存储问题
+ ***************************/
 void TeacherMainForm::onFileNew()
 {
     // 获得文件路径并打开

@@ -1,7 +1,12 @@
 /*
-File Name: studentproblemwidget.cpp
-Description: Implement the widget for student
-Author: unconsolable
+文件名: studentproblemwidget.h
+版本: 1.0
+目的与主要功能: 实现显示题目和提供作答区的Widget
+创建日期: 2020.9.10
+描述: 实现显示题目和提供作答区的Widget
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 
 #include "studentproblemwidget.h"
@@ -67,7 +72,7 @@ Author: unconsolable
         m_gridLayoutProblem->addWidget(m_chkBoxProblemRightChoiceD, 8, 3, 1, 1, Qt::AlignLeft | Qt::AlignHCenter); \
     }                                                                                                             \
     while (0)
-// 初始化判断题答题区并添加到View
+// 初始化判断题答题区并添加到GridLayout
 #define InitJudgementChkBoxAndAddView()                             \
     do                                                              \
     {                                                               \
@@ -75,7 +80,7 @@ Author: unconsolable
         m_gridLayoutProblem->addWidget(m_chkBoxIsRight, 7, 0, 1, 1); \
     }                                                                \
     while (0)
-// 初始化简答答题区并添加到View
+// 初始化简答答题区并添加到GridLayout
 #define InitWritePlainTextAndAddView()                                      \
     do                                                                      \
     {                                                                       \
@@ -127,7 +132,19 @@ Author: unconsolable
 #define CheckDeleteJudgement() CheckDeleteSetNull(m_chkBoxIsRight)
 // 释放解答答题区
 #define CheckDeleteWrite() CheckDeleteSetNull(m_plainTextWriteAnswer)
-// 构造通用信息
+
+/***************************
+ * Name:
+ *   StudentProblemWidget
+ * Input:
+ *   parent 父窗体指针
+ * Return:
+ *   none
+ * Description:
+ *  构造StudentProblemWidget类
+ *  构造通用信息(网格布局等)
+ ***************************/
+
 StudentProblemWidget::StudentProblemWidget(QWidget *parent)
     : QWidget(parent)
 {
@@ -154,7 +171,18 @@ StudentProblemWidget::StudentProblemWidget(QWidget *parent)
     m_gridLayoutProblem->addWidget(m_plainTextProblemDesc, 1, 0, 5, 4);
     m_gridLayoutProblem->addWidget(m_labelProblemAnswerHint, 6, 0, 1, 2);
 }
-// 析构通用信息
+
+/***************************
+ * Name:
+ *   StudentProblemWidget
+ * Input:
+ *   parent 父窗体指针
+ * Return:
+ *   none
+ * Description:
+ *  析构StudentProblemWidget类
+ *  析构所有控件
+ ***************************/
 StudentProblemWidget::~StudentProblemWidget()
 {
     // 释放题目数据
@@ -172,9 +200,21 @@ StudentProblemWidget::~StudentProblemWidget()
     // 释放简答
     CheckDeleteWrite();
 }
+
+/***************************
+ * Name:
+ *   onProblemTypeChanged
+ * Input:
+ *   newtype 新类型的编号
+ * Return:
+ *   none
+ * Description:
+ *   释放原问题对应控件
+ *   添加新问题对应控件
+ ***************************/
 void StudentProblemWidget::onProblemTypeChanged(int newtype)
 {
-    // 释放原有类型特有数据
+    // 释放原有类型特有控件
     switch(m_intLastProblemTypeIndex)
     {
     case SINGLE: CheckDeleteChoice(); CheckDeleteSingle(); break;
@@ -185,7 +225,7 @@ void StudentProblemWidget::onProblemTypeChanged(int newtype)
     }
     // 记录之前类型便于后续删除题目面板控件
     m_intLastProblemTypeIndex = newtype;
-    // 添加新的类型特有数据
+    // 添加新的类型特有控件
     switch (newtype)
     {
     case SINGLE: InitChoice(); InitRadioButtonAndGroup(); ViewAddChoice(); ViewAddRadioButton(); break;

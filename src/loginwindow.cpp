@@ -1,7 +1,12 @@
 /*
-File Name: loginwindow.cpp
-Description: Implement Login Window
-Author: unconsolable
+文件名: loginwindow.h
+版本: 1.0
+目的与主要功能: 实现登录窗口类
+创建日期: 2020.9.2
+描述: 实现登录窗口类
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 
 #include "loginwindow.h"
@@ -10,12 +15,34 @@ Author: unconsolable
 
 extern rapidjson::Document g_jsonDocumentAccount;
 
+/***************************
+ * Name:
+ *   LoginWindow
+ * Input:
+ *   parent 父窗体名称
+ * Return:
+ *   none
+ * Description:
+ *   构造登录窗口类
+ ***************************/
+
 LoginWindow::LoginWindow(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::LoginWindow)
 {
     ui->setupUi(this);
 }
+
+/***************************
+ * Name:
+ *   LoginWindow
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   析构登录窗口类
+ ***************************/
 
 LoginWindow::~LoginWindow()
 {
@@ -37,6 +64,19 @@ LoginWindow::~LoginWindow()
         m_pRootFormRoot = nullptr;
     }
 }
+
+/***************************
+ * Name:
+ *   on_loginBtn_clicked
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   点击登录按钮后发生的事件
+ *   主要负责判断密码正确性
+ *   并切换到不同模块
+ ***************************/
 
 void LoginWindow::on_loginBtn_clicked()
 {

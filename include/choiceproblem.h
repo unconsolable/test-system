@@ -1,9 +1,13 @@
 /*
-File Name: choiceproblem.h
-Description: Define class ChoiceProblem
-Author: unconsolable
+文件名: choiceproblem.h
+版本: 1.0
+目的与主要功能: 定义选择题类
+创建日期: 2020.9.3
+描述: 定义选择题类
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
-
 #ifndef CHOICEPROBLEM_H
 #define CHOICEPROBLEM_H
 

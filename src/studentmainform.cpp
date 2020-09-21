@@ -30,6 +30,18 @@ Author: unconsolable
         m_studentProblemWidget->m_labelProblemChoiceC->setText(tr(t_strVecChoiceDescOrKeyWords->at(2).c_str())); \
         m_studentProblemWidget->m_labelProblemChoiceD->setText(tr(t_strVecChoiceDescOrKeyWords->at(3).c_str())); \
     } while (0)
+
+/***************************
+ * Name:
+ *   StudentMainForm
+ * Input:
+ *   parent 父窗体
+ * Return:
+ *   none
+ * Description:
+ *   构造考试系统页面
+ ***************************/
+
 StudentMainForm::StudentMainForm(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::StudentMainForm)
@@ -49,7 +61,18 @@ StudentMainForm::StudentMainForm(QWidget *parent) :
     // QListView双击事件与slot绑定
     connect(ui->m_listViewProblem, SIGNAL(doubleClicked(const QModelIndex)), this, SLOT(on_m_problemListItemDoubleClicked(const QModelIndex&)));
 }
-// 析构函数
+
+/***************************
+ * Name:
+ *   ~StudentMainForm
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   析构考试系统页面
+ ***************************/
+
 StudentMainForm::~StudentMainForm()
 {
     delete ui;
@@ -62,7 +85,17 @@ StudentMainForm::~StudentMainForm()
         m_doubleArrayAnswerMark = nullptr;
     }
 }
-// 点击打开菜单后的事件
+
+/***************************
+ * Name:
+ *   onFileOpen
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   点击打开菜单后的事件
+ ***************************/
 void StudentMainForm::onFileOpen()
 {
     // 获得文件路径
@@ -100,7 +133,16 @@ void StudentMainForm::onFileOpen()
     // 初始化每题得分数组
     m_doubleArrayAnswerMark = new double[m_pProblemListModel->rowCount()]{0};
 }
-// 点击保存菜单后的事件
+/***************************
+ * Name:
+ *   onFileSave
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   点击保存菜单后的事件
+ ***************************/
 void StudentMainForm::onFileSave()
 {
     // 计算分数
@@ -116,6 +158,16 @@ void StudentMainForm::onFileSave()
         QMessageBox::information(this, tr("Accepted"), QString().number(ans, 'f', 1) + tr("分，到100分,已经提交"));
     }
 }
+/***************************
+ * Name:
+ *   on_m_problemListItemDoubleClicked
+ * Input:
+ *   index 点击坐标
+ * Return:
+ *   none
+ * Description:
+ *   选择题目
+ ***************************/
 void StudentMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index)
 {
     // 获得下标与对应题目的指针
@@ -149,6 +201,17 @@ void StudentMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
         break;
     }
 }
+
+/***************************
+ * Name:
+ *   on_m_buttonFinish_clicked
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   记下本次作答总分
+ ***************************/
 
 void StudentMainForm::on_m_buttonFinish_clicked()
 // 判断是否已经正确提交
@@ -207,7 +270,18 @@ void StudentMainForm::on_m_buttonFinish_clicked()
     m_doubleArrayAnswerMark[m_intCurProblemIndex] = (*m_pProblemListModel)[m_intCurProblemIndex]->checkAnswer(b_variantForAnswer);
     // QMessageBox::information(this, tr("Information"), QString().number(m_doubleTotalMark,'f',1));
 }
-// 显示下一题, 会保存当前题目的答案
+
+/***************************
+ * Name:
+ *   on_m_buttonNext_clicked
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   显示下一题, 会保存当前题目的答案
+ ***************************/
+
 void StudentMainForm::on_m_buttonNext_clicked()
 {
     // 保存答案
@@ -224,7 +298,18 @@ void StudentMainForm::on_m_buttonNext_clicked()
     // 发生双击事件
     on_m_problemListItemDoubleClicked(b_qModelIndexNext);
 }
-// 显示上一题, 会保存当前题目的答案
+
+/***************************
+ * Name:
+ *   on_m_buttonPrev_clicked
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   显示上一题, 会保存当前题目的答案
+ ***************************/
+
 void StudentMainForm::on_m_buttonPrev_clicked()
 {
     // 保存答案

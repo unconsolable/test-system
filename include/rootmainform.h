@@ -1,9 +1,13 @@
 /*
-File Name: rootmainform.h
-Description: Define class RootMainForm
-Author: unconsolable
+文件名: rootmainform.h
+版本: 1.0
+目的与主要功能: 定义账号管理窗口类
+创建日期: 2020.9.12
+描述: 定义账号管理窗口类
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
-
 #ifndef ROOTMAINFORM_H
 #define ROOTMAINFORM_H
 

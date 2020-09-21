@@ -1,7 +1,12 @@
 /*
-File Name: problemlistmodel.h
-Description: Inherit QAbstractListModel to define ProblemListModel
-Author: unconsolable
+文件名: problemlistmodel.h
+版本: 1.0
+目的与主要功能: 继承QAbstractModel定义试题列表模型
+创建日期: 2020.9.4
+描述: 继承QAbstractModel定义试题列表模型
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 
 #ifndef TESTMODEL_H

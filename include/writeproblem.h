@@ -1,7 +1,12 @@
 /*
-File Name: writeproblem.h
-Description: Define the class of the write problem
-Author: unconsolable
+文件名: writeproblem.h
+版本: 1.0
+目的与主要功能: 定义简答题类
+创建日期: 2020.9.4
+描述: 定义简答题类
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 
 #ifndef WRITEPROBLEM_H

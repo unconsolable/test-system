@@ -1,7 +1,12 @@
 /*
-File Name: teacherproblemwidget.cpp
-Description: Implement the widget showing the problem
-Author: unconsolable
+文件名: teacherproblemwidget.h
+版本: 1.0
+目的与主要功能: 定义显示题目和辅助出题的Widget
+创建日期: 2020.9.8
+描述: 定义显示题目和辅助出题的Widget
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 #include "teacherproblemwidget.h"
 #include "problem.h"
@@ -139,8 +144,16 @@ Author: unconsolable
         m_gridLayoutProblem->addWidget(m_plainTextKeyWordList, 7, 0, 4, 4); \
     }                                                                       \
     while (0)
-
-
+/***************************
+ * Name:
+ *   TeacherProblemWidget
+ * Input:
+ *   parent 父窗体指针
+ * Return:
+ *   none
+ * Description:
+ *   构造题目显示窗体
+ ***************************/
 TeacherProblemWidget::TeacherProblemWidget(QWidget *parent)
     : QWidget(parent)
 {
@@ -178,7 +191,16 @@ TeacherProblemWidget::TeacherProblemWidget(QWidget *parent)
     // View添加RadioButton
     ViewAddRadioButton();
 }
-
+/***************************
+ * Name:
+ *   TeacherProblemWidget
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   析构题目显示窗体
+ ***************************/
 TeacherProblemWidget::~TeacherProblemWidget()
 {
     // 释放提示性字符
@@ -198,7 +220,17 @@ TeacherProblemWidget::~TeacherProblemWidget()
     // 释放简答
     CheckDeleteWrite();
 }
-
+/***************************
+ * Name:
+ *   onProblemTypeChanged
+ * Input:
+ *   newtype 新类型的编号
+ * Return:
+ *   none
+ * Description:
+ *   释放原问题对应控件
+ *   添加新问题对应控件
+ ***************************/
 void TeacherProblemWidget::onProblemTypeChanged(int newtype)
 {
     m_boolProblemTypeChanged = true;

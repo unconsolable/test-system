@@ -1,7 +1,12 @@
 /*
-File Name: studentproblemwidget.h
-Description: Define the widget showing the problem for students
-Author: unconsolable
+文件名: studentproblemwidget.h
+版本: 1.0
+目的与主要功能: 定义显示题目和提供作答区的Widget
+创建日期: 2020.9.10
+描述: 定义显示题目和提供作答区的Widget
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 #ifndef STUDENTPROBLEMWIDGET_H
 #define STUDENTPROBLEMWIDGET_H

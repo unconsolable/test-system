@@ -1,7 +1,12 @@
 /*
-File Name: problemlistmodel.cpp
-Description: Implement the class ProblemListModel
-Author: unconsolable
+文件名: problemlistmodel.h
+版本: 1.0
+目的与主要功能: 实现试题列表模型
+创建日期: 2020.9.4
+描述: 实现试题列表模型
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 
 #include "problemlistmodel.h"
@@ -11,9 +16,31 @@ Author: unconsolable
 #include "writeproblem.h"
 #include "rapidjson/prettywriter.h"
 
+/***************************
+ * Name:
+ *   ProblemListModel
+ * Input:
+ *   parent 父级模型
+ * Return:
+ *   none
+ * Description:
+ *   问题列表构造函数
+ ***************************/
+
 ProblemListModel::ProblemListModel(QObject *parent) : QAbstractListModel(parent)
 {
 }
+
+/***************************
+ * Name:
+ *   ~ProblemListModel
+ * Input:
+ *   none
+ * Return:
+ *   none
+ * Description:
+ *   问题列表析构函数
+ ***************************/
 
 ProblemListModel::~ProblemListModel()
 {
@@ -32,7 +59,21 @@ ProblemListModel::~ProblemListModel()
         }
     }
 }
-// 添加单选题
+
+/***************************
+ * Name:
+ *   addProblem
+ * Input:
+ *   pos 添加到的位置
+ *   _mark 分值
+ *   _desc 题干
+ *   _ansList 选项列表
+ *   _right 单选题正确选项
+ * Return:
+ *   none
+ * Description:
+ *   添加单选题
+ ***************************/
 void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, const std::vector<std::string>& _ansList, char _right)
 {
     // 发送Model将变化的信号 [begin,end]方式表示
@@ -41,7 +82,21 @@ void ProblemListModel::addProblem(int pos, double _mark, const std::string& _des
     // 发送Model已变化的信号
     endInsertRows();
 }
-// 添加多选题
+
+/***************************
+ * Name:
+ *   addProblem
+ * Input:
+ *   pos 添加到的位置
+ *   _mark 分值
+ *   _desc 题干
+ *   _ansList 选项列表
+ *   _right 多选题正确选项
+ * Return:
+ *   none
+ * Description:
+ *   添加多选题
+ ***************************/
 void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, const std::vector<std::string>& _ansList, const std::vector<char>& _right)
 {
     // 发送Model将变化的信号 [begin,end]方式表示
@@ -50,7 +105,19 @@ void ProblemListModel::addProblem(int pos, double _mark, const std::string& _des
     // 发送Model已变化的信号
     endInsertRows();
 }
-// 添加判断题
+/***************************
+ * Name:
+ *   addProblem
+ * Input:
+ *   pos 添加到的位置
+ *   _mark 分值
+ *   _desc 题干
+ *   _right 判断题正确选项
+ * Return:
+ *   none
+ * Description:
+ *   添加判断题
+ ***************************/
 void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, bool _right)
 {
     // 发送Model将变化的信号 [begin,end]方式表示
@@ -59,7 +126,19 @@ void ProblemListModel::addProblem(int pos, double _mark, const std::string& _des
     // 发送Model已变化的信号
     endInsertRows();
 }
-// 添加简答题
+/***************************
+ * Name:
+ *   addProblem
+ * Input:
+ *   pos 添加到的位置
+ *   _mark 分值
+ *   _desc 题干
+ *   _keyWords 关键词列表
+ * Return:
+ *   none
+ * Description:
+ *   添加简答题
+ ***************************/
 void ProblemListModel::addProblem(int pos, double _mark, const std::string& _desc, const std::vector<std::string>& _keyWords)
 {
     // 发送Model将变化的信号 [begin,end]方式表示
@@ -68,7 +147,16 @@ void ProblemListModel::addProblem(int pos, double _mark, const std::string& _des
     // 发送Model已变化的信号
     endInsertRows();
 }
-// 使用PrettyWriter转换成字符
+/***************************
+ * Name:
+ *   toJsonString
+ * Input:
+ *   none
+ * Return:
+ *   std::string
+ * Description:
+ *   将所有题目转为JSON字符串
+ ***************************/
 std::string ProblemListModel::toJsonString() const
 {
     rapidjson::Document b_jsonTestPaper(rapidjson::kObjectType);
@@ -86,6 +174,16 @@ std::string ProblemListModel::toJsonString() const
     b_jsonTestPaper.Accept(writer);
     return sb.GetString();
 }
+/***************************
+ * Name:
+ *   fromJsonDocument
+ * Input:
+ *   doc JSON解析后的文档
+ * Return:
+ *   bool
+ * Description:
+ *   将解析的JSON树转为问题列表
+ ***************************/
 bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
 {
     // 检查是否有为problem的key
@@ -146,12 +244,35 @@ bool ProblemListModel::fromJsonDocument(const rapidjson::Document& doc)
     return true;
 }
 
+/***************************
+ * Name:
+ *   rowCount
+ * Input:
+ *   parent 无用
+ * Return:
+ *   none
+ * Description:
+ *   返回数据数目
+ ***************************/
+
 int ProblemListModel::rowCount(const QModelIndex &parent) const
 {
     // 用于View显示使用,返回Model中条目
     Q_UNUSED(parent);
     return m_pProblemVecProList.size();
 }
+
+/***************************
+ * Name:
+ *   data
+ * Input:
+ *   index 数据坐标
+ *   role 数据类型
+ * Return:
+ *   QVariant
+ * Description:
+ *   输出用于显示的数据
+ ***************************/
 
 QVariant ProblemListModel::data(const QModelIndex& index, int role) const
 {
@@ -171,6 +292,19 @@ QVariant ProblemListModel::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
+/***************************
+ * Name:
+ *   headerData
+ * Input:
+ *   section 无用
+ *   orientation 朝向
+ *   role 数据类型
+ * Return:
+ *   QVariant
+ * Description:
+ *   显示题目表头
+ ***************************/
+
 QVariant ProblemListModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     Q_UNUSED(section);
@@ -179,6 +313,17 @@ QVariant ProblemListModel::headerData(int section, Qt::Orientation orientation, 
         return tr("题型");
     return QVariant();
 }
+
+/***************************
+ * Name:
+ *   flags
+ * Input:
+ *   index 坐标
+ * Return:
+ *   Qt::ItemFlags
+ * Description:
+ *   返回位置对应数据类型
+ ***************************/
 
 Qt::ItemFlags ProblemListModel::flags(const QModelIndex &index) const
 {
@@ -189,6 +334,17 @@ Qt::ItemFlags ProblemListModel::flags(const QModelIndex &index) const
     // return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
     return QAbstractItemModel::flags(index);
 }
+
+/***************************
+ * Name:
+ *   rmProblem
+ * Input:
+ *   pos
+ * Return:
+ *   bool
+ * Description:
+ *   删除pos处问题
+ ***************************/
 
 bool ProblemListModel::rmProblem(int pos)
 {
@@ -201,7 +357,17 @@ bool ProblemListModel::rmProblem(int pos)
     endRemoveRows();
     return true;
 }
-
+/***************************
+ * Name:
+ *   operator[]
+ * Input:
+ *   index
+ * Return:
+ *   Problem*
+ * Description:
+ *   返回m_pProblemVecProList
+ *   中index处存的指针
+ ***************************/
 Problem* ProblemListModel::operator[](size_t index)
 {
     // 检查下标是否有效
@@ -210,10 +376,21 @@ Problem* ProblemListModel::operator[](size_t index)
     return m_pProblemVecProList[index];
 }
 
+/***************************
+ * Name:
+ *   totalMark
+ * Input:
+ *   none
+ * Return:
+ *   double
+ * Description:
+ *   计算总分
+ ***************************/
+
 double ProblemListModel::totalMark() const
 {
-    // 计算总分,便于判断是否是总分
-    // 低于100分的试卷用于考试
+    // 计算总分,便于判断是否是
+    // 总分低于100分的试卷用于考试
     double totalmark = 0;
     for (auto& i : m_pProblemVecProList)
     {

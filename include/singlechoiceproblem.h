@@ -1,7 +1,12 @@
 /*
-File Name: singlechoiceproblem.h
-Description: Define class SingleChoiceProblem
-Author: unconsolable
+文件名: singlechoiceproblem.h
+版本: 1.0
+目的与主要功能: 定义单选题类
+创建日期: 2020.9.3
+描述: 定义单选题类
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 
 #ifndef SINGLECHOICEPROBLEM_H

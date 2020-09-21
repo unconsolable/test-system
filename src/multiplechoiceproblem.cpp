@@ -1,7 +1,12 @@
 /*
-File Name: multiplechoiceproblem.h
-Description: Implement class MultipleChoice
-Author: unconsolable
+文件名: multiplechoiceproblem.h
+版本: 1.0
+目的与主要功能: 实现多选题类
+创建日期: 2020.9.3
+描述: 实现多选题类
+作者: unconsolable
+修改者: unconsolable
+联系方式: chenzhipeng2012@gmail.com
 */
 
 #include "multiplechoiceproblem.h"
@@ -11,6 +16,17 @@ MultipleChoiceProblem::MultipleChoiceProblem(double _mark, const std::string& _d
 {
 
 }
+
+/***************************
+ * Name:
+ *   checkAnswer
+ * Input:
+ *   ans 存储答案的QVariant
+ * Return:
+ *   double
+ * Description:
+ *   计算得分
+ ***************************/
 
 double MultipleChoiceProblem::checkAnswer(const QVariant & ans)
 {
@@ -35,6 +51,17 @@ double MultipleChoiceProblem::checkAnswer(const QVariant & ans)
     }
     return b_doubleTotalMark;
 }
+
+/***************************
+ * Name:
+ *   toJsonValue
+ * Input:
+ *   doc 提供Allocator的Document
+ * Return:
+ *   rapidjson::value
+ * Description:
+ *   将判断题转为JSON数据节点
+ ***************************/
 
 rapidjson::Value MultipleChoiceProblem::toJsonValue(rapidjson::Document& doc) const
 {
