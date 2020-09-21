@@ -145,15 +145,19 @@ void TeacherMainForm::onFileOpen()
         // 读入账户文件形成JSON字符串
         b_strProListInfo += t_strInput + ' ';
     }
+    // 存储题目信息的JSON
     rapidjson::Document b_jsonDocProList;
+    // 如果有解析错误则报错
     if (b_jsonDocProList.Parse(b_strProListInfo.c_str()).HasParseError())
     {
         QMessageBox::information(this, "Error", tr("试卷解析失败"));
         return;
     }
+    // 如果转换错误则报错
     if (!m_pProblemListModel->fromJsonDocument(b_jsonDocProList))
         QMessageBox::information(this, "Error", tr("转为Model失败"));
 }
+
 /***************************
  * Name:
  *   onFileSave
@@ -164,18 +168,25 @@ void TeacherMainForm::onFileOpen()
  * Description:
  *   点击保存菜单后发生的事件
  ***************************/
+
 void TeacherMainForm::onFileSave()
 {
+    // 获得文件路径
     QString b_qStrFileDir = QFileDialog::getOpenFileName(this,"Open Paper File","/","JSON files(*.json)");
+    // 将流与文件绑定
     std::ofstream b_ofStrmProblemList(b_qStrFileDir.toStdString());
+    // 若流打开失败，则文件打开失败
     if (!b_ofStrmProblemList)
     {
         QMessageBox::information(this, "Error", tr("文件打开失败"));
         return;
     }
+    // 存储转换结果
     std::string res = m_pProblemListModel->toJsonString();
+    // 写入文件
     b_ofStrmProblemList << res;
 }
+
 /***************************
  * Name:
  *   on_m_buttonRm_clicked
@@ -186,6 +197,7 @@ void TeacherMainForm::onFileSave()
  * Description:
  *   点击删除按钮后发生的事件
  ***************************/
+
 void TeacherMainForm::on_m_buttonRm_clicked()
 {
     // 获得选择的Model
@@ -194,7 +206,7 @@ void TeacherMainForm::on_m_buttonRm_clicked()
     {
         // 获得对应下标
         QModelIndexList indexList = selectModel->selectedIndexes();
-        // 需要检测大小,避免未点击的UB
+        // 需要检测大小,避免未点击的错误
         if (!indexList.size())
         {
             QMessageBox::information(this, tr("错误"), tr("未点击"));
@@ -206,6 +218,7 @@ void TeacherMainForm::on_m_buttonRm_clicked()
         }
     }
 }
+
 /***************************
  * Name:
  *   on_m_problemListItemDoubleClicked
@@ -216,6 +229,7 @@ void TeacherMainForm::on_m_buttonRm_clicked()
  * Description:
  *   双击时实现题目选中
  ***************************/
+
 void TeacherMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index)
 {
     // 获得选择的下标和对应题目的指针
@@ -243,7 +257,7 @@ void TeacherMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
     case MULTIPLE:
         // 设置选项文字
         SetChoiceDesc();
-        // 设置正确答案(组)
+        // 设置正确答案组
         for (auto b_charEachAns : static_cast<MultipleChoiceProblem*>(curProblem)->getRightAns())
         {
             SetChoiceButtonOrBox(b_charEachAns, m_chkBoxProblemRightChoiceA, m_chkBoxProblemRightChoiceB, m_chkBoxProblemRightChoiceC, m_chkBoxProblemRightChoiceD, setCheckState, Qt::Checked);
@@ -269,6 +283,7 @@ void TeacherMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
         break;
     }
 }
+
 /***************************
  * Name:
  *   on_m_buttonFinish_clicked
@@ -279,6 +294,7 @@ void TeacherMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
  * Description:
  *   完成修改时,保存题目信息
  ***************************/
+
 void TeacherMainForm::on_m_buttonFinish_clicked()
 {
     bool isMarkDouble = false;
@@ -372,6 +388,7 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
 
 
 }
+
 /***************************
  * Name:
  *   on_m_buttonAdd_clicked
@@ -382,10 +399,12 @@ void TeacherMainForm::on_m_buttonFinish_clicked()
  * Description:
  *   添加一个模板问题,可以自行修改保存
  ***************************/
+
 void TeacherMainForm::on_m_buttonAdd_clicked()
 {
     m_pProblemListModel->addProblem(m_pProblemListModel->rowCount(), 1.0, "这是一个题目模板,模板为选择题,根据需求自行更改",{"1","2","3","4"}, 'A');
 }
+
 /***************************
  * Name:
  *   onFileNew
@@ -396,6 +415,7 @@ void TeacherMainForm::on_m_buttonAdd_clicked()
  * Description:
  *   新建一个空白问题文件,用于存储问题
  ***************************/
+
 void TeacherMainForm::onFileNew()
 {
     // 获得文件路径并打开
@@ -407,7 +427,9 @@ void TeacherMainForm::onFileNew()
         QMessageBox::information(this, "Error", tr("文件打开失败"));
         return;
     }
+    // 需要写入的空白问题数据
     std::string emptyFile("{\n\t\"problem\":[\n\t]\n}");
+    // 写入数据
     b_ofStrmProblemList << emptyFile;
 }
 
