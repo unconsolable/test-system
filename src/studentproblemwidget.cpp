@@ -172,7 +172,7 @@ StudentProblemWidget::~StudentProblemWidget()
     // 释放简答
     CheckDeleteWrite();
 }
-void StudentProblemWidget::onProblemTypeChanged(int index)
+void StudentProblemWidget::onProblemTypeChanged(int newtype)
 {
     // 释放原有类型特有数据
     switch(m_intLastProblemTypeIndex)
@@ -184,9 +184,9 @@ void StudentProblemWidget::onProblemTypeChanged(int index)
     default: break; //对于-1这种不需任何删除
     }
     // 记录之前类型便于后续删除题目面板控件
-    m_intLastProblemTypeIndex = index;
+    m_intLastProblemTypeIndex = newtype;
     // 添加新的类型特有数据
-    switch (index)
+    switch (newtype)
     {
     case SINGLE: InitChoice(); InitRadioButtonAndGroup(); ViewAddChoice(); ViewAddRadioButton(); break;
     case MULTIPLE: InitChoice(); InitChkBoxAndGroup(); ViewAddChoice(); ViewAddChkBox(); break;

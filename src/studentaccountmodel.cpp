@@ -13,10 +13,10 @@ StudentAccountModel::StudentAccountModel(rapidjson::Document *_jsonDocumentAcc, 
 void StudentAccountModel::addAccount(const std::string &account, const std::string &passwd)
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    // account建为jsonValue格式
+    // account建为jsonValue格式，转为string
     rapidjson::Value jsonValueAccount;
     jsonValueAccount.SetString(account.c_str(), account.size(), m_pJsonDocumentAccount->GetAllocator());
-    // passwd建为jsonValue格式
+    // passwd建为jsonValue格式，转为string
     rapidjson::Value jsonValuePasswd;
     jsonValuePasswd.SetString(passwd.c_str(), passwd.size(), m_pJsonDocumentAccount->GetAllocator());
     // 尾后追加
@@ -47,7 +47,7 @@ QVariant StudentAccountModel::data(const QModelIndex &index, int role) const
         return QVariant();
     if (index.row() >= static_cast<int>((*m_pJsonDocumentAccount)["student"].MemberCount()))
         return QVariant();
-    // 返回账号
+    // 返回显示的信息
     if (role == Qt::DisplayRole || role == Qt::EditRole)
         return tr(((*m_pJsonDocumentAccount)["student"].MemberBegin() + index.row())->name.GetString());
     return QVariant();
@@ -55,6 +55,7 @@ QVariant StudentAccountModel::data(const QModelIndex &index, int role) const
 
 std::pair<std::string, std::string> StudentAccountModel::getAccountAndPasswd(int pos)
 {
+    // 返回<账号，密码>对
     return std::make_pair(((*m_pJsonDocumentAccount)["student"].MemberBegin() + pos)->name.GetString(), ((*m_pJsonDocumentAccount)["student"].MemberBegin() + pos)->value.GetString());
 }
 

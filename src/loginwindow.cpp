@@ -20,7 +20,7 @@ LoginWindow::LoginWindow(QWidget *parent)
 LoginWindow::~LoginWindow()
 {
     delete ui;
-    // 删除后置nullptr防止悬垂指针
+    // 删除后，置nullptr，防止悬垂指针
     if (m_pTeacherFormTea)
     {
         delete m_pTeacherFormTea;
@@ -46,16 +46,18 @@ void LoginWindow::on_loginBtn_clicked()
     std::string rootPwStr = g_jsonDocumentAccount["root"].GetString();
     if (g_jsonDocumentAccount["faculty"].HasMember(idStrPtr))
     {
-        // 教师界面
+        // 比较密码
         std::string rightPwStr = g_jsonDocumentAccount["faculty"][idStrPtr].GetString();
         if (rightPwStr == pwStr)
         {
+            // 密码正确，切换窗口
             m_pTeacherFormTea = new TeacherMainForm();
             this->close();
             m_pTeacherFormTea->show();
         }
         else
         {
+            // 密码错误，报错
             QMessageBox::information(this, "错误", "密码错误");
         }
     }
@@ -65,12 +67,14 @@ void LoginWindow::on_loginBtn_clicked()
         std::string rightPwStr = g_jsonDocumentAccount["student"][idStrPtr].GetString();
         if (rightPwStr == pwStr)
         {
+            // 密码正确，切换窗口
             m_pStudentFormStu = new StudentMainForm();
             this->close();
             m_pStudentFormStu->show();
         }
         else
         {
+            // 密码错误，报错
             QMessageBox::information(this, "错误", "密码错误");
         }
     }
@@ -79,11 +83,13 @@ void LoginWindow::on_loginBtn_clicked()
         // 管理员界面
         if (rootPwStr == pwStr)
         {
+            // 密码正确，切换窗口
             m_pRootFormRoot = new RootMainForm();
             this->close();
             m_pRootFormRoot->show();
         }
         else
+            // 密码错误，报错
             QMessageBox::information(this, "错误", "密码错误");
     }
     else

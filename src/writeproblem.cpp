@@ -36,7 +36,9 @@ rapidjson::Value WriteProblem::toJsonValue(rapidjson::Document &doc) const
     for (const auto& b_strEachKeyWord : m_strVecKeyWords)
     {
         rapidjson::Value choice;
+        // 存储关键词string
         choice.SetString(b_strEachKeyWord.c_str(), b_strEachKeyWord.size(), doc.GetAllocator());
+        // 尾后附加
         keyWord.PushBack(choice, doc.GetAllocator());
     }
     // 将Array与对应Key写入JSON值中
@@ -46,10 +48,12 @@ rapidjson::Value WriteProblem::toJsonValue(rapidjson::Document &doc) const
 
 const std::vector<std::string> &WriteProblem::getKeyWords() const
 {
+    // 返回关键词
     return m_strVecKeyWords;
 }
 
 void WriteProblem::setKeyWords(const std::vector<std::string> &keyWords)
 {
+    // 设置关键词
     m_strVecKeyWords = keyWords;
 }

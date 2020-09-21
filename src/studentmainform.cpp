@@ -82,18 +82,22 @@ void StudentMainForm::onFileOpen()
         b_strProListInfo += t_strInput + ' ';
     }
     rapidjson::Document b_jsonDocProList;
+    // 解析字符串，解析出错时报错
     if (b_jsonDocProList.Parse(b_strProListInfo.c_str()).HasParseError())
     {
         QMessageBox::information(this, "Error", tr("试卷解析失败"));
         return;
     }
+    // 转换为ProblemListModel
     if (!m_pProblemListModel->fromJsonDocument(b_jsonDocProList))
         QMessageBox::information(this, "Error", tr("转为Model失败"));
+    // 计算总分
     if (m_pProblemListModel->totalMark() < 100)
     {
         QMessageBox::information(this, "Error", tr("试卷总分低于100，不能用于考试，程序即将退出"));
         exit(2);
     }
+    // 初始化每题得分数组
     m_doubleArrayAnswerMark = new double[m_pProblemListModel->rowCount()]{0};
 }
 // 点击保存菜单后的事件
@@ -101,13 +105,15 @@ void StudentMainForm::onFileSave()
 {
     // 计算分数
     double ans = std::accumulate(m_doubleArrayAnswerMark, m_doubleArrayAnswerMark + m_pProblemListModel->rowCount(), 0.0);
-    if (abs(ans - 100) >= 0.001)
+    if (ans < 100)
     {
+        // 分值未到，报错提醒
         QMessageBox::information(this, tr("Error"), QString().number(ans, 'f', 1) + tr("分，未到100分，继续修改。"));
     }
     else
     {
-        QMessageBox::information(this, tr("Accepted"), tr("到100分,已经提交"));
+        // 分值已到，提示提交
+        QMessageBox::information(this, tr("Accepted"), QString().number(ans, 'f', 1) + tr("分，到100分,已经提交"));
     }
 }
 void StudentMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index)
@@ -123,9 +129,10 @@ void StudentMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
     m_studentProblemWidget->m_labelProblemMark->setText(QString().number(curProblem->getMark(),'f',1) + QString("分"));
     // 设置题目描述
     m_studentProblemWidget->m_plainTextProblemDesc->setPlainText(tr(curProblem->getDescription().c_str()));
-    // 根据题目类型不同分别显示不同内容
     const std::vector<std::string> *t_strVecChoiceDescOrKeyWords = nullptr;
     std::ostringstream oSStrmKeyWords;
+    // 单选题需要多设置一个选项信息
+    // 根据题目类型不同分别显示不同内容
     switch (curProblem->getType())
     {
     case SINGLE:
@@ -152,7 +159,7 @@ void StudentMainForm::on_m_buttonFinish_clicked()
     switch ((*m_pProblemListModel)[m_intCurProblemIndex]->getType())
     {
     case SINGLE:
-        // 判断单选的答案
+        // 判断单选选择的答案
         if (m_studentProblemWidget->m_radioProblemRightChoiceA->isChecked())
             b_variantForAnswer.setValue('A');
         else if (m_studentProblemWidget->m_radioProblemRightChoiceB->isChecked())
@@ -163,7 +170,7 @@ void StudentMainForm::on_m_buttonFinish_clicked()
             b_variantForAnswer.setValue('D');
         break;
     case MULTIPLE:
-        // 添加多选的选项
+        // 添加多选选择的选项
         if (m_studentProblemWidget->m_chkBoxProblemRightChoiceA->checkState() == Qt::Checked)
         {
             b_variantTempChoiceAnswer.setValue('A');
@@ -198,11 +205,12 @@ void StudentMainForm::on_m_buttonFinish_clicked()
     }
     // 记录这一题的成绩
     m_doubleArrayAnswerMark[m_intCurProblemIndex] = (*m_pProblemListModel)[m_intCurProblemIndex]->checkAnswer(b_variantForAnswer);
-//    QMessageBox::information(this, tr("Information"), QString().number(m_doubleTotalMark,'f',1));
+    // QMessageBox::information(this, tr("Information"), QString().number(m_doubleTotalMark,'f',1));
 }
 // 显示下一题, 会保存当前题目的答案
 void StudentMainForm::on_m_buttonNext_clicked()
 {
+    // 保存答案
     on_m_buttonFinish_clicked();
     // 下标加1
     int b_intNextColumn = m_intCurProblemIndex + 1;
@@ -213,20 +221,23 @@ void StudentMainForm::on_m_buttonNext_clicked()
     QModelIndex b_qModelIndexNext = m_pProblemListModel->index(b_intNextColumn, 0);
     // 设置选中
     ui->m_listViewProblem->setCurrentIndex(b_qModelIndexNext);
-    // 发生事件
+    // 发生双击事件
     on_m_problemListItemDoubleClicked(b_qModelIndexNext);
 }
 // 显示上一题, 会保存当前题目的答案
 void StudentMainForm::on_m_buttonPrev_clicked()
 {
+    // 保存答案
     on_m_buttonFinish_clicked();
+    // 下标减1
     int b_intNextColumn = m_intCurProblemIndex - 1;
+    // 若为-1回到0
     if (b_intNextColumn == -1)
         b_intNextColumn = m_pProblemListModel->rowCount() - 1;
     // 获取下标对应的QModelIndex
     QModelIndex b_qModelIndexNext = m_pProblemListModel->index(b_intNextColumn, 0);
     // 设置选中
     ui->m_listViewProblem->setCurrentIndex(b_qModelIndexNext);
-    // 发生事件
+    // 发生双击事件
     on_m_problemListItemDoubleClicked(b_qModelIndexNext);
 }

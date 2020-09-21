@@ -26,9 +26,10 @@ public:
     // rapidjson中只有增加和删除的API,删除时需要key
     void addAccount(const std::string& account, const std::string& passwd);
     void rmAccount(int pos);
-    // 获得账户密码
+    // 返回<账号，密码>对
     std::pair<std::string, std::string> getAccountAndPasswd(int pos);
 private:
+    // 账号数据模型
     rapidjson::Document *m_pJsonDocumentAccount;
 };
 

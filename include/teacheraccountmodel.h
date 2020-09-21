@@ -30,7 +30,7 @@ public:
     // rapidjson中增加只能append,因此修改后位置可能会变
     void addAccount(const std::string& account, const std::string& passwd);
     void rmAccount(int pos);
-    // 获得账户密码
+    // 获得<账号,密码>对
     std::pair<std::string, std::string> getAccountAndPasswd(int pos);
 private:
     rapidjson::Document *m_pJsonDocumentAccount;

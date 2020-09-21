@@ -199,9 +199,10 @@ TeacherProblemWidget::~TeacherProblemWidget()
     CheckDeleteWrite();
 }
 
-void TeacherProblemWidget::onProblemTypeChanged(int index)
+void TeacherProblemWidget::onProblemTypeChanged(int newtype)
 {
     m_boolProblemTypeChanged = true;
+    // 释放原有题目类型
     switch(m_intLastProblemTypeIndex)
     {
     case SINGLE: CheckDeleteChoice(); CheckDeleteSingle(); break;
@@ -209,8 +210,9 @@ void TeacherProblemWidget::onProblemTypeChanged(int index)
     case JUDGEMENT: CheckDeleteJudgement(); break;
     case WRITE: CheckDeleteWrite(); break;
     }
-    m_intLastProblemTypeIndex = index;
-    switch (index)
+    m_intLastProblemTypeIndex = newtype;
+    // 安排新的题目类型
+    switch (newtype)
     {
     case SINGLE: InitChoice(); InitRadioButtonAndGroup(); ViewAddChoice(); ViewAddRadioButton(); break;
     case MULTIPLE: InitChoice(); InitChkBoxAndGroup(); ViewAddChoice(); ViewAddChkBox(); break;

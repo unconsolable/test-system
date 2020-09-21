@@ -23,6 +23,7 @@ double SingleChoiceProblem::checkAnswer(const QVariant& ans)
 
 rapidjson::Value SingleChoiceProblem::toJsonValue(rapidjson::Document& doc) const
 {
+    // 获得已经构建的成果
     auto problem = ChoiceProblem::toJsonValue(doc);
     // 选项在JSON里会变成数字
     problem.AddMember("right",m_charRightAns,doc.GetAllocator());
@@ -31,10 +32,12 @@ rapidjson::Value SingleChoiceProblem::toJsonValue(rapidjson::Document& doc) cons
 
 char SingleChoiceProblem::getRightAns() const
 {
+    // 返回正确答案
     return m_charRightAns;
 }
 
 void SingleChoiceProblem::setRightAns(char rightAns)
 {
+    // 设置正确答案
     m_charRightAns = rightAns;
 }

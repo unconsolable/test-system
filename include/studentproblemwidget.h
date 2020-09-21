@@ -72,7 +72,7 @@ private:
     int m_intLastProblemTypeIndex = -1;
 private slots:
     // 负责在题目类型变化时重新绘制题面
-    void onProblemTypeChanged(int index);
+    void onProblemTypeChanged(int newtype);
 };
 
 #endif // STUDENTPROBLEMWIDGET_H

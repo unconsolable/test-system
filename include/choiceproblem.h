@@ -20,7 +20,7 @@ public:
     // 转为JSON节点类型,便于后续转为JSON文本
     virtual rapidjson::Value toJsonValue(rapidjson::Document& doc) const override;
     virtual ~ChoiceProblem() override = default;
-    // 选项的Setter和Getter
+    // 选项字符的Setter和Getter
     const std::vector<std::string>& getAnswerList() const;
     void setAnswerList(const std::vector<std::string> &AnswerList);
 protected:

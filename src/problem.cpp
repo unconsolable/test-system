@@ -19,9 +19,11 @@ rapidjson::Value Problem::toJsonValue(rapidjson::Document& doc) const
     problem.AddMember("type",static_cast<int>(m_problemTy),doc.GetAllocator());
     // 分数,
     problem.AddMember("mark",m_doubleMark,doc.GetAllocator());
-    //  描述
+    // 描述需要转为字符串
     rapidjson::Value b_jsonValueDescription;
+    // 设置字符串
     b_jsonValueDescription.SetString(m_strDescription.c_str(),m_strDescription.size(), doc.GetAllocator());
+    // 添加描述
     problem.AddMember("description",b_jsonValueDescription, doc.GetAllocator());
     return problem;
 }

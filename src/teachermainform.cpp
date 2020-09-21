@@ -204,6 +204,14 @@ void TeacherMainForm::on_m_problemListItemDoubleClicked(const QModelIndex& index
 // 完成修改时,保存题目信息
 void TeacherMainForm::on_m_buttonFinish_clicked()
 {
+    bool isMarkDouble = false;
+    m_teacherProblemWidget->m_lineEditProblemMark->text().toDouble(&isMarkDouble);
+    if (!isMarkDouble)
+    {
+      QMessageBox::information(this, "Error", "分值非数字，重新检查");
+      return;
+    }
+    // 检查分值是否为数字
     // 通用信息不再另外保存
     // 判断题的对错也不再另外保存
     // 题目描述信息

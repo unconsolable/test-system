@@ -80,7 +80,7 @@ private:
     int m_intLastProblemTypeIndex = 0;
 private slots:
     // 题目类型改变时,释放原有控件,添加新的控件
-    void onProblemTypeChanged(int index);
+    void onProblemTypeChanged(int newtype);
 };
 
 #endif // PROBLEMWIDGET_H
